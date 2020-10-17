@@ -4,7 +4,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/one_q_shop_withlabel_png" />
+            android:src="@drawable/splash_screen" />
     </item>
 
 </layer-list>

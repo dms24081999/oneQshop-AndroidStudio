@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,24 +17,20 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.LoginAPI;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.dominicsilveira.one_q_shop.utils.api.RestClient;
+import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-import okhttp3.OkHttpClient;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,10 +39,15 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private TextView forgotPasswordText,registerSwitchText;
 
+    RestMethods restMethods;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Builds HTTP Client for API Calls
+        restMethods = RestClient.buildHTTPClient();
 
         initComponents();
         attachListeners();
@@ -90,9 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String email, String password) {
         final AppConstants globalClass=(AppConstants)getApplicationContext();
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        LoginAPI loginAPI = new Retrofit.Builder().baseUrl(AppConstants.BACKEND_URL).client(client).build().create(LoginAPI.class);
-        Call<ResponseBody> req = loginAPI.postLogin(email, password);
+        Call<ResponseBody> req = restMethods.postLogin(email, password);
         req.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

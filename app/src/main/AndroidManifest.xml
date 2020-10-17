@@ -18,8 +18,10 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegisterLogin.RegisterActivity"></activity>
-        <activity android:name=".RegisterLogin.ForgotPasswordActivity" />
+        <activity android:name=".RegisterLogin.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".RegisterLogin.ForgotPasswordActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".RegisterLogin.SplashScreen"
             android:theme="@style/SplashTheme">
