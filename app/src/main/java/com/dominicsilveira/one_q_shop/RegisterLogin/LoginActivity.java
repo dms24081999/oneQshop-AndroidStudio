@@ -2,15 +2,131 @@ package com.dominicsilveira.one_q_shop.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.api.LoginAPI;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private EditText email;
+    private EditText password;
+    private Button loginBtn;
+    private TextView forgotPasswordText,registerSwitchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        initComponents();
+        attachListeners();
+    }
+
+    private void initComponents() {
+        email=findViewById(R.id.emailField);
+        password=findViewById(R.id.passwordField);
+        loginBtn=findViewById(R.id.loginBtn);
+        registerSwitchText=findViewById(R.id.registerSwitchText);
+        forgotPasswordText=findViewById(R.id.forgotPasswordText);
+    }
+
+    private void attachListeners() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String txt_email=email.getText().toString();
+                String txt_password=password.getText().toString();
+                loginUser(txt_email,txt_password);
+            }
+        });
+
+        registerSwitchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                finish();
+            }
+        });
+
+        forgotPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+            }
+        });
+    }
+
+
+    private void loginUser(String email, String password) {
+        final AppConstants globalClass=(AppConstants)getApplicationContext();
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        LoginAPI loginAPI = new Retrofit.Builder().baseUrl(AppConstants.BACKEND_URL).client(client).build().create(LoginAPI.class);
+        Call<ResponseBody> req = loginAPI.postLogin(email, password);
+        req.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Toast.makeText(LoginActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    try {
+                        String resp=response.body().string();
+                        JSONObject obj = new JSONObject(resp); //response.body().string() fetched only once
+                        String token = obj.getString("token");
+                        Log.i(String.valueOf(LoginActivity.this.getComponentName().getClassName()), String.valueOf(obj));
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                        myEdit.putString("token", token); // Storing the key and its value as the data fetched from edittext
+                        myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        String resp=response.errorBody().string();
+                        JSONObject obj = new JSONObject(resp);
+                        Log.e(String.valueOf(LoginActivity.this.getComponentName().getClassName()), String.valueOf(obj));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+
     }
 }
