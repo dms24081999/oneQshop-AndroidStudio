@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_dashboard">
+    app:startDestination="@+id/nav_feedback">
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -34,4 +34,19 @@
         android:name="com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.dominicsilveira.one_q_shop.BlankFragment"
+        android:label="@string/feedback"
+        tools:layout="@layout/fragment_blank" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.dominicsilveira.one_q_shop.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" >
+    </fragment>
+
 </navigation>

@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.ui.dashboard;
+package com.dominicsilveira.one_q_shop;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,20 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
 
-import java.util.Objects;
-
-public class DashboardFragment extends Fragment {
-    Toolbar mToolbar;
+public class BlankFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+                             ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_blank, container, false);
         TextView textView = root.findViewById(R.id.text);
-        textView.setText("Dashboard");
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("36");
+        textView.setText("Blank1");
         return root;
     }
 }
