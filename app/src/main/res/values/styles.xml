@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,7 +10,7 @@
         <item name="android:dialogTheme">@style/Dialog.Theme</item>
     </style>
 
-    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -22,14 +22,14 @@
     </style>
 
 
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="Button.Primary" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorPrimary</item>
@@ -99,21 +99,21 @@
         <item name="mrl_rippleColor">#80000000</item>
     </style>
 
-    <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Dialog.Theme" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!--Theme for date picker dialog-->
-    <style name="DatePickerThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="DatePickerThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <!--Theme for time picker dialog-->
-    <style name="TimePickerThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="TimePickerThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
@@ -161,7 +161,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Drawer.Custom.Dark" parent="@style/ThemeOverlay.AppCompat.Light">
+    <style name="Drawer.Custom.Dark" parent="@style/ThemeOverlay.MaterialComponents.Light">
         <item name="colorControlHighlight">#26000000</item>
         <item name="listPreferredItemHeightSmall">60dp</item>
     </style>
@@ -245,7 +245,7 @@
         <item name="colorControlNormal">@color/grey_40</item>
     </style>
 
-    <style name="AppTheme.Dialog.NoActionBar" parent="Theme.AppCompat.Light.Dialog">
+    <style name="AppTheme.Dialog.NoActionBar" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
