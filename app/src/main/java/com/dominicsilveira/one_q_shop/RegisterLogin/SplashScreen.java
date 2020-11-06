@@ -42,7 +42,6 @@ public class SplashScreen extends AppCompatActivity {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-//        https://stackoverflow.com/questions/40973633/retrofit-2-get-json-from-response-body
         Call<Users> req = restMethods.isAuthenticated("Token "+token);
         req.enqueue(new Callback<Users>() {
             @Override

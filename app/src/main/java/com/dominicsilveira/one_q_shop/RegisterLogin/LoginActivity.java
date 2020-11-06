@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
         req.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(LoginActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
                     try {
                         String resp=response.body().string();

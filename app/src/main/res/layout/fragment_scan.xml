@@ -14,6 +14,8 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <!--    44000000-->
         <com.dominicsilveira.one_q_shop.utils.ScannerOverlay
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,7 +25,6 @@
             app:line_width="5"
             app:square_height="250"
             app:square_width="250" />
-        <!--    44000000-->
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,14 +40,20 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:background="@color/grey_40">
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/turnOnCameraBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:paddingLeft="@dimen/spacing_large"
+            android:paddingRight="@dimen/spacing_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
+            android:background="@drawable/rounded_btn"
             android:text="Turn-on Camera"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            app:strokeColor="@color/colorAccent" />
+            android:textAllCaps="false"
+            android:elevation="@dimen/spacing_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@android:color/white" />
+
     </RelativeLayout>
 
 </RelativeLayout>

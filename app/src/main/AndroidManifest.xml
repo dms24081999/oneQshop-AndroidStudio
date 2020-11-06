@@ -19,7 +19,8 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.profile.AboutUsActivity"></activity>
+        <activity android:name=".ui.profile.ChangePasswordActivity"></activity>
+        <activity android:name=".ui.profile.AboutUsActivity" />
         <activity android:name=".ui.profile.PersonalDetailsActivity" />
         <activity
             android:name=".MainActivity"

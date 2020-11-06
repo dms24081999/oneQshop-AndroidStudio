@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class ScanFragment extends Fragment {
 
     SurfaceView image;
     RelativeLayout cameraOn,cameraOff;
-    MaterialButton turnOnCameraBtn;
+    Button turnOnCameraBtn;
 
     String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,

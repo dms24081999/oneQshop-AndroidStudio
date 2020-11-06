@@ -13,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -39,6 +40,12 @@ public interface RestMethods {
     @GET("api/users/is-authenticated/")
     Call<Users> isAuthenticated(@Header("Authorization") String authHeader);
 
-
+    @FormUrlEncoded
+    @PUT("api/users/change-password/")
+    Call<ResponseBody> changePassword(
+            @Header("Authorization") String authHeader,
+            @Field("old_password") String old_password,
+            @Field("new_password") String new_password
+    );
 }
 
