@@ -54,7 +54,6 @@ public class ScanFragment extends Fragment {
         updateUI();
         addListeners();
 
-
         return root;
     }
 

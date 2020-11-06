@@ -23,7 +23,7 @@ public class AppConstants extends Application {
     public static final int RESTART_SERVICE_REQUEST_CODE = 107;
     public static final int NOTIFICATION_GROUP_REQUEST_CODE = 108;
     public static final int SCAN_PERMISSION_ALL = 109;
-    public static final String BACKEND_URL = "http://c2901b99e6e5.ngrok.io/";
+    public static final String BACKEND_URL = "http://36848a3fad30.ngrok.io/";
 
     private Users userObj;
 
