@@ -49,22 +49,31 @@ public class ScanFragment extends Fragment {
 //        TextView textView = root.findViewById(R.id.text);
 //        textView.setText("Scan");
 
+        initComponents(root);
+        updateUI();
+        addListeners();
+
+
+        return root;
+    }
+
+
+    private void initComponents(View root) {
         image=root.findViewById(R.id.image);
         cameraOn=root.findViewById(R.id.cameraOn);
         cameraOff=root.findViewById(R.id.cameraOff);
         turnOnCameraBtn=root.findViewById(R.id.turnOnCameraBtn);
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
+    }
 
-        updateUI();
-
+    private void addListeners() {
         turnOnCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 askCameraPermission();
             }
         });
-        return root;
     }
 
     private void updateUI() {
@@ -92,14 +101,12 @@ public class ScanFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == AppConstants.CAMERA_REQUEST_CODE) {// If request is cancelled, the result arrays are empty.
             if (ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) {
-                // permission was granted, yay! Do the contacts-related task you need to do.
+                    Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) { // permission was granted, yay! Do the contacts-related task you need to do.
                 Log.e(String.valueOf(getActivity().getClass()),"Permission Granted!");
                 Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
                 updateUI();
-            } else {
+            } else { // permission denied, boo! Disable the functionality that depends on this permission.
                 Log.e(String.valueOf(getActivity().getClass()),"Permission Denied!");
-                // permission denied, boo! Disable the functionality that depends on this permission.
                 Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
                 updateUI();
             }
@@ -121,13 +128,6 @@ public class ScanFragment extends Fragment {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
                 try {

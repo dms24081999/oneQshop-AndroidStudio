@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dominicsilveira.one_q_shop.classes.Users;
+
 
 public class AppConstants extends Application {
     public static final int LOCATION_REQUEST_CODE = 100;
@@ -21,8 +23,17 @@ public class AppConstants extends Application {
     public static final int RESTART_SERVICE_REQUEST_CODE = 107;
     public static final int NOTIFICATION_GROUP_REQUEST_CODE = 108;
     public static final int SCAN_PERMISSION_ALL = 109;
-    public static final String BACKEND_URL = "http://426dd1725d2c.ngrok.io/";
+    public static final String BACKEND_URL = "http://c2901b99e6e5.ngrok.io/";
 
+    private Users userObj;
+
+    public Users getUserObj(){
+        return userObj;
+    }
+
+    public void setUserObj(Users userObj){
+        this.userObj=userObj;
+    }
 
     @Override
     public void onCreate() {

@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.navigation_layout);
         navigationView = findViewById ( R.id.navigation_view );
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_settings, R.id.nav_feedback,
-                R.id.navigation_dashboard, R.id.navigation_search, R.id.navigation_scan,  R.id.navigation_cart, R.id.navigation_profile)
-                .setDrawerLayout(drawerLayout)
+                R.id.nav_settings, R.id.nav_feedback,R.id.nav_profile,
+                R.id.navigation_dashboard, R.id.navigation_search, R.id.navigation_scan,  R.id.navigation_cart)
+                .setOpenableLayout(drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 //        NavProfileFullName =  navView.findViewById ( R.id.nav_user_full_name );
 //        NavProfileEmail =  navView.findViewById ( R.id.nav_user_email );
 
-        arr.addAll(Arrays.asList(R.id.nav_feedback,R.id.nav_settings));
+        arr.addAll(Arrays.asList(R.id.nav_feedback,R.id.nav_settings,R.id.nav_profile));
         //Handle visibility of the application bottom navigation
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
@@ -104,6 +104,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        int bottomInt= 1;
+//        if(bottomInt==0){
+//            navigationView.setCheckedItem(R.id.navigation_dashboard);
+//            navigationView.getMenu().performIdentifierAction(R.id.navigation_dashboard, 0);
+//            bottomNavigation.setSelectedItemId(R.id.navigation_scan);
+//        }else if(bottomInt==1){
+//            navigationView.setCheckedItem(R.id.nav_profile);
+//            navigationView.getMenu().performIdentifierAction(R.id.nav_profile, 0);
+//        }
     }
 
     @Override

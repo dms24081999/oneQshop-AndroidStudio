@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 
@@ -25,10 +26,13 @@ public class SplashScreen extends AppCompatActivity {
     RestMethods restMethods;
     String token;
     Intent intent;
+    AppConstants globalClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        globalClass=(AppConstants)SplashScreen.this.getApplicationContext();
 
         SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
@@ -46,6 +50,7 @@ public class SplashScreen extends AppCompatActivity {
                 Toast.makeText(SplashScreen.this, response.code() + " ", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
                     String resp=response.body().getEmail();
+                    globalClass.setUserObj(response.body());
 //                        JSONObject obj = new JSONObject(resp); //response.body().string() fetched only once
                     Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(response.code()+" "+" "+resp));
                     intent=new Intent(SplashScreen.this, MainActivity.class);

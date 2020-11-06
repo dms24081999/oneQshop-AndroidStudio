@@ -19,10 +19,12 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.profile.AboutUsActivity"></activity>
+        <activity android:name=".ui.profile.PersonalDetailsActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/NoActionBarTheme"/>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".RegisterLogin.RegisterActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -52,4 +54,5 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
     </application>
+
 </manifest>

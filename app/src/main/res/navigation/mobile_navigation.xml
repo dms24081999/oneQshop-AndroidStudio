@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_feedback">
+    app:startDestination="@+id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -30,7 +30,7 @@
         tools:layout="@layout/fragment_cart" />
 
     <fragment
-        android:id="@+id/navigation_profile"
+        android:id="@+id/nav_profile"
         android:name="com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
