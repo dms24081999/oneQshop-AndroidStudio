@@ -29,6 +29,11 @@ public class Users {
     @SerializedName("picture")
     @Expose
     private Object picture;
+    @SerializedName("picture_path")
+    @Expose
+    private String picturePath;
+
+
 
     public Integer getId() {
         return id;
@@ -92,5 +97,13 @@ public class Users {
 
     public void setPicture(Object picture) {
         this.picture = picture;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

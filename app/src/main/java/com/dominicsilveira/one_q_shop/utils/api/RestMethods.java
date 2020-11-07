@@ -18,10 +18,16 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface RestMethods {
+
+
+    @GET
+    Call<ResponseBody> getImageFile(@Url String url); // don't need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
+
     @FormUrlEncoded
-    @POST("api/users/create/")
+    @POST("/api/users/create/")
     Call<ResponseBody> postRegister(
             @Field("username") String username,
             @Field("first_name") String first_name,
@@ -32,18 +38,18 @@ public interface RestMethods {
 
 
     @FormUrlEncoded
-    @POST("api/token-auth/")
+    @POST("/api/token-auth/")
     Call<ResponseBody> postLogin(
             @Field("username") String username,
             @Field("password") String password
     );
 
 
-    @GET("api/users/is-authenticated/")
+    @GET("/api/users/is-authenticated/")
     Call<Users> isAuthenticated(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
-    @PUT("api/users/change-password/")
+    @PUT("/api/users/change-password/")
     Call<ResponseBody> changePassword(
             @Header("Authorization") String authHeader,
             @Field("old_password") String old_password,
@@ -51,7 +57,7 @@ public interface RestMethods {
     );
 
     @FormUrlEncoded
-    @PATCH("api/users/{user_id}/")
+    @PATCH("/api/users/{user_id}/")
     Call<Users> updateUserDetails(
             @Path(value = "user_id", encoded = true) Integer user_id,
             @Header("Authorization") String authHeader,
