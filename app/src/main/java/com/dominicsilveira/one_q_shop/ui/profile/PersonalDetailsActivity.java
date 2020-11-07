@@ -90,8 +90,8 @@ public class PersonalDetailsActivity extends AppCompatActivity {
         firstNameText.setSelection(firstNameText.getText().length());
         lastNameText.setText(userObj.getLastName());
         lastNameText.setSelection(lastNameText.getText().length());
-//        phoneText.setText(userObj.get);
-//        phoneText.setSelection(phoneText.getText().length());
+        phoneText.setText(userObj.getPhoneNumber());
+        phoneText.setSelection(phoneText.getText().length());
         emailText.setText(userObj.getEmail());
         emailText.setSelection(emailText.getText().length());
     }
@@ -103,8 +103,9 @@ public class PersonalDetailsActivity extends AppCompatActivity {
                 first_name=firstNameText.getText().toString();
                 last_name=lastNameText.getText().toString();
                 email=emailText.getText().toString();
+                phone_no=phoneText.getText().toString();
 
-                Call<Users> req = restMethods.updateUserDetails(userObj.getId(),"Token "+token, first_name,last_name,email);
+                Call<Users> req = restMethods.updateUserDetails(userObj.getId(),"Token "+token, first_name,last_name,email,phone_no);
                 req.enqueue(new Callback<Users>() {
                     @Override
                     public void onResponse(Call<Users> call, Response<Users> response) {

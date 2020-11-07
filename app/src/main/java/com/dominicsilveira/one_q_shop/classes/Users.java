@@ -20,6 +20,9 @@ public class Users {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("phone_number")
+    @Expose
+    private String phoneNumber;
     @SerializedName("current_user")
     @Expose
     private Integer currentUser;
@@ -67,6 +70,14 @@ public class Users {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Integer getCurrentUser() {
         return currentUser;
     }
@@ -82,5 +93,4 @@ public class Users {
     public void setPicture(Object picture) {
         this.picture = picture;
     }
-
 }

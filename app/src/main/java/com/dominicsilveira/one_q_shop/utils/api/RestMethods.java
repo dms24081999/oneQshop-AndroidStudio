@@ -57,7 +57,8 @@ public interface RestMethods {
             @Header("Authorization") String authHeader,
             @Field("first_name") String first_name,
             @Field("last_name") String last_name,
-            @Field("email") String email
+            @Field("email") String email,
+            @Field("phone_number") String phone_number
     );
 }
 
