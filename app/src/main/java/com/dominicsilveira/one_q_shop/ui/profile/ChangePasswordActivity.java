@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,6 +137,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 Toast.makeText(ChangePasswordActivity.this, "Password Changed!", Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(ChangePasswordActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
+                                Gson gson = new Gson();
+                                ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                                Log.i(String.valueOf(ChangePasswordActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
                             }
                         }
                         @Override

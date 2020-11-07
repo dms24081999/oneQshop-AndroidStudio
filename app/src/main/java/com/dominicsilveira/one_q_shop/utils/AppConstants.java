@@ -33,8 +33,7 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-
-    public static final String BACKEND_URL = "http://338326935481.ngrok.io";
+    public static final String BACKEND_URL = "https://big-bird-7.loca.lt";
 
     private Users userObj;
 

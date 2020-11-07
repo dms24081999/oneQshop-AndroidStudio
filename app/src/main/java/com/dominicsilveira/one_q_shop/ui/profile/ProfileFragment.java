@@ -4,7 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,19 +31,28 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.classes.Users;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +69,7 @@ public class ProfileFragment extends Fragment {
     CircularImageView profileImage;
     RestMethods restMethods;
     private Uri mCropImageUri;
+    String token;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +92,9 @@ public class ProfileFragment extends Fragment {
         upiDetailsBtn = root.findViewById(R.id.upiDetailsBtn);
         nameText.setText(userObj.getUsername());
         profileImage = root.findViewById(R.id.profileImage);
+
+        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", Context.MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        token=sh.getString("token", "0");// We can then use the data
 
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
@@ -183,12 +198,53 @@ public class ProfileFragment extends Fragment {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {// handle result of CropImageActivity
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                profileImage.setImageURI(result.getUri());
-                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+                Uri newImg=result.getUri();
+                profileImage.setImageURI(newImg);
+                uploadProfilePic(newImg);
+//                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void uploadProfilePic(Uri uri) {
+        File file=new File(uri.getPath());
+        RequestBody reqFile = RequestBody.create(okhttp3.MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("picture",
+                file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "picture");
+        Call<Users> req = restMethods.postProfileImage(userObj.getId(),"Token "+token,body, name);
+        req.enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful()) {
+                    if(response.code()==200){
+                        Toast.makeText(getActivity(), "Updated Details!", Toast.LENGTH_SHORT).show();
+                        globalClass.setUserObj(response.body());
+                    }else{
+                        Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
+                        Gson gson = new Gson();
+                        ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                        Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
+                    }
+                }else {
+                    try {
+                        Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
+                        Gson gson = new Gson();
+                        ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                        Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+                Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override

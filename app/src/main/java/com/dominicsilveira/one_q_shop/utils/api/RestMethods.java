@@ -21,8 +21,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface RestMethods {
-
-
     @GET
     Call<ResponseBody> getImageFile(@Url String url); // don't need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
 
@@ -66,5 +64,15 @@ public interface RestMethods {
             @Field("email") String email,
             @Field("phone_number") String phone_number
     );
+
+    @Multipart
+    @PATCH("/api/users/{user_id}/")
+    Call<Users> postProfileImage(
+            @Path(value = "user_id", encoded = true) Integer user_id,
+            @Header("Authorization") String authHeader,
+            @Part MultipartBody.Part imageBitmap,
+            @Part("picture") RequestBody picture
+    );
+
 }
 
