@@ -14,17 +14,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.classes.ErrorMessage;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -129,7 +123,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }else if(newPass.equals(confirmPass) && !newPass.equals(oldPass)){
                     newPasswordLayout.setError("");
                     confirmPasswordLayout.setError("");
-                    Call<ResponseBody> req = restMethods.changePassword("Token "+token, oldPass,newPass);
+                    Call<ResponseBody> req = restMethods.changePassword(token, oldPass,newPass);
                     req.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

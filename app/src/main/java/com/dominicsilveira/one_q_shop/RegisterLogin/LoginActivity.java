@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Login;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private Button loginBtn;
     private TextView forgotPasswordText,registerSwitchText;
+
 
     RestMethods restMethods;
 
@@ -90,24 +93,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String email, String password) {
         final AppConstants globalClass=(AppConstants)getApplicationContext();
-        Call<ResponseBody> req = restMethods.postLogin(email, password);
-        req.enqueue(new Callback<ResponseBody>() {
+        Call<Login> req = restMethods.postLogin(email, password);
+        req.enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Login> call, Response<Login> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String resp=response.body().string();
-                        JSONObject obj = new JSONObject(resp); //response.body().string() fetched only once
-                        String token = obj.getString("token");
-                        Log.i(String.valueOf(LoginActivity.this.getComponentName().getClassName()), String.valueOf(obj));
-
-                        SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
-                        SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-                        myEdit.putString("token", token); // Storing the key and its value as the data fetched from edittext
-                        myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    globalClass.setUserObj(response.body().getUser());
+                    String token = response.body().getToken();
+                    Log.i(String.valueOf(LoginActivity.this.getComponentName().getClassName()), String.valueOf(token));
+                    SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                    myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
+                    myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                    Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     try {
                         String resp=response.errorBody().string();
@@ -119,11 +119,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Login> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
-
     }
 }

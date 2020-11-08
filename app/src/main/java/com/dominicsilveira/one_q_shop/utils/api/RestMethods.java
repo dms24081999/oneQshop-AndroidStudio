@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils.api;
 
-import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Login;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -26,7 +27,7 @@ public interface RestMethods {
 
     @FormUrlEncoded
     @POST("/api/users/create/")
-    Call<ResponseBody> postRegister(
+    Call<Login> postRegister(
             @Field("username") String username,
             @Field("first_name") String first_name,
             @Field("last_name") String last_name,
@@ -36,15 +37,15 @@ public interface RestMethods {
 
 
     @FormUrlEncoded
-    @POST("/api/token-auth/")
-    Call<ResponseBody> postLogin(
+    @POST("/api/users/login/")
+    Call<Login> postLogin(
             @Field("username") String username,
             @Field("password") String password
     );
 
 
     @GET("/api/users/is-authenticated/")
-    Call<Users> isAuthenticated(@Header("Authorization") String authHeader);
+    Call<User> isAuthenticated(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
     @PUT("/api/users/change-password/")
@@ -56,7 +57,7 @@ public interface RestMethods {
 
     @FormUrlEncoded
     @PATCH("/api/users/{user_id}/")
-    Call<Users> updateUserDetails(
+    Call<User> updateUserDetails(
             @Path(value = "user_id", encoded = true) Integer user_id,
             @Header("Authorization") String authHeader,
             @Field("first_name") String first_name,
@@ -67,7 +68,7 @@ public interface RestMethods {
 
     @Multipart
     @PATCH("/api/users/{user_id}/")
-    Call<Users> postProfileImage(
+    Call<User> postProfileImage(
             @Path(value = "user_id", encoded = true) Integer user_id,
             @Header("Authorization") String authHeader,
             @Part MultipartBody.Part imageBitmap,

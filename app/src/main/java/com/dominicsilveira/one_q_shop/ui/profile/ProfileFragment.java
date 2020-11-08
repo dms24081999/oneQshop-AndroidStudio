@@ -31,8 +31,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
@@ -49,6 +48,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -64,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
     LinearLayout personalDetailsBtn,changePasswordBtn,aboutMeBtn,logoutBtn,upiDetailsBtn;
     TextView nameText;
-    Users userObj;
+    User userObj;
     AppConstants globalClass;
     CircularImageView profileImage;
     RestMethods restMethods;
@@ -214,10 +214,10 @@ public class ProfileFragment extends Fragment {
         MultipartBody.Part body = MultipartBody.Part.createFormData("picture",
                 file.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "picture");
-        Call<Users> req = restMethods.postProfileImage(userObj.getId(),"Token "+token,body, name);
-        req.enqueue(new Callback<Users>() {
+        Call<User> req = restMethods.postProfileImage(userObj.getId(),token,body, name);
+        req.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     if(response.code()==200){
                         Toast.makeText(getActivity(), "Updated Details!", Toast.LENGTH_SHORT).show();
@@ -240,7 +240,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<Users> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
 
 
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Login;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
@@ -99,24 +101,22 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerUser(String txt_username, String txt_first_name, String txt_last_name, String txt_email, String txt_password) {
         final AppConstants globalClass=(AppConstants)getApplicationContext();
-        Call<ResponseBody> req = restMethods.postRegister(txt_username,txt_first_name,txt_last_name,txt_email,txt_password);
-        req.enqueue(new Callback<ResponseBody>() {
+        Call<Login> req = restMethods.postRegister(txt_username,txt_first_name,txt_last_name,txt_email,txt_password);
+        req.enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Login> call, Response<Login> response) {
                 Toast.makeText(RegisterActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
-                    try {
-                        String resp=response.body().string();
-                        JSONObject obj = new JSONObject(resp); //response.body().string() fetched only once
-//                        String token = obj.getString("token");
-                        Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(obj));
-//                        SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
-//                        SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-//                        myEdit.putString("token", token); // Storing the key and its value as the data fetched from edittext
-//                        myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    globalClass.setUserObj(response.body().getUser());
+                    String token = response.body().getToken();
+                    Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(token));
+                    SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                    myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
+                    myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                    Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     try {
                         String resp=response.errorBody().string();
@@ -128,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Login> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }

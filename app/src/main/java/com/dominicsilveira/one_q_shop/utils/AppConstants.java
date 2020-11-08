@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 
 public class AppConstants extends Application {
@@ -33,15 +33,15 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://big-bird-7.loca.lt";
+    public static final String BACKEND_URL = "https://moody-sloth-86.loca.lt";
 
-    private Users userObj;
+    private User userObj;
 
-    public Users getUserObj(){
+    public User getUserObj(){
         return userObj;
     }
 
-    public void setUserObj(Users userObj){
+    public void setUserObj(User userObj){
         this.userObj=userObj;
     }
 

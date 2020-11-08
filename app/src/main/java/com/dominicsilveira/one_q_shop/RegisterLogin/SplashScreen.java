@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
-import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
@@ -42,10 +42,10 @@ public class SplashScreen extends AppCompatActivity {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        Call<Users> req = restMethods.isAuthenticated("Token "+token);
-        req.enqueue(new Callback<Users>() {
+        Call<User> req = restMethods.isAuthenticated(token);
+        req.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 Toast.makeText(SplashScreen.this, response.code() + " ", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
                     String resp=response.body().getEmail();
@@ -67,7 +67,7 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
             @Override
-            public void onFailure(Call<Users> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(SplashScreen.this, "Request failed", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
                 intent=new Intent(SplashScreen.this,LoginActivity.class);

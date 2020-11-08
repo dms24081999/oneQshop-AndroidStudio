@@ -12,20 +12,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.classes.Users;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +30,7 @@ public class PersonalDetailsActivity extends AppCompatActivity {
     AppCompatEditText firstNameText,lastNameText,phoneText,emailText,newEmailText,currentPasswordText;
     Button bt_submit,bt_submit_email;
 
-    Users userObj;
+    User userObj;
     String email,first_name,last_name,phone_no,token;
 
     RestMethods restMethods;
@@ -105,10 +100,10 @@ public class PersonalDetailsActivity extends AppCompatActivity {
                 email=emailText.getText().toString();
                 phone_no=phoneText.getText().toString();
 
-                Call<Users> req = restMethods.updateUserDetails(userObj.getId(),"Token "+token, first_name,last_name,email,phone_no);
-                req.enqueue(new Callback<Users>() {
+                Call<User> req = restMethods.updateUserDetails(userObj.getId(),token, first_name,last_name,email,phone_no);
+                req.enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<Users> call, Response<Users> response) {
+                    public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
                             if(response.code()==200){
                                 Toast.makeText(PersonalDetailsActivity.this, "Updated Details!", Toast.LENGTH_SHORT).show();
@@ -131,7 +126,7 @@ public class PersonalDetailsActivity extends AppCompatActivity {
                         }
                     }
                     @Override
-                    public void onFailure(Call<Users> call, Throwable t) {
+                    public void onFailure(Call<User> call, Throwable t) {
                         Toast.makeText(PersonalDetailsActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
                         t.printStackTrace();
                     }
