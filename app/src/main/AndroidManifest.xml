@@ -19,6 +19,30 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RegisterLogin.ResetPasswordActivity">
+            <intent-filter android:label="one-Q-shop">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://moody-sloth-86.loca.lt/api/users/reset-password/” -->
+                <data
+                    android:host="@string/host_url"
+                    android:pathPrefix="@string/host_password_reset_path"
+                    android:scheme="@string/host_protocol" />
+                <!-- note that the leading "/" is required for pathPrefix -->
+            </intent-filter>
+            <intent-filter android:label="one-Q-shop">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "one_q_shop://reset_password” -->
+                <data
+                    android:host="reset_password"
+                    android:scheme="one_q_shop" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.profile.ChangePasswordActivity" />
         <activity android:name=".ui.profile.AboutUsActivity" />
         <activity android:name=".ui.profile.PersonalDetailsActivity" />
@@ -31,26 +55,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".RegisterLogin.ForgotPasswordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-            <intent-filter android:label="@string/filter_view_http_gizmos">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="https"
-                    android:host="moody-sloth-86.loca.lt"
-                    android:pathPrefix="/api/users/reset-password" />
-                <!-- note that the leading "/" is required for pathPrefix-->
-            </intent-filter>
-            <intent-filter android:label="@string/filter_view_example_gizmos">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "example://gizmos” -->
-                <data android:scheme="example"
-                    android:host="gizmos" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".RegisterLogin.SplashScreen"
             android:theme="@style/SplashTheme">
@@ -69,7 +74,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
