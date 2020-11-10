@@ -50,7 +50,6 @@ public class SplashScreen extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String resp=response.body().getEmail();
                     globalClass.setUserObj(response.body());
-//                        JSONObject obj = new JSONObject(resp); //response.body().string() fetched only once
                     Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(response.code()+" "+" "+resp));
                     intent=new Intent(SplashScreen.this, MainActivity.class);
                 } else {

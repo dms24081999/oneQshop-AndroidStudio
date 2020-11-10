@@ -29,10 +29,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.api.CallbackUtils;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.gson.Gson;
@@ -61,15 +64,16 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResponse{
     LinearLayout personalDetailsBtn,changePasswordBtn,aboutMeBtn,logoutBtn,upiDetailsBtn;
     TextView nameText;
     User userObj;
     AppConstants globalClass;
-    CircularImageView profileImage;
+    CircularImageView userAvatar;
     RestMethods restMethods;
     private Uri mCropImageUri;
     String token;
+    CallbackUtils utils;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +88,9 @@ public class ProfileFragment extends Fragment {
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
         userObj=globalClass.getUserObj();
+        utils=new CallbackUtils(getActivity().getApplicationContext(), ProfileFragment.this);
+
+
         logoutBtn = root.findViewById(R.id.logoutBtn);
         nameText = root.findViewById(R.id.nameText);
         personalDetailsBtn = root.findViewById(R.id.personalDetailsBtn);
@@ -91,7 +98,7 @@ public class ProfileFragment extends Fragment {
         aboutMeBtn = root.findViewById(R.id.aboutMeBtn);
         upiDetailsBtn = root.findViewById(R.id.upiDetailsBtn);
         nameText.setText(userObj.getUsername());
-        profileImage = root.findViewById(R.id.profileImage);
+        userAvatar = root.findViewById(R.id.userAvatar);
 
         SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", Context.MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
@@ -101,9 +108,14 @@ public class ProfileFragment extends Fragment {
 
         String imageURL=AppConstants.BACKEND_URL.concat(userObj.getPicturePath());
         Log.i("IMAGE_URL",imageURL);
-        setBitmapFromURL(imageURL);
+//        setBitmapFromURL(imageURL);
+        if(globalClass.getUserProfilePic()==null){
+            utils.setBitmapFromURL(AppConstants.BACKEND_URL.concat(userObj.getPicturePath()));
+        }else{
+            userAvatar.setImageBitmap(globalClass.getUserProfilePic());
+        }
 
-        profileImage.setOnClickListener(new View.OnClickListener() {
+        userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImageFromGallery();
@@ -167,7 +179,7 @@ public class ProfileFragment extends Fragment {
                     if (response.body() != null) {
                         // display the image data in a ImageView or save it
                         Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                        profileImage.setImageBitmap(bmp);
+                        userAvatar.setImageBitmap(bmp);
                         // profileImage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_account_circle_000000_24));
                     }
                 }
@@ -199,7 +211,7 @@ public class ProfileFragment extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri newImg=result.getUri();
-                profileImage.setImageURI(newImg);
+                userAvatar.setImageURI(newImg);
                 uploadProfilePic(newImg);
 //                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -261,5 +273,11 @@ public class ProfileFragment extends Fragment {
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
                 .start(getContext(), this);
+    }
+
+    @Override
+    public void callbackMethod(Bitmap output) {
+        Log.e("ProfileFragment","Callback from utils");
+        userAvatar.setImageBitmap(output);
     }
 }

@@ -2,6 +2,7 @@ package com.dominicsilveira.one_q_shop.utils;
 
 import android.app.Activity;
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,9 +34,10 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://".concat("dms24081999.loca.lt");
+    public static final String BACKEND_URL = "https://".concat("dms24.loca.lt");
 
     private User userObj;
+    private Bitmap userProfilePic;
 
     public User getUserObj(){
         return userObj;
@@ -43,6 +45,14 @@ public class AppConstants extends Application {
 
     public void setUserObj(User userObj){
         this.userObj=userObj;
+    }
+
+    public Bitmap getUserProfilePic(){
+        return userProfilePic;
+    }
+
+    public void setUserProfilePic(Bitmap userProfilePic){
+        this.userProfilePic=userProfilePic;
     }
 
     @Override
