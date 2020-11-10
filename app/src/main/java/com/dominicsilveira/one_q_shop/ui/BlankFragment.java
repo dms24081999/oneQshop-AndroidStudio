@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop;
+package com.dominicsilveira.one_q_shop.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

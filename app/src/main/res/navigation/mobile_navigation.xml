@@ -37,14 +37,14 @@
 
     <fragment
         android:id="@+id/nav_feedback"
-        android:name="com.dominicsilveira.one_q_shop.BlankFragment"
+        android:name="com.dominicsilveira.one_q_shop.ui.BlankFragment"
         android:label="@string/title_feedback"
         tools:layout="@layout/fragment_blank" >
     </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.dominicsilveira.one_q_shop.SettingsFragment"
+        android:name="com.dominicsilveira.one_q_shop.ui.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" >
     </fragment>
