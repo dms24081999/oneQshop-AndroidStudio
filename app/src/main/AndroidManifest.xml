@@ -19,13 +19,14 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegisterLogin.ResetPasswordActivity">
+        <activity android:name=".RegisterLogin.ResetPasswordActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter android:label="one-Q-shop">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://moody-sloth-86.loca.lt/api/users/reset-password/” -->
+                <!-- Accepts URIs that begin with "https://dms24081999.loca.lt/api/users/reset-password/” -->
                 <data
                     android:host="@string/host_url"
                     android:pathPrefix="@string/host_password_reset_path"

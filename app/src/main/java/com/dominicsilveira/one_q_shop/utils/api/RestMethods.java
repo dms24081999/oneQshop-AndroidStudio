@@ -43,6 +43,19 @@ public interface RestMethods {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST("/api/users/reset-password/")
+    Call<ResponseBody> postRequestResetPassword(
+            @Field("email") String email
+    );
+
+    @FormUrlEncoded
+    @POST("/api/users/reset-password/confirm/")
+    Call<ResponseBody> postResetPassword(
+            @Field("token") String token,
+            @Field("password") String password
+    );
+
 
     @GET("/api/users/is-authenticated/")
     Call<User> isAuthenticated(@Header("Authorization") String authHeader);

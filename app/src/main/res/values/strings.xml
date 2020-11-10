@@ -2,7 +2,7 @@
     <string name="app_name">one-Q-shop</string>
 
     <string name="host_protocol">https</string>
-    <string name="host_url">moody-sloth-86.loca.lt</string>
+    <string name="host_url">dms24081999.loca.lt</string>
     <string name="host_password_reset_path">/api/users/reset-password/</string>
 
     <string name="title_activity_main">MainActivity</string>

@@ -33,7 +33,7 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://moody-sloth-86.loca.lt";
+    public static final String BACKEND_URL = "https://".concat("dms24081999.loca.lt");
 
     private User userObj;
 
