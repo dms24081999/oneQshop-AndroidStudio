@@ -15,18 +15,7 @@ import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 public class AppConstants extends Application {
     public static final int CAMERA_REQUEST_CODE = 100;
-    public static final int GALLERY_REQUEST_CODE = 101;
-    public static final int IMAGE_CROP_REQUEST_CODE = 102;
-//    public static final int LOCATION_REQUEST_CODE = 100;
-//    public static final int GPS_REQUEST_CODE = 101;
-//    public static final int CAMERA_PERM_CODE = 102;
-//
-//    public static final int INTERNET_PERM_CODE = 104;
-//    public static final int WRITE_EXTERNAL_STORAGE_PERM_CODE = 105;
-//    public static final int NUMBER_PLATE_POPUP_REQUEST_CODE = 106;
-//    public static final int RESTART_SERVICE_REQUEST_CODE = 107;
-//    public static final int NOTIFICATION_GROUP_REQUEST_CODE = 108;
-//    public static final int SCAN_PERMISSION_ALL = 109;
+
 
     /*
     http://www.jsonschema2pojo.org
@@ -34,7 +23,7 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://".concat("dms24.loca.lt");
+    public static final String BACKEND_URL = "https://".concat("dms24-v1.loca.lt");
 
     private User userObj;
     private Bitmap userProfilePic;

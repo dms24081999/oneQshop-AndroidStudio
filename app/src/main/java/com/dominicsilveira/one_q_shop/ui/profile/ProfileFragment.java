@@ -1,41 +1,32 @@
 package com.dominicsilveira.one_q_shop.ui.profile;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.CallbackUtils;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
+import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.gson.Gson;
@@ -43,20 +34,13 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
+
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +57,8 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     RestMethods restMethods;
     private Uri mCropImageUri;
     String token;
-    CallbackUtils utils;
+    CallbackUtils callbackUtils;
+    BasicUtils basicUtils=new BasicUtils();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +73,7 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
         userObj=globalClass.getUserObj();
-        utils=new CallbackUtils(getActivity().getApplicationContext(), ProfileFragment.this);
+        callbackUtils =new CallbackUtils(getActivity().getApplicationContext(), ProfileFragment.this);
 
 
         logoutBtn = root.findViewById(R.id.logoutBtn);
@@ -106,14 +91,7 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        String imageURL=AppConstants.BACKEND_URL.concat(userObj.getPicturePath());
-        Log.i("IMAGE_URL",imageURL);
-//        setBitmapFromURL(imageURL);
-        if(globalClass.getUserProfilePic()==null){
-            utils.setBitmapFromURL(AppConstants.BACKEND_URL.concat(userObj.getPicturePath()));
-        }else{
-            userAvatar.setImageBitmap(globalClass.getUserProfilePic());
-        }
+        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
 
         userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,27 +147,7 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
             }
         });
     }
-    
-    public void setBitmapFromURL(String src) {
-        Call<ResponseBody> req = restMethods.getImageFile(src);
-        req.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        // display the image data in a ImageView or save it
-                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                        userAvatar.setImageBitmap(bmp);
-                        // profileImage.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_account_circle_000000_24));
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                // TODO
-            }
-        });
-    }
+
 
     private void pickImageFromGallery() {
         CropImage.startPickImageActivity(getContext(), this);
@@ -212,6 +170,9 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
             if (resultCode == RESULT_OK) {
                 Uri newImg=result.getUri();
                 userAvatar.setImageURI(newImg);
+                Bitmap bitmap=basicUtils.uriToBitmap(getActivity(),newImg);
+                globalClass.setUserProfilePic(bitmap);
+                ((MainActivity)getActivity()).callbackMethod(bitmap);
                 uploadProfilePic(newImg);
 //                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -278,6 +239,10 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     @Override
     public void callbackMethod(Bitmap output) {
         Log.e("ProfileFragment","Callback from utils");
-        userAvatar.setImageBitmap(output);
+        if(output==null){
+            userAvatar.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_account_circle_000000_24));
+        }else{
+            userAvatar.setImageBitmap(output);
+        }
     }
 }

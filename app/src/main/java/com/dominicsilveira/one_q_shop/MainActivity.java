@@ -13,7 +13,7 @@ import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
-import com.dominicsilveira.one_q_shop.utils.api.CallbackUtils;
+import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -21,6 +21,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
     User userObj;
     AppConstants globalClass;
     TextView userName,userEmail;
-    CallbackUtils utils;
+    CallbackUtils callbackUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
         restMethods = RestClient.buildHTTPClient();
         globalClass=(AppConstants)getApplicationContext();
         userObj=globalClass.getUserObj();
-        utils=new CallbackUtils(getApplicationContext(),MainActivity.this);
-
+        callbackUtils =new CallbackUtils(getApplicationContext(),MainActivity.this);
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         mToolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( mToolbar );
@@ -87,11 +87,8 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
         userName=navView.findViewById(R.id.userName);
         userEmail=navView.findViewById(R.id.userEmail);
 
-        if(globalClass.getUserProfilePic()==null){
-            utils.setBitmapFromURL(AppConstants.BACKEND_URL.concat(userObj.getPicturePath()));
-        }else{
-            userAvatar.setImageBitmap(globalClass.getUserProfilePic());
-        }
+        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
+
         userName.setText(userObj.getFirstName().concat(" ").concat(userObj.getLastName()));
         userEmail.setText(userObj.getEmail());
 
@@ -138,6 +135,10 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
     @Override
     public void callbackMethod(Bitmap output) {
         Log.e("MainActivity","Callback from utils");
-        userAvatar.setImageBitmap(output);
+        if(output==null){
+            userAvatar.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_account_circle_000000_24));
+        }else{
+            userAvatar.setImageBitmap(output);
+        }
     }
 }
