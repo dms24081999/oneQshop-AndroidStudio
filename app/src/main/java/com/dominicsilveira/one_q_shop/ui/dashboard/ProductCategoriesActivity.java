@@ -44,12 +44,19 @@ public class ProductCategoriesActivity extends AppCompatActivity {
     RestMethods restMethods;
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
     AppConstants globalClass;
+    Integer categoryId;
+    String categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_categories);
 
+        Intent intent=getIntent();
+        categoryId=intent.getIntExtra("CATEGORY_ID",-1);
+        categoryName=intent.getStringExtra("CATEGORY_NAME");
+        if(categoryName==null)
+            categoryName="All Categories";
         initComponents();
         attachListeners();
     }
@@ -60,7 +67,7 @@ public class ProductCategoriesActivity extends AppCompatActivity {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        getSupportActionBar().setTitle("All Categories");
+        getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -72,7 +79,8 @@ public class ProductCategoriesActivity extends AppCompatActivity {
 
     private void attachListeners() {
         Map<String, String> data = new HashMap<>();
-        data.put("category", "2");
+        if(categoryId!=-1)
+            data.put("category", String.valueOf(categoryId));
         Call<ProductListDetails> req = restMethods.getProductListDetails(data);
         req.enqueue(new Callback<ProductListDetails>() {
             @Override

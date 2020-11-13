@@ -42,7 +42,7 @@ import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
     FloatingActionButton allCategoriesBtn;
-    LinearLayout category;
+    LinearLayout categoryListView;
     RestMethods restMethods;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,7 +56,7 @@ public class DashboardFragment extends Fragment {
         restMethods = RestClient.buildHTTPClient();
 
         allCategoriesBtn=root.findViewById(R.id.allCategoriesBtn);
-        category=root.findViewById(R.id.category);
+        categoryListView=root.findViewById(R.id.categoryListView);
 
         allCategoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +72,21 @@ public class DashboardFragment extends Fragment {
             public void onResponse(Call<CategoriesListDetails> call, Response<CategoriesListDetails> response) {
                 Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
+                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code()));
                     List<CategoriesDetails> categoriesDetailsList=response.body().getResults();
-                    for (CategoriesDetails temp : categoriesDetailsList) {
+                    for (final CategoriesDetails temp : categoriesDetailsList) {
                         View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
-                        category.addView(categoryView);
+                        categoryView.findViewById(R.id.categoryBtn).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getActivity(),ProductCategoriesActivity.class);
+                                intent.putExtra("CATEGORY_ID",temp.getId());
+                                intent.putExtra("CATEGORY_NAME",temp.getName());
+                                startActivity(intent);
+                            }
+                        });
+                        categoryListView.addView(categoryView);
                     }
-                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code())+" "+category);
                 } else {
                     Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();
