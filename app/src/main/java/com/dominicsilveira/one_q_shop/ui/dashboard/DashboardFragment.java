@@ -54,12 +54,20 @@ public class DashboardFragment extends Fragment {
 //        textView.setText("Dashboard");
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("36");
 
+        initComponents(root);
+        attachListeners(root);
+        return root;
+    }
+
+    private void initComponents(View root) {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
         allCategoriesBtn=root.findViewById(R.id.allCategoriesBtn);
         categoryListView=root.findViewById(R.id.categoryListView);
+    }
 
+    private void attachListeners(View root) {
         allCategoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +113,5 @@ public class DashboardFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-        return root;
     }
 }
