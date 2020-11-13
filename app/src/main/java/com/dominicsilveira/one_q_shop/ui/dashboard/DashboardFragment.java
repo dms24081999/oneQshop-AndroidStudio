@@ -25,11 +25,13 @@ import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
+import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +78,10 @@ public class DashboardFragment extends Fragment {
                     List<CategoriesDetails> categoriesDetailsList=response.body().getResults();
                     for (final CategoriesDetails temp : categoriesDetailsList) {
                         View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
-                        categoryView.findViewById(R.id.categoryBtn).setOnClickListener(new View.OnClickListener() {
+                        FloatingActionButton categoryBtn=categoryView.findViewById(R.id.categoryBtn);
+                        Log.i("DashboardFragment",AppConstants.BACKEND_URL.concat(temp.getImage())+" "+temp.getId());
+                        Picasso.get().load(temp.getImage()).into(categoryBtn);
+                        categoryBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent=new Intent(getActivity(),ProductCategoriesActivity.class);

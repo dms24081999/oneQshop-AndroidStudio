@@ -14,6 +14,6 @@
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
         app:rippleColor="@android:color/white"
-        app:srcCompat="@drawable/ic_baseline_person_000000_24" />
+        android:src="@drawable/ic_baseline_person_000000_24" />
 
 </LinearLayout>

@@ -3,6 +3,8 @@ package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class CategoriesDetails {
 
     @SerializedName("id")
@@ -17,6 +19,9 @@ public class CategoriesDetails {
     @SerializedName("description")
     @Expose
     private String description;
+    @SerializedName("image")
+    @Expose
+    private String image;
     @SerializedName("is_deleted")
     @Expose
     private Boolean isDeleted;
@@ -51,6 +56,18 @@ public class CategoriesDetails {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
     }
 
     public void setIsDeleted(Boolean isDeleted) {
