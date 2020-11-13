@@ -69,23 +69,6 @@ public class ProductCategoriesActivity extends AppCompatActivity {
     }
 
     private void attachListeners() {
-//        productDetailsArrayList.add(new ProductDetails("112323","dms"));
-////        productDetailsArrayList.add(new ProductDetails("123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("121233","dms"));
-////        productDetailsArrayList.add(new ProductDetails("123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("12123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("14523","dms"));
-////        productDetailsArrayList.add(new ProductDetails("12453","dms"));
-////        productDetailsArrayList.add(new ProductDetails("123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("123","dms"));
-////        productDetailsArrayList.add(new ProductDetails("12783","dms"));
-////        productDetailsArrayList.add(new ProductDetails("127893","dms"));
-////        productDetailsArrayList.add(new ProductDetails("12893","dms"));
-////        productDetailsArrayList.add(new ProductDetails("1278","dms"));
-////        productDetailsArrayList.add(new ProductDetails("1893","dms"));
-////        productDetailsArrayList.add(new ProductDetails("1273","dms"));
-
 
         Call<ProductListDetails> req = restMethods.getProductListDetails();
         Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called1");

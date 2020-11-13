@@ -23,12 +23,21 @@ public class ProductDetails {
     @SerializedName("categories_details")
     @Expose
     private List<CategoriesDetails> categoriesDetails = null;
+    @SerializedName("brand_details")
+    @Expose
+    private BrandDetails brandDetails;
     @SerializedName("images")
     @Expose
     private List<Integer> images = null;
     @SerializedName("images_details")
     @Expose
     private List<ImagesDetails> imagesDetails = null;
+    @SerializedName("price")
+    @Expose
+    private Double price;
+    @SerializedName("is_deleted")
+    @Expose
+    private Boolean isDeleted;
 
     public Integer getId() {
         return id;
@@ -78,6 +87,14 @@ public class ProductDetails {
         this.categoriesDetails = categoriesDetails;
     }
 
+    public BrandDetails getBrandDetails() {
+        return brandDetails;
+    }
+
+    public void setBrandDetails(BrandDetails brandDetails) {
+        this.brandDetails = brandDetails;
+    }
+
     public List<Integer> getImages() {
         return images;
     }
@@ -92,6 +109,22 @@ public class ProductDetails {
 
     public void setImagesDetails(List<ImagesDetails> imagesDetails) {
         this.imagesDetails = imagesDetails;
+    }
+
+    public String getPrice() {
+        return String.format("%.2f", this.price);
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
 

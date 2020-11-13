@@ -68,22 +68,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public void setDatas(ProductListAdapter.MyViewHolder holder, final ProductDetails productDetails){
         holder.productName.setText(productDetails.getName());
-        holder.brandName.setText(productDetails.getBarcode());
+        if(productDetails.getBrandDetails()!=null){
+            holder.brandName.setText(productDetails.getBrandDetails().getName());
+        }else{
+            holder.brandName.setText("one-Q-shop");
+        }
+        holder.priceText.setText("₹ ".concat(productDetails.getPrice()));
         Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
-//        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm a");
-//        holder.startDate.setText(simpleDateFormat.format(bookedSlot.startTime));
-//        holder.endDate.setText(simpleDateFormat.format(bookedSlot.endTime));
-//        String hasPaid="Paid: ".concat((bookedSlot.hasPaid==1)?"Yes":"No");
-//        holder.hasPaid.setText(hasPaid);
-//        holder.userHistoryCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(context, BookingDetailsActivity.class);
-//                intent.putExtra("UUID", bookedSlotKey.key);
-//                intent.putExtra("BookedSlot", bookedSlot);
-//                context.startActivity(intent);
-//            }
-//        });
 
     }
 

@@ -14,6 +14,9 @@ public class ImagesDetails {
     @SerializedName("main_image")
     @Expose
     private Boolean mainImage;
+    @SerializedName("is_deleted")
+    @Expose
+    private Boolean isDeleted;
 
     public Integer getId() {
         return id;
@@ -39,4 +42,7 @@ public class ImagesDetails {
         this.mainImage = mainImage;
     }
 
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
