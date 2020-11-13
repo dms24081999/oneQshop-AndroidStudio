@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout parent;
-        TextView productName,brandName,priceText,endDate;
+        TextView productName,brandName,priceText;
+        ImageView productImage;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -36,6 +40,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productName = (TextView)itemView.findViewById(R.id.productName);
             brandName = (TextView)itemView.findViewById(R.id.brandName);
             priceText = (TextView)itemView.findViewById(R.id.priceText);
+            productImage = (ImageView) itemView.findViewById(R.id.productImage);
         }
     }
 
@@ -57,13 +62,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ProductListAdapter.MyViewHolder holder, int position) {
-        ProductDetails bookedSlotKey=productDetailsArrayList.get(position);
-        setDatas(holder,bookedSlotKey);
+        ProductDetails productDetails=productDetailsArrayList.get(position);
+        setDatas(holder,productDetails);
     }
 
-    public void setDatas(ProductListAdapter.MyViewHolder holder, final ProductDetails bookedSlotKey){
-        holder.productName.setText(bookedSlotKey.name);
-        holder.brandName.setText(bookedSlotKey.userID);
+    public void setDatas(ProductListAdapter.MyViewHolder holder, final ProductDetails productDetails){
+        holder.productName.setText(productDetails.getName());
+        holder.brandName.setText(productDetails.getBarcode());
+        Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
 //        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm a");
 //        holder.startDate.setText(simpleDateFormat.format(bookedSlot.startTime));
 //        holder.endDate.setText(simpleDateFormat.format(bookedSlot.endTime));

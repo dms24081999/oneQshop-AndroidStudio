@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils.api;
 
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 
 import okhttp3.MultipartBody;
@@ -86,5 +87,8 @@ public interface RestMethods {
             @Part("picture") RequestBody picture
     );
 
+    @GET("/api/products/product/")
+    Call<ProductListDetails> getProductListDetails();
+//    @Header("Authorization") String authHeader
 }
 
