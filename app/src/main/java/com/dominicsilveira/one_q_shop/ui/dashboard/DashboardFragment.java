@@ -3,10 +3,14 @@ package com.dominicsilveira.one_q_shop.ui.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,19 +21,43 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
+import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
+import com.dominicsilveira.one_q_shop.utils.api.RestClient;
+import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
     FloatingActionButton allCategoriesBtn;
+    LinearLayout category;
+    RestMethods restMethods;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 //        TextView textView = root.findViewById(R.id.text);
 //        textView.setText("Dashboard");
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("36");
+
+        //Builds HTTP Client for API Calls
+        restMethods = RestClient.buildHTTPClient();
+
         allCategoriesBtn=root.findViewById(R.id.allCategoriesBtn);
+        category=root.findViewById(R.id.category);
+
         allCategoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,7 +65,32 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
+        Map<String, String> data = new HashMap<>();
+        Call<CategoriesListDetails> req = restMethods.getCategoriesListDetails(data);
+        req.enqueue(new Callback<CategoriesListDetails>() {
+            @Override
+            public void onResponse(Call<CategoriesListDetails> call, Response<CategoriesListDetails> response) {
+                Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    List<CategoriesDetails> categoriesDetailsList=response.body().getResults();
+                    for (CategoriesDetails temp : categoriesDetailsList) {
+                        View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
+                        category.addView(categoryView);
+                    }
+                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code())+" "+category);
+                } else {
+                    Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
+                }
+            }
+            @Override
+            public void onFailure(Call<CategoriesListDetails> call, Throwable t) {
+                Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
         return root;
     }
 }

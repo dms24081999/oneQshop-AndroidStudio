@@ -27,7 +27,9 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,22 +71,19 @@ public class ProductCategoriesActivity extends AppCompatActivity {
     }
 
     private void attachListeners() {
-
-        Call<ProductListDetails> req = restMethods.getProductListDetails();
-        Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called1");
+        Map<String, String> data = new HashMap<>();
+        data.put("category", "2");
+        Call<ProductListDetails> req = restMethods.getProductListDetails(data);
         req.enqueue(new Callback<ProductListDetails>() {
             @Override
             public void onResponse(Call<ProductListDetails> call, Response<ProductListDetails> response) {
                 Toast.makeText(ProductCategoriesActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
-                Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called2");
                 if (response.isSuccessful()) {
                     productDetailsArrayList=response.body().getResults();
                     mAdapter = new ProductListAdapter(productDetailsArrayList);
                     recyclerView.setAdapter(mAdapter);
-                    Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called3");
                     Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), String.valueOf(response.code())+" "+productDetailsArrayList);
                 } else {
-                    Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called4");
                     Toast.makeText(ProductCategoriesActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();
                     ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
@@ -93,7 +92,6 @@ public class ProductCategoriesActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ProductListDetails> call, Throwable t) {
-                Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), "Called5");
                 Toast.makeText(ProductCategoriesActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }

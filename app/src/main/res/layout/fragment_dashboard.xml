@@ -83,83 +83,24 @@
                 android:layout_width="@dimen/spacing_middle"
                 android:layout_height="0dp" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/allCategoriesBtn"
+            <LinearLayout
+                android:id="@+id/category"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
+                android:layout_height="match_parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/allCategoriesBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_middle"
+                    android:clickable="true"
+                    android:tint="@android:color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:fabSize="normal"
+                    app:rippleColor="@android:color/white"
+                    app:srcCompat="@drawable/ic_baseline_person_000000_24" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@android:color/white"
-                app:backgroundTint="@color/colorPrimary"
-                app:fabSize="normal"
-                app:rippleColor="@android:color/white"
-                app:srcCompat="@drawable/ic_baseline_person_000000_24" />
+            </LinearLayout>
 
             <View
                 android:layout_width="@dimen/spacing_middle"

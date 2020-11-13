@@ -1,8 +1,11 @@
 package com.dominicsilveira.one_q_shop.utils.api;
 
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -18,6 +21,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface RestMethods {
@@ -88,7 +92,10 @@ public interface RestMethods {
     );
 
     @GET("/api/products/product/")
-    Call<ProductListDetails> getProductListDetails();
+    Call<ProductListDetails> getProductListDetails(@QueryMap Map<String, String> param);
 //    @Header("Authorization") String authHeader
+
+    @GET("/api/products/category/")
+    Call<CategoriesListDetails> getCategoriesListDetails(@QueryMap Map<String, String> param);
 }
 
