@@ -17,19 +17,15 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Login;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

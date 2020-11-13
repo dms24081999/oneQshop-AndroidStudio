@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
@@ -17,6 +17,7 @@ import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -87,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
         userName=navView.findViewById(R.id.userName);
         userEmail=navView.findViewById(R.id.userEmail);
 
-        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
-
+//        callbackUtils.setBitmapFromURL();
+        Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
         userName.setText(userObj.getFirstName().concat(" ").concat(userObj.getLastName()));
         userEmail.setText(userObj.getEmail());
 

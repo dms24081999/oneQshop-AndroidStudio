@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;

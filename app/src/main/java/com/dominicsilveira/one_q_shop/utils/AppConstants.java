@@ -5,12 +5,11 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 
 
 public class AppConstants extends Application {

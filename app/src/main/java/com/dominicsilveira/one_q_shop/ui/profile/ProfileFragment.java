@@ -31,12 +31,13 @@ import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -91,7 +92,8 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
+//        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
+        Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
 
         userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,9 +1,9 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes;
+package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UsersList {
+public class User {
 
     @SerializedName("id")
     @Expose
@@ -20,12 +20,20 @@ public class UsersList {
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("phone_number")
+    @Expose
+    private String phoneNumber;
     @SerializedName("current_user")
     @Expose
     private Integer currentUser;
     @SerializedName("picture")
     @Expose
     private Object picture;
+    @SerializedName("picture_path")
+    @Expose
+    private String picturePath;
+
+
 
     public Integer getId() {
         return id;
@@ -67,6 +75,14 @@ public class UsersList {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Integer getCurrentUser() {
         return currentUser;
     }
@@ -83,4 +99,11 @@ public class UsersList {
         this.picture = picture;
     }
 
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
+    }
 }

@@ -1,8 +1,8 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes;
+package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 
 public class Login {
 
