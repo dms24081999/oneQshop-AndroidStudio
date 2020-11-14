@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
+import com.dominicsilveira.one_q_shop.ui.profile.PersonalDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
@@ -30,13 +33,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout parent;
+        LinearLayout parent,productCardBtn;
         TextView productName,brandName,priceText;
         ImageView productImage;
 
         MyViewHolder(View itemView) {
             super(itemView);
             parent = (LinearLayout)itemView.findViewById(R.id.parent);
+            productCardBtn = (LinearLayout)itemView.findViewById(R.id.productCardBtn);
             productName = (TextView)itemView.findViewById(R.id.productName);
             brandName = (TextView)itemView.findViewById(R.id.brandName);
             priceText = (TextView)itemView.findViewById(R.id.priceText);
@@ -73,6 +77,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }else{
             holder.brandName.setText("one-Q-shop");
         }
+        holder.productCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, ProductDetailsActivity.class);
+                context.startActivity(intent);
+            }
+        });
         holder.priceText.setText("₹ ".concat(productDetails.getPrice()));
         Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
 

@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.ui.dashboard;
+package com.dominicsilveira.one_q_shop.ui.product;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,25 +11,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.dominicsilveira.one_q_shop.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.RegisterLogin.ResetPasswordActivity;
-import com.dominicsilveira.one_q_shop.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

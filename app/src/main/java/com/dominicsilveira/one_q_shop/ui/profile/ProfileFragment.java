@@ -93,7 +93,8 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
         restMethods = RestClient.buildHTTPClient();
 
 //        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
+        if(userObj.getPicturePath()!=null)
+            Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
 
         userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override

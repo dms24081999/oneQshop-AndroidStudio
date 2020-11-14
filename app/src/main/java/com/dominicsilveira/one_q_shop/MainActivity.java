@@ -89,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
         userEmail=navView.findViewById(R.id.userEmail);
 
 //        callbackUtils.setBitmapFromURL();
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
+        if(userObj.getPicturePath()!=null)
+            Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
         userName.setText(userObj.getFirstName().concat(" ").concat(userObj.getLastName()));
         userEmail.setText(userObj.getEmail());
 

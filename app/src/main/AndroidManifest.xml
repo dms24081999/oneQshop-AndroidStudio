@@ -19,7 +19,9 @@
         android:roundIcon="@drawable/one_q_shop_nolabel_png"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.dashboard.ProductCategoriesActivity"></activity>
+        <activity android:name=".ui.product.ProductDetailsActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity android:name=".ui.product.ProductCategoriesActivity" />
         <activity
             android:name=".RegisterLogin.ResetPasswordActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
