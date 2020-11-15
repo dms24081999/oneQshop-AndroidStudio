@@ -71,15 +71,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
         app_bar_layout=findViewById(R.id.app_bar_layout);
 
         Intent intent=getIntent();
-        productDetails = (ProductDetails) intent.getSerializableExtra("PRODUCT_DETAILS");
-        productName.setText(productDetails.getName());
-        if(productDetails.getBrandDetails()!=null){
-            brandName.setText(productDetails.getBrandDetails().getName());
+        productId=intent.getIntExtra("BARCODE_VALUE",-1);
+        Log.i("ProductDetailsActivity", String.valueOf(productId));
+        if(productId!=-1){
+            productName.setText(String.valueOf(productId));
         }else{
-            brandName.setText("one-Q-shop");
+            productDetails = (ProductDetails) intent.getSerializableExtra("PRODUCT_DETAILS");
+            productName.setText(productDetails.getName());
+            if(productDetails.getBrandDetails()!=null){
+                brandName.setText(productDetails.getBrandDetails().getName());
+            }else{
+                brandName.setText("one-Q-shop");
+            }
+            priceText.setText("₹ ".concat(productDetails.getPrice()));
+            Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
         }
-        priceText.setText("₹ ".concat(productDetails.getPrice()));
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
+
 
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override

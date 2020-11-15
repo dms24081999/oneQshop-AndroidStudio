@@ -2,6 +2,7 @@ package com.dominicsilveira.one_q_shop.utils.api;
 
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 
@@ -94,6 +95,9 @@ public interface RestMethods {
     @GET("/api/products/product/")
     Call<ProductListDetails> getProductListDetails(@QueryMap Map<String, String> param);
 //    @Header("Authorization") String authHeader
+
+    @GET("/api/products/barcodes/")
+    Call<ProductBarCodes> getProductBarCodes(@QueryMap Map<String, String> param);
 
     @GET("/api/products/category/")
     Call<CategoriesListDetails> getCategoriesListDetails(@QueryMap Map<String, String> param);

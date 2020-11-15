@@ -1,20 +1,35 @@
 package com.dominicsilveira.one_q_shop.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.MainActivity;
+import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,10 +53,13 @@ public class SplashScreen extends AppCompatActivity {
         token=sh.getString("token", "0");// We can then use the data
         Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
 
-
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
+        retriveProductBarCodes();
+    }
+
+    private void checkUserAuth() {
         Call<User> req = restMethods.isAuthenticated(token);
         req.enqueue(new Callback<User>() {
             @Override
@@ -74,6 +92,36 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    private void retriveProductBarCodes() {
+        Map<String, String> data = new HashMap<>();
+        Call<ProductBarCodes> getProductBarCodes = restMethods.getProductBarCodes(data);
+        getProductBarCodes.enqueue(new Callback<ProductBarCodes>() {
+            @Override
+            public void onResponse(Call<ProductBarCodes> call, Response<ProductBarCodes> response) {
+                Toast.makeText(SplashScreen.this, response.code() + " ", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(response.code()));
+                    SharedPreferences sharedPreferences = getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// Storing data into SharedPreferences
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                    Gson gson = new Gson();
+                    String json = gson.toJson(response.body());
+                    prefsEditor.putString("barcodesObj", json);// Storing the key and its value as the data fetched from edittext
+                    prefsEditor.apply();// Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                    checkUserAuth();
+                } else {
+                    Toast.makeText(SplashScreen.this, "Request failed!", Toast.LENGTH_SHORT).show();
+                    Gson gson = new Gson();
+                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                    Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
+                }
+            }
+            @Override
+            public void onFailure(Call<ProductBarCodes> call, Throwable t) {
+                Toast.makeText(SplashScreen.this, "Request failed", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
 }

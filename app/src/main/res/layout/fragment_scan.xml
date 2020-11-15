@@ -26,11 +26,11 @@
             app:square_height="250"
             app:square_width="250" />
         <Button
+            android:id="@+id/btn_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Take Picture"
+            android:text="Show Product"
             android:textSize="30sp"
-            android:id="@+id/btn_camera"
             android:layout_alignParentBottom="true"
             android:layout_margin="8dp"/>
     </RelativeLayout>

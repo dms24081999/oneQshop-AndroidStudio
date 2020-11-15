@@ -2,6 +2,8 @@ package com.dominicsilveira.one_q_shop.ui.scan;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,21 +26,28 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.security.Permission;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ScanFragment extends Fragment {
 
     SurfaceView image;
     RelativeLayout cameraOn,cameraOff;
-    Button turnOnCameraBtn;
+    Button turnOnCameraBtn,btn_camera;
+    String barCodeValue="";
+    ProductBarCodes productBarCodes;
 
     String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,
@@ -47,8 +56,6 @@ public class ScanFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_scan, container, false);
-//        TextView textView = root.findViewById(R.id.text);
-//        textView.setText("Scan");
 
         initComponents(root);
         updateUI();
@@ -63,8 +70,15 @@ public class ScanFragment extends Fragment {
         cameraOn=root.findViewById(R.id.cameraOn);
         cameraOff=root.findViewById(R.id.cameraOff);
         turnOnCameraBtn=root.findViewById(R.id.turnOnCameraBtn);
+        btn_camera=root.findViewById(R.id.btn_camera);
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
+
+        SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        Gson gson = new Gson();
+        String json = sh.getString("barcodesObj", "");// We can then use the data
+        productBarCodes = gson.fromJson(json, ProductBarCodes.class);
+        Log.i("ScanFragment", String.valueOf(productBarCodes.getResults().size()));
     }
 
     private void addListeners() {
@@ -72,6 +86,19 @@ public class ScanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 askCameraPermission();
+            }
+        });
+        btn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (productBarCodes.getResults().containsKey(barCodeValue)) {
+                    Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
+                    intent.putExtra("BARCODE_VALUE",productBarCodes.getResults().get(barCodeValue));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "No Product Found!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -153,12 +180,11 @@ public class ScanFragment extends Fragment {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodeSparseArray=detections.getDetectedItems();
-                if(barcodeSparseArray.size()>0){
-                    Log.i("Barcode/QR-code value:",barcodeSparseArray.valueAt(0).displayValue);
-//                    Intent intent=new Intent();
-//                    intent.putExtra("barcode",barcodeSparseArray.valueAt(0));
-//                    setResult(CommonStatusCodes.SUCCESS,intent);
-//                    finish();
+                if(barcodeSparseArray.size()>0) {
+                    barCodeValue = barcodeSparseArray.valueAt(0).displayValue;
+                    Log.i("Barcode/QR-code value:", barCodeValue);
+                }else{
+                    barCodeValue="";
                 }
             }
         });
