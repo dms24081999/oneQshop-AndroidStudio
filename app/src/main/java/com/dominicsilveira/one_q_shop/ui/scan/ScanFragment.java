@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,18 +31,30 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.RegisterLogin.SplashScreen;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.api.RestClient;
+import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.security.Permission;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -53,6 +66,7 @@ public class ScanFragment extends Fragment {
     Button turnOnCameraBtn,btn_camera;
     String barCodeValue="";
     ProductBarCodes productBarCodes;
+    RestMethods restMethods;
 
     String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,
@@ -78,6 +92,9 @@ public class ScanFragment extends Fragment {
         btn_camera=root.findViewById(R.id.btn_camera);
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
+
+        //Builds HTTP Client for API Calls
+        restMethods = RestClient.buildHTTPClient();
 
         SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();
@@ -178,13 +195,11 @@ public class ScanFragment extends Fragment {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodeSparseArray=detections.getDetectedItems();
-                if(barcodeSparseArray.size()>0) {
+                if(barcodeSparseArray.size()>0 && !isProductDialogOpen) {
                     barCodeValue = barcodeSparseArray.valueAt(0).displayValue;
                     Log.i("Barcode/QR-code value:", barCodeValue);
                     if (productBarCodes.getResults().containsKey(barCodeValue)) {
-                        Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
-                        isProductDialogOpen=true;
-                        showDialogProductBlue();
+                        getProductDetails(productBarCodes.getResults().get(barCodeValue));
 //                        Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
 //                        intent.putExtra("BARCODE_VALUE",productBarCodes.getResults().get(barCodeValue));
 //                        startActivity(intent);
@@ -196,27 +211,60 @@ public class ScanFragment extends Fragment {
         });
     }
 
-    private void showDialogProductBlue() {
+    private void getProductDetails(final Integer product_id) {
 //        https://stackoverflow.com/a/9815528
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
+                Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
                 if(!isProductDialogOpen){
-                    final Dialog dialog = new Dialog(getActivity());
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-                    dialog.setContentView(R.layout.dialog_product);
-                    TextView text=dialog.findViewById(R.id.pricePopUp);
-                    text.setText("123");
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                    dialog.setCancelable(true);
-                    dialog.show();
-                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    isProductDialogOpen=true;
+                    Map<String, String> data = new HashMap<>();
+                    Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(product_id,data);
+                    getProductBarCodes.enqueue(new Callback<ProductDetails>() {
                         @Override
-                        public void onCancel(DialogInterface dialog) {
-                            // dialog dismiss without button press
+                        public void onResponse(Call<ProductDetails> call, Response<ProductDetails> response) {
+                            Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                            if (response.isSuccessful()) {
+                                Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code()));
+                                showProductDialog(response.body());
+                            } else {
+                                isProductDialogOpen=false;
+                                Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
+                                Gson gson = new Gson();
+                                ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
+                                Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ProductDetails> call, Throwable t) {
                             isProductDialogOpen=false;
+                            Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
+                            t.printStackTrace();
                         }
                     });
                 }
+            }
+        });
+    }
+
+    private void showProductDialog(ProductDetails productDetails) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_product);
+        TextView productNamePop=dialog.findViewById(R.id.productNamePop);
+        productNamePop.setText(productDetails.getName());
+        TextView pricePop=dialog.findViewById(R.id.pricePop);
+        pricePop.setText(productDetails.getPrice());
+        ImageView productImagePop=dialog.findViewById(R.id.productImagePop);
+        Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImagePop);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // dialog dismiss without button press
+                isProductDialogOpen=false;
             }
         });
     }

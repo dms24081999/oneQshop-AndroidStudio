@@ -13,11 +13,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/rounded_btn" />
+            android:background="@color/white"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/productImagePop"
+                android:background="@color/white"
+                android:layout_gravity="center"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,6 +36,7 @@
             android:padding="@dimen/spacing_large">
 
             <TextView
+                android:id="@+id/productNamePop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Maecenas Quis"
@@ -34,7 +45,7 @@
                 app:fontFamily="sans-serif-medium" />
 
             <TextView
-                android:id="@+id/pricePopUp"
+                android:id="@+id/pricePop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="$9.20"
