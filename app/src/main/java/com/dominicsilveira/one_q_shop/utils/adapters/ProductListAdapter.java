@@ -72,15 +72,18 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public void setDatas(ProductListAdapter.MyViewHolder holder, final ProductDetails productDetails){
         holder.productName.setText(productDetails.getName());
+        final String brandName;
         if(productDetails.getBrandDetails()!=null){
-            holder.brandName.setText(productDetails.getBrandDetails().getName());
+            brandName=productDetails.getBrandDetails().getName();
         }else{
-            holder.brandName.setText("one-Q-shop");
+            brandName="one-Q-shop";
         }
+        holder.brandName.setText(brandName);
         holder.productCardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context, ProductDetailsActivity.class);
+                intent.putExtra("PRODUCT_DETAILS",productDetails);
                 context.startActivity(intent);
             }
         });
@@ -94,4 +97,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public int getItemCount() {
         return productDetailsArrayList.size();
     }
+
+
 }

@@ -3,7 +3,9 @@ package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BrandDetails {
+import java.io.Serializable;
+
+public class BrandDetails implements Serializable {
 
     @SerializedName("id")
     @Expose

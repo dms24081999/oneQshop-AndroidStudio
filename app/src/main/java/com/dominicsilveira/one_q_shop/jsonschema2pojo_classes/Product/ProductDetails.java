@@ -1,10 +1,11 @@
 package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductDetails {
+public class ProductDetails implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
