@@ -1,10 +1,13 @@
 package com.dominicsilveira.one_q_shop.ui.scan;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ScanFragment extends Fragment {
 
+    Boolean isProductDialogOpen=false;
     SurfaceView image;
     RelativeLayout cameraOn,cameraOff;
     Button turnOnCameraBtn,btn_camera;
@@ -91,14 +96,7 @@ public class ScanFragment extends Fragment {
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (productBarCodes.getResults().containsKey(barCodeValue)) {
-                    Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
-                    intent.putExtra("BARCODE_VALUE",productBarCodes.getResults().get(barCodeValue));
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "No Product Found!", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
@@ -183,8 +181,41 @@ public class ScanFragment extends Fragment {
                 if(barcodeSparseArray.size()>0) {
                     barCodeValue = barcodeSparseArray.valueAt(0).displayValue;
                     Log.i("Barcode/QR-code value:", barCodeValue);
+                    if (productBarCodes.getResults().containsKey(barCodeValue)) {
+                        Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
+                        isProductDialogOpen=true;
+                        showDialogProductBlue();
+//                        Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
+//                        intent.putExtra("BARCODE_VALUE",productBarCodes.getResults().get(barCodeValue));
+//                        startActivity(intent);
+                    }
                 }else{
                     barCodeValue="";
+                }
+            }
+        });
+    }
+
+    private void showDialogProductBlue() {
+//        https://stackoverflow.com/a/9815528
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                if(!isProductDialogOpen){
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+                    dialog.setContentView(R.layout.dialog_product);
+                    TextView text=dialog.findViewById(R.id.pricePopUp);
+                    text.setText("123");
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    dialog.setCancelable(true);
+                    dialog.show();
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            // dialog dismiss without button press
+                            isProductDialogOpen=false;
+                        }
+                    });
                 }
             }
         });
