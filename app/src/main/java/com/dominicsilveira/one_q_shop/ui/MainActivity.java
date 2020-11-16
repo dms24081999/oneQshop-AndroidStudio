@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop;
+package com.dominicsilveira.one_q_shop.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;

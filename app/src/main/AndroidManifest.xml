@@ -29,7 +29,7 @@
         <activity android:name=".ui.profile.AboutUsActivity" />
         <activity android:name=".ui.profile.PersonalDetailsActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/NoActionBarTheme" />
         <activity

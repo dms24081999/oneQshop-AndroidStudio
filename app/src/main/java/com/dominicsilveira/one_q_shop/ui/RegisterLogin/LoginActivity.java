@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.dominicsilveira.one_q_shop.MainActivity;
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;

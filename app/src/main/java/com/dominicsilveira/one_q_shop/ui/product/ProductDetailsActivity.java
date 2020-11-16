@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -27,11 +28,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.bumptech.glide.request.animation.ViewAnimation;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
+import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,6 +52,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     AppBarLayout app_bar_layout;
     Drawable upArrow;
     LinearLayout categoryTags;
+    ImageButton bt_toggle_description;
+    LinearLayout lyt_expand_description;
+    NestedScrollView nested_scroll_view;
 
     Intent prevIntent;
     Integer productId;
@@ -62,7 +68,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         initPrevIntent();
         initToolbar();
         initComponents();
+        attachListeners();
     }
+
 
     private void initPrevIntent() {
         prevIntent=getIntent();
@@ -100,6 +108,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         priceText=findViewById(R.id.priceText);
         productImage=findViewById(R.id.productImage);
         categoryTags=findViewById(R.id.categoryTags);
+        nested_scroll_view=findViewById(R.id.nested_scroll_view);
+
+        // section description
+        bt_toggle_description = findViewById(R.id.bt_toggle_description);
+        lyt_expand_description = findViewById(R.id.lyt_expand_description);
+
 
         if(productId!=-1){
             productName.setText(String.valueOf(productId));
@@ -125,19 +139,43 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
 
         }
+    }
 
-//        // section description
-//        bt_toggle_description = (ImageButton) findViewById(R.id.bt_toggle_description);
-//        lyt_expand_description = (View) findViewById(R.id.lyt_expand_description);
-//        bt_toggle_description.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggleSection(view, lyt_expand_description);
-//            }
-//        });
+    private void attachListeners() {
+        bt_toggle_description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSection(view, lyt_expand_description);
+            }
+        });
 
+        // expand first description
+        toggleArrow(bt_toggle_description);
+        lyt_expand_description.setVisibility(View.VISIBLE);
+    }
 
+    private void toggleSection(View bt, final View lyt) {
+        boolean show = toggleArrow(bt);
+        if (show) {
+            ViewAnimationUtils.expand(lyt, new ViewAnimationUtils.AnimListener() {
+                @Override
+                public void onFinish() {
+                    BasicUtils.nestedScrollTo(nested_scroll_view, lyt);
+                }
+            });
+        } else {
+            ViewAnimationUtils.collapse(lyt);
+        }
+    }
 
+    public boolean toggleArrow(View view) {
+        if (view.getRotation() == 0) {
+            view.animate().setDuration(200).rotation(180);
+            return true;
+        } else {
+            view.animate().setDuration(200).rotation(0);
+            return false;
+        }
     }
 
 }
