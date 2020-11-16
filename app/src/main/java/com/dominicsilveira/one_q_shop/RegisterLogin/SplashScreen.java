@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
@@ -40,7 +42,7 @@ public class SplashScreen extends AppCompatActivity {
 
     RestMethods restMethods;
     String token;
-    Intent intent;
+    Intent intent,prevIntent;
     AppConstants globalClass;
 
     @Override
@@ -56,8 +58,30 @@ public class SplashScreen extends AppCompatActivity {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        retriveProductBarCodes();
+        initPrevUrlIntent();
     }
+
+    private void initPrevUrlIntent() {
+        Uri uri = getIntent().getData();
+        String type="",password_reset_token;
+        if (uri != null) {
+            type = uri.getQueryParameter("type"); // type = "some-type"
+            if(type.equals("password_reset")){
+                password_reset_token = uri.getQueryParameter("token"); // token = "some-token"
+                resetPasswordActivity(password_reset_token);
+            }
+        }else{
+            retriveProductBarCodes();
+        }
+    }
+
+    private void resetPasswordActivity(String password_reset_token) {
+        intent=new Intent(SplashScreen.this, ResetPasswordActivity.class);
+        intent.putExtra("TOKEN",password_reset_token);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void checkUserAuth() {
         Call<User> req = restMethods.isAuthenticated(token);

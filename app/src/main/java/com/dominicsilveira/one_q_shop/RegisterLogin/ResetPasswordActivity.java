@@ -3,6 +3,7 @@ package com.dominicsilveira.one_q_shop.RegisterLogin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     String password_reset_token;
     AppCompatEditText confirmPasswordField,newPasswordField;
     Button resetBtn;
+    Intent prevIntent;
     RestMethods restMethods;
 
     @Override
@@ -39,12 +41,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         //Builds HTTP Client for API Calls
         restMethods = RestClient.buildHTTPClient();
 
-        Uri uri = getIntent().getData();
-        if (uri != null) {
-            password_reset_token = uri.getQueryParameter("token"); // token = "some-token"
-            Log.e(String.valueOf(ResetPasswordActivity.this.getClass()),password_reset_token);
-        }
-
         initComponents();
         attachListeners();
     }
@@ -53,6 +49,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         newPasswordField=findViewById(R.id.newPasswordField);
         confirmPasswordField=findViewById(R.id.confirmPasswordField);
         resetBtn=findViewById(R.id.resetBtn);
+
+        prevIntent=getIntent();
+        password_reset_token=prevIntent.getStringExtra("TOKEN");
     }
 
     private void attachListeners() {

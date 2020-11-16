@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:text="₹ 80.00"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/green_500"
                     android:textStyle="bold" />
 
             </LinearLayout>

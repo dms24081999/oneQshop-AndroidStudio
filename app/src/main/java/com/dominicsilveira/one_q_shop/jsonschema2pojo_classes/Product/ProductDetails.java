@@ -89,7 +89,11 @@ public class ProductDetails implements Serializable {
     }
 
     public BrandDetails getBrandDetails() {
-        return brandDetails;
+        if(brandDetails!=null){
+            return brandDetails;
+        }else{
+            return new BrandDetails(0,"one-Q-shop","",false);
+        }
     }
 
     public void setBrandDetails(BrandDetails brandDetails) {

@@ -52,7 +52,7 @@
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:text="Shop Adida"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/grey_60" />
+                android:textColor="@color/colorPrimary" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -83,15 +83,48 @@
 
             </HorizontalScrollView>
 
-            <TextView
-                android:id="@+id/pricePop"
-                android:gravity="right"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="$9.20"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/green_500"
-                app:fontFamily="sans-serif-medium" />
+                android:layout_marginTop="@dimen/spacing_large"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    style="@style/Yellow.Small.AppCompatRatingBar.White"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:stepSize="1"
+                    android:theme="@style/Yellow.Small.AppCompatRatingBar.White" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/spacing_medium"
+                    android:layout_marginLeft="@dimen/spacing_medium"
+                    android:text="381,380"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_60" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/pricePop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$ 9.20"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/green_500"
+                    app:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
 
         </LinearLayout>
 

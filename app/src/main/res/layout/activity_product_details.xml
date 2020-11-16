@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:text="$ 80.00"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                 </LinearLayout>

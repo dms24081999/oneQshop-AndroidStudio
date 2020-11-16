@@ -24,30 +24,7 @@
         <activity android:name=".ui.product.ProductCategoriesActivity" />
         <activity
             android:name=".RegisterLogin.ResetPasswordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter android:label="one-Q-shop">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://dms24081999.loca.lt/api/users/reset-password/” -->
-                <data
-                    android:host="@string/host_url"
-                    android:pathPrefix="@string/host_password_reset_path"
-                    android:scheme="@string/host_protocol" />
-                <!-- note that the leading "/" is required for pathPrefix -->
-            </intent-filter>
-            <intent-filter android:label="one-Q-shop">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "one_q_shop://reset_password” -->
-                <data
-                    android:host="reset_password"
-                    android:scheme="one_q_shop" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.profile.ChangePasswordActivity" />
         <activity android:name=".ui.profile.AboutUsActivity" />
         <activity android:name=".ui.profile.PersonalDetailsActivity" />
@@ -68,6 +45,27 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:label="one-Q-shop">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://dms24081999.loca.lt/api/users/reset-password/” -->
+                <data
+                    android:host="@string/landing_page_url"
+                    android:scheme="@string/landing_page_protocol" />
+                <!-- note that the leading "/" is required for pathPrefix -->
+            </intent-filter>
+            <intent-filter android:label="one-Q-shop">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "one_q_shop://reset_password” -->
+                <data
+                    android:host="reset_password"
+                    android:scheme="one_q_shop" />
             </intent-filter>
         </activity>
         <activity

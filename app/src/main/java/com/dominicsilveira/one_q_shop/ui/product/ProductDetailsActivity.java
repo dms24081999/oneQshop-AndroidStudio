@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,7 +50,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     Drawable upArrow;
     LinearLayout categoryTags;
 
-
+    Intent prevIntent;
     Integer productId;
     ProductDetails productDetails;
 
@@ -57,7 +58,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+
+        initPrevIntent();
         initToolbar();
+        initComponents();
+    }
+
+    private void initPrevIntent() {
+        prevIntent=getIntent();
+        productId=prevIntent.getIntExtra("BARCODE_VALUE",-1);
+        productDetails = (ProductDetails) prevIntent.getSerializableExtra("PRODUCT_DETAILS");
     }
 
     private void initToolbar() {
@@ -66,30 +76,36 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        app_bar_layout=findViewById(R.id.app_bar_layout);
         upArrow = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_arrow_back_000000_24,null);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0) {
+//                    Log.i("ProductDetailsActivity", "Collapsed");
+                    BasicUtils.setColorFilter(upArrow, Color.parseColor("#FFFFFF"));
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                } else {
+//                    Log.i("ProductDetailsActivity", "Expanded");
+                    BasicUtils.setColorFilter(upArrow, Color.parseColor("#000000"));
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                }
+            }
+        });
+    }
 
-
+    private void initComponents() {
         productName=findViewById(R.id.productName);
         brandName=findViewById(R.id.brandName);
         priceText=findViewById(R.id.priceText);
         productImage=findViewById(R.id.productImage);
-        app_bar_layout=findViewById(R.id.app_bar_layout);
         categoryTags=findViewById(R.id.categoryTags);
 
-
-        Intent intent=getIntent();
-        productId=intent.getIntExtra("BARCODE_VALUE",-1);
-        Log.i("ProductDetailsActivity", String.valueOf(productId));
         if(productId!=-1){
             productName.setText(String.valueOf(productId));
         }else{
-            productDetails = (ProductDetails) intent.getSerializableExtra("PRODUCT_DETAILS");
             productName.setText(productDetails.getName());
-            if(productDetails.getBrandDetails()!=null){
-                brandName.setText(productDetails.getBrandDetails().getName());
-            }else{
-                brandName.setText("one-Q-shop");
-            }
+            brandName.setText(productDetails.getBrandDetails().getName());
             priceText.setText("₹ ".concat(productDetails.getPrice()));
             Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
             for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
@@ -110,21 +126,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         }
 
+//        // section description
+//        bt_toggle_description = (ImageButton) findViewById(R.id.bt_toggle_description);
+//        lyt_expand_description = (View) findViewById(R.id.lyt_expand_description);
+//        bt_toggle_description.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                toggleSection(view, lyt_expand_description);
+//            }
+//        });
 
-        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0) {
-//                    Log.i("ProductDetailsActivity", "Collapsed");
-                    BasicUtils.setColorFilter(upArrow, Color.parseColor("#FFFFFF"));
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-                } else {
-//                    Log.i("ProductDetailsActivity", "Expanded");
-                    BasicUtils.setColorFilter(upArrow, Color.parseColor("#000000"));
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-                }
-            }
-        });
+
+
     }
 
 }

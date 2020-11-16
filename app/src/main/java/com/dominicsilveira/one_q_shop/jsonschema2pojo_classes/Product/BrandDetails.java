@@ -20,6 +20,13 @@ public class BrandDetails implements Serializable {
     @Expose
     private Boolean isDeleted;
 
+    public BrandDetails(Integer id,String name,String description,Boolean isDeleted){
+        this.id=id;
+        this.name=name;
+        this.description=description;
+        this.isDeleted=isDeleted;
+    }
+
     public Integer getId() {
         return id;
     }

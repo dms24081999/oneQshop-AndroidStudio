@@ -73,11 +73,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void setDatas(ProductListAdapter.MyViewHolder holder, final ProductDetails productDetails){
         holder.productName.setText(productDetails.getName());
         final String brandName;
-        if(productDetails.getBrandDetails()!=null){
-            brandName=productDetails.getBrandDetails().getName();
-        }else{
-            brandName="one-Q-shop";
-        }
+        brandName=productDetails.getBrandDetails().getName();
         holder.brandName.setText(brandName);
         holder.productCardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
