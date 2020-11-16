@@ -22,7 +22,7 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://".concat("dms24-v6.loca.lt");
+    public static final String BACKEND_URL = "https://".concat("dms24-v2.loca.lt");
 
     private User userObj;
     private Bitmap userProfilePic;

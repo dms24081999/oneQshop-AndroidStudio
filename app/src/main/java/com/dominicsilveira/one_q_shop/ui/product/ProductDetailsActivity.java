@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,12 +27,14 @@ import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.hootsuite.nachos.NachoTextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -44,6 +47,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ImageView productImage;
     AppBarLayout app_bar_layout;
     Drawable upArrow;
+    LinearLayout categoryTags;
+
 
     Integer productId;
     ProductDetails productDetails;
@@ -69,6 +74,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         priceText=findViewById(R.id.priceText);
         productImage=findViewById(R.id.productImage);
         app_bar_layout=findViewById(R.id.app_bar_layout);
+        categoryTags=findViewById(R.id.categoryTags);
+
 
         Intent intent=getIntent();
         productId=intent.getIntExtra("BARCODE_VALUE",-1);
@@ -85,6 +92,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
             priceText.setText("₹ ".concat(productDetails.getPrice()));
             Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
+            for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
+                View categoryView = getLayoutInflater().inflate(R.layout.include_round_chips, null);
+                Button chipName=categoryView.findViewById(R.id.chipName);
+                chipName.setText(categoriesDetails.getName());
+                chipName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent=new Intent(ProductDetailsActivity.this,ProductCategoriesActivity.class);
+                        intent.putExtra("CATEGORY_ID",categoriesDetails.getId());
+                        intent.putExtra("CATEGORY_NAME",categoriesDetails.getName());
+                        startActivity(intent);
+                    }
+                });
+                categoryTags.addView(categoryView);
+            }
+
         }
 
 

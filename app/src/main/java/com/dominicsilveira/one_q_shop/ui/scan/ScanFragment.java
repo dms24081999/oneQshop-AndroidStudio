@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +34,10 @@ import androidx.lifecycle.ViewModelProviders;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
+import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
@@ -251,12 +254,32 @@ public class ScanFragment extends Fragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.dialog_product);
+
         TextView productNamePop=dialog.findViewById(R.id.productNamePop);
-        productNamePop.setText(productDetails.getName());
+        TextView brandNamePop=dialog.findViewById(R.id.brandNamePop);
         TextView pricePop=dialog.findViewById(R.id.pricePop);
-        pricePop.setText(productDetails.getPrice());
         ImageView productImagePop=dialog.findViewById(R.id.productImagePop);
+        LinearLayout categoryTagsPop=dialog.findViewById(R.id.categoryTagsPop);
+
+        productNamePop.setText(productDetails.getName());
+        pricePop.setText(productDetails.getPrice());
         Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImagePop);
+        for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
+            View categoryView = getLayoutInflater().inflate(R.layout.include_round_chips, null);
+            Button chipName=categoryView.findViewById(R.id.chipName);
+            chipName.setText(categoriesDetails.getName());
+            chipName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(getActivity(), ProductCategoriesActivity.class);
+                    intent.putExtra("CATEGORY_ID",categoriesDetails.getId());
+                    intent.putExtra("CATEGORY_NAME",categoriesDetails.getName());
+                    startActivity(intent);
+                }
+            });
+            categoryTagsPop.addView(categoryView);
+        }
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();

@@ -69,7 +69,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Smart Parking About"
+                                android:text="one-Q-shop"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                                 android:textColor="@color/grey_80" />
 
@@ -81,8 +81,7 @@
                                 android:textColor="@color/grey_40" />
 
                         </LinearLayout>
-
-
+                        
                     </LinearLayout>
 
                     <LinearLayout
