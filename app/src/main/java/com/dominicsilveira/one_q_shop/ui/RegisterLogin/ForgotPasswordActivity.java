@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.RegisterLogin;
+package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
 

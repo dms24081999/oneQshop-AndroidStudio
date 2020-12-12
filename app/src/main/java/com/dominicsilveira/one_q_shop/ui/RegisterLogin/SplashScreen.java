@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.RegisterLogin;
+package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,8 @@ import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.ResetPasswordActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.api.RestClient;
 import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
@@ -92,7 +94,7 @@ public class SplashScreen extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    intent=new Intent(SplashScreen.this,LoginActivity.class);
+                    intent=new Intent(SplashScreen.this, LoginActivity.class);
                 }
                 startActivity(intent);
                 finish();
