@@ -14,8 +14,8 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
 import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
-import com.dominicsilveira.oneqshoprestapi.RestApiClient;
-import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;

@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.oneqshoprestapi.RestApiClient;
-import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 
 import org.json.JSONObject;

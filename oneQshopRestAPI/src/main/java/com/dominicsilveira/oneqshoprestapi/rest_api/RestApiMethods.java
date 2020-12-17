@@ -1,4 +1,4 @@
-package com.dominicsilveira.oneqshoprestapi;
+package com.dominicsilveira.oneqshoprestapi.rest_api;
 
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
@@ -27,9 +27,11 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface RestApiMethods {
+    String getImageFileRequest = "getImageFileRequest";
     @GET
     Call<ResponseBody> getImageFile(@Url String url); // don't need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
 
+    String postRegisterRequest = "postRegisterRequest";
     @FormUrlEncoded
     @POST("/api/users/create/")
     Call<Login> postRegister(
@@ -40,7 +42,7 @@ public interface RestApiMethods {
             @Field("password") String password
     );
 
-
+    String postLoginRequest = "postLoginRequest";
     @FormUrlEncoded
     @POST("/api/users/login/")
     Call<Login> postLogin(
@@ -48,12 +50,14 @@ public interface RestApiMethods {
             @Field("password") String password
     );
 
+    String postRequestResetPasswordRequest = "postRequestResetPasswordRequest";
     @FormUrlEncoded
     @POST("/api/users/reset-password/")
     Call<ResponseBody> postRequestResetPassword(
             @Field("email") String email
     );
 
+    String postResetPasswordRequest = "postResetPasswordRequest";
     @FormUrlEncoded
     @POST("/api/users/reset-password/confirm/")
     Call<ResponseBody> postResetPassword(
@@ -61,10 +65,11 @@ public interface RestApiMethods {
             @Field("password") String password
     );
 
-
+    String isAuthenticatedRequest = "isAuthenticatedRequest";
     @GET("/api/users/is-authenticated/")
     Call<User> isAuthenticated(@Header("Authorization") String authHeader);
 
+    String changePasswordRequest = "changePasswordRequest";
     @FormUrlEncoded
     @PUT("/api/users/change-password/")
     Call<ResponseBody> changePassword(
@@ -73,6 +78,7 @@ public interface RestApiMethods {
             @Field("new_password") String new_password
     );
 
+    String updateUserDetailsRequest = "updateUserDetailsRequest";
     @FormUrlEncoded
     @PATCH("/api/users/{user_id}/")
     Call<User> updateUserDetails(
@@ -84,6 +90,7 @@ public interface RestApiMethods {
             @Field("phone_number") String phone_number
     );
 
+    String postProfileImageRequest = "postProfileImageRequest";
     @Multipart
     @PATCH("/api/users/{user_id}/")
     Call<User> postProfileImage(
@@ -93,19 +100,23 @@ public interface RestApiMethods {
             @Part("picture") RequestBody picture
     );
 
+    String getProductListDetailsRequest = "getProductListDetailsRequest";
     @GET("/api/products/product/")
     Call<ProductListDetails> getProductListDetails(@QueryMap Map<String, String> param);
 //    @Header("Authorization") String authHeader
 
+    String getProductDetailsRequest = "getProductDetailsRequest";
     @GET("/api/products/product/{product_id}/")
     Call<ProductDetails> getProductDetails(
             @Path(value = "product_id", encoded = true) Integer product_id,
             @QueryMap Map<String, String> param
     );
 
+    String getProductBarCodesRequest = "getProductBarCodesRequest";
     @GET("/api/products/barcodes/")
     Call<ProductBarCodes> getProductBarCodes(@QueryMap Map<String, String> param);
 
+    String getCategoriesListDetailsRequest = "getCategoriesListDetailsRequest";
     @GET("/api/products/category/")
     Call<CategoriesListDetails> getCategoriesListDetails(@QueryMap Map<String, String> param);
 }

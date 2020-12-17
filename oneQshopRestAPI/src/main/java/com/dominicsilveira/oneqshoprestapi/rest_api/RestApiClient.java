@@ -1,4 +1,4 @@
-package com.dominicsilveira.oneqshoprestapi;
+package com.dominicsilveira.oneqshoprestapi.rest_api;
 
 import android.util.Log;
 

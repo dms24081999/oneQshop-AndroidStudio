@@ -13,8 +13,11 @@ import com.dominicsilveira.one_q_shop.ui.MainActivity;
 
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
-import com.dominicsilveira.oneqshoprestapi.RestApiClient;
-import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
@@ -30,7 +33,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity implements ApiListener {
+    private static String TAG = SplashScreen.class.getSimpleName();
 
     RestApiMethods restMethods;
     String token;
@@ -76,68 +80,44 @@ public class SplashScreen extends AppCompatActivity {
 
 
     private void checkUserAuth() {
-        Call<User> req = restMethods.isAuthenticated(token);
-        req.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Toast.makeText(SplashScreen.this, response.code() + " ", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    String resp=response.body().getEmail();
-                    globalClass.setUserObj(response.body());
-                    Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(response.code()+" "+" "+resp));
-                    intent=new Intent(SplashScreen.this, MainActivity.class);
-                } else {
-                    try {
-                        String resp=response.errorBody().string();
-                        JSONObject obj = new JSONObject(resp);
-                        Log.e(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(obj));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    intent=new Intent(SplashScreen.this, LoginActivity.class);
-                }
-                startActivity(intent);
-                finish();
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(SplashScreen.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-                intent=new Intent(SplashScreen.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        Call<User> isAuthCall = restMethods.isAuthenticated(token);
+        ApiResponse.callRetrofitApi(isAuthCall, RestApiMethods.isAuthenticatedRequest, this);
     }
 
     private void retriveProductBarCodes() {
         Map<String, String> data = new HashMap<>();
-        Call<ProductBarCodes> getProductBarCodes = restMethods.getProductBarCodes(data);
-        getProductBarCodes.enqueue(new Callback<ProductBarCodes>() {
-            @Override
-            public void onResponse(Call<ProductBarCodes> call, Response<ProductBarCodes> response) {
-                Toast.makeText(SplashScreen.this, response.code() + " ", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(response.code()));
-                    SharedPreferences sharedPreferences = getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// Storing data into SharedPreferences
-                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-                    Gson gson = new Gson();
-                    String json = gson.toJson(response.body());
-                    prefsEditor.putString("barcodesObj", json);// Storing the key and its value as the data fetched from edittext
-                    prefsEditor.apply();// Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
-                    checkUserAuth();
-                } else {
-                    Toast.makeText(SplashScreen.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                }
+        Call<ProductBarCodes> getProductBarCodesCall = restMethods.getProductBarCodes(data);
+        ApiResponse.callRetrofitApi(getProductBarCodesCall, RestApiMethods.getProductBarCodesRequest, this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.isAuthenticatedRequest)) {
+            if(data!=null){
+                User user = (User) data;
+                globalClass.setUserObj(user);
+                Toast.makeText(globalClass, "Auth Successful!", Toast.LENGTH_SHORT).show();
+                intent=new Intent(SplashScreen.this, MainActivity.class);
+            }else{
+                Toast.makeText(SplashScreen.this, "Error "+(error), Toast.LENGTH_SHORT).show();
+                intent=new Intent(SplashScreen.this,LoginActivity.class);
             }
-            @Override
-            public void onFailure(Call<ProductBarCodes> call, Throwable t) {
-                Toast.makeText(SplashScreen.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
+            startActivity(intent);
+            finish();
+        }
+        if (strApiName.equals(RestApiMethods.getProductBarCodesRequest)) {
+            if(data!=null){
+                ProductBarCodes productBarCodes = (ProductBarCodes) data;
+                SharedPreferences sharedPreferences = getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// Storing data into SharedPreferences
+                SharedPreferences.Editor prefsEditor = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                Gson gson = new Gson();
+                String json = gson.toJson(productBarCodes);
+                prefsEditor.putString("barcodesObj", json);// Storing the key and its value as the data fetched from edittext
+                prefsEditor.apply();// Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                checkUserAuth();
+            }else{
+                Toast.makeText(SplashScreen.this, "Error".concat(error), Toast.LENGTH_SHORT).show();
             }
-        });
+        }
     }
 }

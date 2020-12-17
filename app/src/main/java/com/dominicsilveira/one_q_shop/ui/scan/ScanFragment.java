@@ -33,8 +33,8 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
-import com.dominicsilveira.oneqshoprestapi.RestApiClient;
-import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;

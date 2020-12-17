@@ -18,7 +18,8 @@ public class ErrorMessage {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        if(message==null) this.message="";
+        else this.message = message;
     }
 }
 
