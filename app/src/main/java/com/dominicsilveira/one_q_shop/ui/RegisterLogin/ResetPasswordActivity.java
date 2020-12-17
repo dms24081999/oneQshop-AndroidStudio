@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -20,7 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity implements ApiListener {
+    private static String TAG = ResetPasswordActivity.class.getSimpleName();
 
     String password_reset_token;
     AppCompatEditText confirmPasswordField,newPasswordField;
@@ -68,24 +74,19 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private void resetPassword(String newPassword) {
         Call<ResponseBody> req = restMethods.postResetPassword(password_reset_token,newPassword);
-        req.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200) {
-                    Toast.makeText(ResetPasswordActivity.this, "Password reset Successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ResetPasswordActivity.this,LoginActivity.class));
-                }else{
-                    Toast.makeText(ResetPasswordActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(String.valueOf(ResetPasswordActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                }
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postResetPasswordRequest, ResetPasswordActivity.this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.postResetPasswordRequest)) {
+            if(status==200){
+                Toast.makeText(ResetPasswordActivity.this, "Password reset Successful!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ResetPasswordActivity.this,LoginActivity.class));
+                finish();
+            }else{
+                Toast.makeText(ResetPasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ResetPasswordActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 }

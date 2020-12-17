@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
                 startActivity(intent);
                 finish();
             }else{
-                Toast.makeText(LoginActivity.this, "Error".concat(error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
     }

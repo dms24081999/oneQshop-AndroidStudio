@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -25,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity implements ApiListener {
 
     AppCompatEditText oldPasswordText,newPasswordText,confirmPasswordText;
     Button bt_submit;
@@ -124,24 +128,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     newPasswordLayout.setError("");
                     confirmPasswordLayout.setError("");
                     Call<ResponseBody> req = restMethods.changePassword(token, oldPass,newPass);
-                    req.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code()==200) {
-                                Toast.makeText(ChangePasswordActivity.this, "Password Changed!", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(ChangePasswordActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                                Gson gson = new Gson();
-                                ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                                Log.i(String.valueOf(ChangePasswordActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(ChangePasswordActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                            t.printStackTrace();
-                        }
-                    });
+                    ApiResponse.callRetrofitApi(req, RestApiMethods.changePasswordRequest, ChangePasswordActivity.this);
                 }else{
                     Toast.makeText(ChangePasswordActivity.this, "New Passwords don't match", Toast.LENGTH_SHORT).show();
                     newPasswordLayout.setError("Passwords don't match");
@@ -149,5 +136,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.changePasswordRequest)) {
+            if(status==200){
+                Toast.makeText(ChangePasswordActivity.this, "Password Changed!", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(ChangePasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

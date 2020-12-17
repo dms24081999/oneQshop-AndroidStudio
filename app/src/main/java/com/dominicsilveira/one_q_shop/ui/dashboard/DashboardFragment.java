@@ -15,8 +15,14 @@ import androidx.fragment.app.Fragment;
 
 import com.dominicsilveira.one_q_shop.R;
 
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -36,7 +42,8 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements ApiListener {
+    private static String TAG = DashboardFragment.class.getSimpleName();
     FloatingActionButton allCategoriesBtn;
     LinearLayout categoryListView;
     RestApiMethods restMethods;
@@ -71,41 +78,34 @@ public class DashboardFragment extends Fragment {
 
         Map<String, String> data = new HashMap<>();
         Call<CategoriesListDetails> req = restMethods.getCategoriesListDetails(data);
-        req.enqueue(new Callback<CategoriesListDetails>() {
-            @Override
-            public void onResponse(Call<CategoriesListDetails> call, Response<CategoriesListDetails> response) {
-                Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code()));
-                    List<CategoriesDetails> categoriesDetailsList=response.body().getResults();
-                    for (final CategoriesDetails temp : categoriesDetailsList) {
-                        View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
-                        FloatingActionButton categoryBtn=categoryView.findViewById(R.id.categoryBtn);
-                        Log.i("DashboardFragment",AppConstants.BACKEND_URL.concat(temp.getImage())+" "+temp.getId());
-                        Picasso.get().load(temp.getImage()).into(categoryBtn);
-                        categoryBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent=new Intent(getActivity(),ProductCategoriesActivity.class);
-                                intent.putExtra("CATEGORY_ID",temp.getId());
-                                intent.putExtra("CATEGORY_NAME",temp.getName());
-                                startActivity(intent);
-                            }
-                        });
-                        categoryListView.addView(categoryView);
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
+        ApiResponse.callRetrofitApi(req, RestApiMethods.getCategoriesListDetailsRequest, this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.getCategoriesListDetailsRequest)) {
+            if(data!=null){
+                CategoriesListDetails categoriesListDetails = (CategoriesListDetails) data;
+                List<CategoriesDetails> categoriesDetailsList=categoriesListDetails.getResults();
+                for (final CategoriesDetails temp : categoriesDetailsList) {
+                    View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
+                    FloatingActionButton categoryBtn=categoryView.findViewById(R.id.categoryBtn);
+                    Log.i(TAG,AppConstants.BACKEND_URL.concat(temp.getImage())+" "+temp.getId());
+                    Picasso.get().load(temp.getImage()).into(categoryBtn);
+                    categoryBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent=new Intent(getActivity(),ProductCategoriesActivity.class);
+                            intent.putExtra("CATEGORY_ID",temp.getId());
+                            intent.putExtra("CATEGORY_NAME",temp.getName());
+                            startActivity(intent);
+                        }
+                    });
+                    categoryListView.addView(categoryView);
                 }
+            }else{
+                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<CategoriesListDetails> call, Throwable t) {
-                Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 }

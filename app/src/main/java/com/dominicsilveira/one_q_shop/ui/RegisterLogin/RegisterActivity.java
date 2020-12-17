@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
@@ -28,21 +30,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements ApiListener {
     EditText emailField,firstNameField,lastNameField,usernameField,passwordField;
     Button registerBtn;
     TextView loginSwitchText;
-
     RestApiMethods restMethods;
-
+    AppConstants globalClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
+        globalClass=(AppConstants)getApplicationContext();
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
 
         initComponents();
         attachListeners();
@@ -87,38 +88,28 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser(String txt_username, String txt_first_name, String txt_last_name, String txt_email, String txt_password) {
-        final AppConstants globalClass=(AppConstants)getApplicationContext();
         Call<Login> req = restMethods.postRegister(txt_username,txt_first_name,txt_last_name,txt_email,txt_password);
-        req.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                Toast.makeText(RegisterActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    globalClass.setUserObj(response.body().getUser());
-                    String token = response.body().getToken();
-                    Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(token));
-                    SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
-                    SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-                    myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
-                    myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
-                    Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    try {
-                        String resp=response.errorBody().string();
-                        JSONObject obj = new JSONObject(resp);
-                        Log.e(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(obj));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postRegisterRequest, RegisterActivity.this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.postRegisterRequest)) {
+            if(status==200){
+                Login login = (Login) data;
+                globalClass.setUserObj(login.getUser());
+                String token = login.getToken();
+                Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(token));
+                SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+                myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
+                myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }else{
+                Toast.makeText(RegisterActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 }

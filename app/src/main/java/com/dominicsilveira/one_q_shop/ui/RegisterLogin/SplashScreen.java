@@ -99,7 +99,7 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
                 Toast.makeText(globalClass, "Auth Successful!", Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this, MainActivity.class);
             }else{
-                Toast.makeText(SplashScreen.this, "Error "+(error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashScreen.this, "Error "+error, Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this,LoginActivity.class);
             }
             startActivity(intent);
@@ -116,7 +116,7 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
                 prefsEditor.apply();// Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
                 checkUserAuth();
             }else{
-                Toast.makeText(SplashScreen.this, "Error".concat(error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashScreen.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
     }

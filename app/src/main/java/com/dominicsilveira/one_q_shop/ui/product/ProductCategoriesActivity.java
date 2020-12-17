@@ -12,8 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -30,12 +36,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductCategoriesActivity extends AppCompatActivity {
+public class ProductCategoriesActivity extends AppCompatActivity implements ApiListener {
+    private static String TAG = ProductCategoriesActivity.class.getSimpleName();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    LinearLayout backBtn,nextBtn;
+    LinearLayout backBtn,nextBtn,recyclerLinearLayout;
 
     RestApiMethods restMethods;
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
@@ -62,8 +69,7 @@ public class ProductCategoriesActivity extends AppCompatActivity {
             categoryName="All Categories";
 
         globalClass=(AppConstants)getApplicationContext();
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
 
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -84,16 +90,13 @@ public class ProductCategoriesActivity extends AppCompatActivity {
                 loadData(true,false);
             }
         });
-
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadData(false,true);
             }
         });
-
         loadData(false,false);
-
     }
 
     public static Map<String, String> getQueryMap(String urlString) {
@@ -115,35 +118,31 @@ public class ProductCategoriesActivity extends AppCompatActivity {
         if(goBack)
             data = backURL;
         else if(goNext)
-            data=nextURL;
+            data = nextURL;
         else
             data = new HashMap<String, String>();
         if(categoryId!=-1)
             data.put("category", String.valueOf(categoryId));
         Call<ProductListDetails> req = restMethods.getProductListDetails(data);
-        req.enqueue(new Callback<ProductListDetails>() {
-            @Override
-            public void onResponse(Call<ProductListDetails> call, Response<ProductListDetails> response) {
-                Toast.makeText(ProductCategoriesActivity.this, response.code() + " ", Toast.LENGTH_SHORT).show();
-                if (response.isSuccessful()) {
-                    productDetailsArrayList=response.body().getResults();
-                    nextURL=getQueryMap(response.body().getNext());
-                    backURL=getQueryMap(response.body().getPrevious());
-                    mAdapter = new ProductListAdapter(productDetailsArrayList);
-                    recyclerView.setAdapter(mAdapter);
-                    Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), String.valueOf(response.code())+" "+productDetailsArrayList);
-                } else {
-                    Toast.makeText(ProductCategoriesActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(String.valueOf(ProductCategoriesActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                }
+        ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.getProductListDetailsRequest)) {
+            if(data!=null){
+                ProductListDetails productListDetails = (ProductListDetails) data;
+                productDetailsArrayList=productListDetails.getResults();
+                nextURL=getQueryMap(productListDetails.getNext());
+                backURL=getQueryMap(productListDetails.getPrevious());
+                mAdapter = new ProductListAdapter(productDetailsArrayList);
+                recyclerView.setAdapter(mAdapter);
+                LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                llm.scrollToPositionWithOffset(0, 0);
+                Log.i(TAG, String.valueOf(productDetailsArrayList));
+            }else{
+                Toast.makeText(ProductCategoriesActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<ProductListDetails> call, Throwable t) {
-                Toast.makeText(ProductCategoriesActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 }

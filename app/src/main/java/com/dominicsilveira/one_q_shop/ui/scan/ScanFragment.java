@@ -33,6 +33,8 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -56,7 +58,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ScanFragment extends Fragment {
+public class ScanFragment extends Fragment implements ApiListener {
 
     Boolean isProductDialogOpen=false;
     SurfaceView image;
@@ -92,7 +94,6 @@ public class ScanFragment extends Fragment {
         cameraOn=root.findViewById(R.id.cameraOn);
         cameraOff=root.findViewById(R.id.cameraOff);
         turnOnCameraBtn=root.findViewById(R.id.turnOnCameraBtn);
-        btn_camera=root.findViewById(R.id.btn_camera);
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
 
@@ -113,12 +114,6 @@ public class ScanFragment extends Fragment {
                 askCameraPermission();
             }
         });
-//        btn_camera.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     private void initProductDialog() {
@@ -273,30 +268,22 @@ public class ScanFragment extends Fragment {
                     isProductDialogOpen=true;
                     Map<String, String> data = new HashMap<>();
                     Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(product_id,data);
-                    getProductBarCodes.enqueue(new Callback<ProductDetails>() {
-                        @Override
-                        public void onResponse(Call<ProductDetails> call, Response<ProductDetails> response) {
-                            Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
-                            if (response.isSuccessful()) {
-                                Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(response.code()));
-                                populateProductDialog(response.body());
-                            } else {
-                                isProductDialogOpen=false;
-                                Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
-                                Gson gson = new Gson();
-                                ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                                Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<ProductDetails> call, Throwable t) {
-                            isProductDialogOpen=false;
-                            Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
-                            t.printStackTrace();
-                        }
-                    });
+                    ApiResponse.callRetrofitApi(getProductBarCodes, RestApiMethods.getProductDetailsRequest, ScanFragment.this);
                 }
             }
         });
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.getProductDetailsRequest)) {
+            if(data!=null){
+                ProductDetails productDetails = (ProductDetails) data;
+                populateProductDialog(productDetails);
+            }else{
+                isProductDialogOpen=false;
+                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

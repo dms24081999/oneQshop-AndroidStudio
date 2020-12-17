@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -24,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity implements ApiListener {
 
     private Button sendMailBtn;
     private EditText email;
@@ -67,23 +70,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void resetPasswordMail(final String email) {
         Call<ResponseBody> req = restMethods.postRequestResetPassword(email);
-        req.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code()==200) {
-                    Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent to "+email, Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(ForgotPasswordActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                    Gson gson = new Gson();
-                    ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(String.valueOf(ForgotPasswordActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                }
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postRequestResetPasswordRequest, ForgotPasswordActivity.this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.postRequestResetPasswordRequest)) {
+            if(status==200){
+                Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent to "+email, Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(ForgotPasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ForgotPasswordActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 }

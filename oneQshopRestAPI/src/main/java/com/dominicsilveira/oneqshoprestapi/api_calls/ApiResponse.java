@@ -24,18 +24,18 @@ public class ApiResponse {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, strApiName + ": onResponse: " + response.body().toString());
+                    Log.d(TAG, strApiName + " : onResponse: " + response.body().toString() + " : STATUS: " + response.code());
                     apiListener.onApiResponse(strApiName, response.code(), response.body(),"");
                 } else {
                     Gson gson = new Gson();
                     ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                    Log.i(TAG, strApiName + ": onError: " + error.getMessage());
+                    Log.i(TAG, strApiName + " : onError: " + error.getMessage() + " : STATUS: " + response.code());
                     apiListener.onApiResponse(strApiName, response.code(),null, error.getMessage());
                 }
             }
             @Override
             public void onFailure(Call<T> call, Throwable t) {
-                Log.d(TAG, strApiName + ": onFailure: " + t.toString());
+                Log.d(TAG, strApiName + " : onFailure: " + t.toString());
                 apiListener.onApiResponse(strApiName, 404,null, "Request Failed!");
                 t.printStackTrace();
             }

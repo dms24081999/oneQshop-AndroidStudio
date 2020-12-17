@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <!--    44000000-->
         <com.dominicsilveira.one_q_shop.utils.ScannerOverlay
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,21 +24,15 @@
             app:line_width="5"
             app:square_height="250"
             app:square_width="250" />
-        <Button
-            android:id="@+id/btn_camera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Show Product"
-            android:textSize="30sp"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/cameraOff"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:gravity="center"
         android:background="@color/grey_40">
+
         <Button
             android:id="@+id/turnOnCameraBtn"
             style="@style/Widget.AppCompat.Button.Borderless"

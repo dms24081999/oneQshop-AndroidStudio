@@ -29,6 +29,8 @@ import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
 
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -52,7 +54,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResponse{
+public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResponse, ApiListener {
     LinearLayout personalDetailsBtn,changePasswordBtn,aboutMeBtn,logoutBtn,upiDetailsBtn;
     TextView nameText;
     User userObj;
@@ -194,36 +196,20 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
                 file.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "picture");
         Call<User> req = restMethods.postProfileImage(userObj.getId(),token,body, name);
-        req.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    if(response.code()==200){
-                        Toast.makeText(getActivity(), "Updated Details!", Toast.LENGTH_SHORT).show();
-                        globalClass.setUserObj(response.body());
-                    }else{
-                        Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
-                        Gson gson = new Gson();
-                        ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                        Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                    }
-                }else {
-                    try {
-                        Toast.makeText(getActivity(), "Request failed!", Toast.LENGTH_SHORT).show();
-                        Gson gson = new Gson();
-                        ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                        Log.i(String.valueOf(getActivity().getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postProfileImageRequest, ProfileFragment.this);
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.postProfileImageRequest)) {
+            if(status==200){
+                User user = (User) data;
+                globalClass.setUserObj(user);
+                Toast.makeText(getActivity(), "Updated Profile Pic!", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
             }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+        }
     }
 
     @Override
@@ -251,4 +237,5 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
             userAvatar.setImageBitmap(output);
         }
     }
+
 }

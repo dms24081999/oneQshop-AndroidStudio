@@ -15,6 +15,8 @@ import com.dominicsilveira.one_q_shop.R;
 
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
@@ -27,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PersonalDetailsActivity extends AppCompatActivity {
+public class PersonalDetailsActivity extends AppCompatActivity implements ApiListener {
 
     AppCompatEditText firstNameText,lastNameText,phoneText,emailText,newEmailText,currentPasswordText;
     Button bt_submit,bt_submit_email;
@@ -103,38 +105,21 @@ public class PersonalDetailsActivity extends AppCompatActivity {
                 phone_no=phoneText.getText().toString();
 
                 Call<User> req = restMethods.updateUserDetails(userObj.getId(),token, first_name,last_name,email,phone_no);
-                req.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            if(response.code()==200){
-                                Toast.makeText(PersonalDetailsActivity.this, "Updated Details!", Toast.LENGTH_SHORT).show();
-                                globalClass.setUserObj(response.body());
-                            }else{
-                                Toast.makeText(PersonalDetailsActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
-                                Gson gson = new Gson();
-                                ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                                Log.i(String.valueOf(PersonalDetailsActivity.this.getComponentName().getClassName()), String.valueOf(error.getMessage()));
-                            }
-
-                        } else {
-                            try {
-                                String resp=response.errorBody().string();
-                                JSONObject obj = new JSONObject(resp);
-                                Log.e(String.valueOf(PersonalDetailsActivity.this.getComponentName().getClassName()), String.valueOf(obj));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(PersonalDetailsActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
-                        t.printStackTrace();
-                    }
-                });
-
+                ApiResponse.callRetrofitApi(req, RestApiMethods.updateUserDetailsRequest, PersonalDetailsActivity.this);
             }
         });
+    }
+
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.updateUserDetailsRequest)) {
+            if(status==200){
+                User user = (User) data;
+                Toast.makeText(PersonalDetailsActivity.this, "Updated Details!", Toast.LENGTH_SHORT).show();
+                globalClass.setUserObj(user);
+            }else{
+                Toast.makeText(PersonalDetailsActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
