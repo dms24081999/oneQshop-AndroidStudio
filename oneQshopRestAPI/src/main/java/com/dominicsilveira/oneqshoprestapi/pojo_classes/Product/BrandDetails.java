@@ -1,12 +1,12 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product;
+package com.dominicsilveira.oneqshoprestapi.pojo_classes.Product;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class CategoriesDetails implements Serializable {
+public class BrandDetails implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -14,18 +14,19 @@ public class CategoriesDetails implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("short_name")
-    @Expose
-    private String shortName;
     @SerializedName("description")
     @Expose
     private String description;
-    @SerializedName("image")
-    @Expose
-    private String image;
     @SerializedName("is_deleted")
     @Expose
     private Boolean isDeleted;
+
+    public BrandDetails(Integer id,String name,String description,Boolean isDeleted){
+        this.id=id;
+        this.name=name;
+        this.description=description;
+        this.isDeleted=isDeleted;
+    }
 
     public Integer getId() {
         return id;
@@ -43,28 +44,12 @@ public class CategoriesDetails implements Serializable {
         this.name = name;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Boolean getIsDeleted() {
@@ -74,4 +59,5 @@ public class CategoriesDetails implements Serializable {
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
 }

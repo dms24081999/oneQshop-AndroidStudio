@@ -1,4 +1,5 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User;
+package com.dominicsilveira.oneqshoprestapi.pojo_classes.User;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -107,3 +108,4 @@ public class User {
         this.picturePath = picturePath;
     }
 }
+

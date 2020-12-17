@@ -23,13 +23,16 @@ import androidx.fragment.app.Fragment;
 
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -46,6 +49,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResponse{
@@ -54,7 +58,7 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     User userObj;
     AppConstants globalClass;
     CircularImageView userAvatar;
-    RestMethods restMethods;
+    RestApiMethods restMethods;
     private Uri mCropImageUri;
     String token;
     CallbackUtils callbackUtils;
@@ -85,11 +89,11 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
         nameText.setText(userObj.getUsername());
         userAvatar = root.findViewById(R.id.userAvatar);
 
-        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", Context.MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
 //        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
         if(userObj.getPicturePath()!=null)
@@ -108,12 +112,12 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FirebaseAuth.getInstance().signOut();
-//                getActivity().stopService(new Intent(getActivity(), MyParkingService.class));
+                SharedPreferences preferences = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);
+                preferences.edit().remove("token").apply();
 //                AlarmUtils.cancelAllAlarms(getActivity(),new Intent(getActivity(), NotificationReceiver.class));
                 Toast.makeText(getActivity(), "Logout Success", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getActivity(), LoginActivity.class));
-//                getActivity().finish();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
             }
         });
 

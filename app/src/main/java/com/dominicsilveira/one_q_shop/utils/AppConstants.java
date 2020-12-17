@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 
 
 public class AppConstants extends Application {

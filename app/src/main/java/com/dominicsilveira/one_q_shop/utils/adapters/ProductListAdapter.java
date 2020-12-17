@@ -13,10 +13,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.ui.profile.PersonalDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

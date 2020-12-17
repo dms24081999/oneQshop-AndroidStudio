@@ -1,4 +1,5 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product;
+package com.dominicsilveira.oneqshoprestapi.pojo_classes.Product;
+
 
 import java.io.Serializable;
 import java.util.List;
@@ -52,3 +53,4 @@ public class ProductListDetails implements Serializable {
         this.results = results;
     }
 }
+

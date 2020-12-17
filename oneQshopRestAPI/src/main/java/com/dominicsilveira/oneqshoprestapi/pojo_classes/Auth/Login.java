@@ -1,8 +1,10 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth;
+package com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth;
 
+
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+
 
 public class Login {
 
@@ -41,3 +43,4 @@ public class Login {
     }
 
 }
+

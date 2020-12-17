@@ -5,10 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
-import com.mikhaellopez.circularimageview.CircularImageView;
+
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -19,7 +18,7 @@ import retrofit2.Response;
 
 public class CallbackUtils {
     //Builds HTTP Client for API Calls
-    RestMethods restMethods = RestClient.buildHTTPClient();
+    RestApiMethods restMethods = RestApiClient.buildHTTPClient();
     AppConstants globalClass;
     Context applicationContext;
     public AsyncResponse asyncCallback = null;

@@ -14,14 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
+
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -39,7 +39,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class DashboardFragment extends Fragment {
     FloatingActionButton allCategoriesBtn;
     LinearLayout categoryListView;
-    RestMethods restMethods;
+    RestApiMethods restMethods;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class DashboardFragment extends Fragment {
 
     private void initComponents(View root) {
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         allCategoriesBtn=root.findViewById(R.id.allCategoriesBtn);
         categoryListView=root.findViewById(R.id.categoryListView);

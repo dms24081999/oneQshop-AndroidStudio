@@ -12,13 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ProductCategoriesActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     LinearLayout backBtn,nextBtn;
 
-    RestMethods restMethods;
+    RestApiMethods restMethods;
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
     AppConstants globalClass;
     Integer categoryId;
@@ -63,7 +63,7 @@ public class ProductCategoriesActivity extends AppCompatActivity {
 
         globalClass=(AppConstants)getApplicationContext();
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -29,14 +29,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
+
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -62,7 +64,7 @@ public class ScanFragment extends Fragment {
     Button turnOnCameraBtn,btn_camera;
     String barCodeValue="";
     ProductBarCodes productBarCodes;
-    RestMethods restMethods;
+    RestApiMethods restMethods;
     Dialog productDialog;
 
     TextView productNamePop,brandNamePop,pricePop;
@@ -95,7 +97,7 @@ public class ScanFragment extends Fragment {
         cameraOff.setVisibility(View.GONE);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();

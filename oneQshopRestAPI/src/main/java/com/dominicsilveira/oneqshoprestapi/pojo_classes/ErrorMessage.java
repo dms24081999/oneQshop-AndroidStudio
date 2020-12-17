@@ -1,4 +1,5 @@
-package com.dominicsilveira.one_q_shop.jsonschema2pojo_classes;
+package com.dominicsilveira.oneqshoprestapi.pojo_classes;
+
 
 public class ErrorMessage {
     private int code;
@@ -20,3 +21,4 @@ public class ErrorMessage {
         this.message = message;
     }
 }
+

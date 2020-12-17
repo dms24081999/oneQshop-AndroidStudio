@@ -10,14 +10,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.ResetPasswordActivity;
+
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class SplashScreen extends AppCompatActivity {
 
-    RestMethods restMethods;
+    RestApiMethods restMethods;
     String token;
     Intent intent,prevIntent;
     AppConstants globalClass;
@@ -48,7 +48,7 @@ public class SplashScreen extends AppCompatActivity {
         Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         initPrevUrlIntent();
     }

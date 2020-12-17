@@ -10,11 +10,13 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+
 import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
     AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView bottomNavigation;
     CircularImageView userAvatar;
-    RestMethods restMethods;
+    RestApiMethods restMethods;
     List<Integer> arr=new ArrayList<>();
     User userObj;
     AppConstants globalClass;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements CallbackUtils.Asy
         setContentView(R.layout.activity_main);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
         globalClass=(AppConstants)getApplicationContext();
         userObj=globalClass.getUserObj();
         callbackUtils =new CallbackUtils(getApplicationContext(),MainActivity.this);

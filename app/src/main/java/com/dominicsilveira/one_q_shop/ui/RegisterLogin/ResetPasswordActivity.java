@@ -11,11 +11,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.google.gson.Gson;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +26,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     AppCompatEditText confirmPasswordField,newPasswordField;
     Button resetBtn;
     Intent prevIntent;
-    RestMethods restMethods;
+    RestApiMethods restMethods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         initComponents();
         attachListeners();
@@ -74,6 +73,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code()==200) {
                     Toast.makeText(ResetPasswordActivity.this, "Password reset Successful!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ResetPasswordActivity.this,LoginActivity.class));
                 }else{
                     Toast.makeText(ResetPasswordActivity.this, "Request failed!", Toast.LENGTH_SHORT).show();
                     Gson gson = new Gson();

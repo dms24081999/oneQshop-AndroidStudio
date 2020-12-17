@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.ErrorMessage;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -33,7 +35,7 @@ public class PersonalDetailsActivity extends AppCompatActivity {
     User userObj;
     String email,first_name,last_name,phone_no,token;
 
-    RestMethods restMethods;
+    RestApiMethods restMethods;
 
     AppConstants globalClass;
 
@@ -58,7 +60,7 @@ public class PersonalDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_personal_details);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         initComponents();
         attachListeners();

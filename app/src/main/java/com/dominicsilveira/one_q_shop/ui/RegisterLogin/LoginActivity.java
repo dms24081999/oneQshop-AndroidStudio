@@ -17,11 +17,12 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
+
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
-import com.dominicsilveira.one_q_shop.utils.api.RestClient;
-import com.dominicsilveira.one_q_shop.utils.api.RestMethods;
+import com.dominicsilveira.oneqshoprestapi.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.RestApiMethods;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 
 
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPasswordText,registerSwitchText;
 
 
-    RestMethods restMethods;
+    RestApiMethods restMethods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //Builds HTTP Client for API Calls
-        restMethods = RestClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();
 
         initComponents();
         attachListeners();

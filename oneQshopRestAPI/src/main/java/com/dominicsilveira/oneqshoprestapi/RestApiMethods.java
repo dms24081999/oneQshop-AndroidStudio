@@ -1,11 +1,11 @@
-package com.dominicsilveira.one_q_shop.utils.api;
+package com.dominicsilveira.oneqshoprestapi;
 
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Auth.Login;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.CategoriesListDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductBarCodes;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.Product.ProductListDetails;
-import com.dominicsilveira.one_q_shop.jsonschema2pojo_classes.User.User;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
-public interface RestMethods {
+public interface RestApiMethods {
     @GET
     Call<ResponseBody> getImageFile(@Url String url); // don't need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
 
@@ -109,4 +109,3 @@ public interface RestMethods {
     @GET("/api/products/category/")
     Call<CategoriesListDetails> getCategoriesListDetails(@QueryMap Map<String, String> param);
 }
-

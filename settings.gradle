@@ -1,2 +1,3 @@
+include ':oneQshopRestAPI'
 include ':app'
 rootProject.name = "one-Q-shop"
