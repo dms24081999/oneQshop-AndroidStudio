@@ -5,6 +5,7 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDe
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductRecommendations;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 
 import java.util.Map;
@@ -104,6 +105,13 @@ public interface RestApiMethods {
     @GET("/api/products/product/")
     Call<ProductListDetails> getProductListDetails(@QueryMap Map<String, String> param);
 //    @Header("Authorization") String authHeader
+
+    String getProductRecommendationListDetailsRequest = "getProductRecommendationListDetailsRequest";
+    @GET("/api/products/recommend/visual/{product_id}/")
+    Call<ProductRecommendations> getProductRecommendationListDetails(
+            @Path(value = "product_id", encoded = true) Integer product_id,
+            @QueryMap Map<String, String> param
+    );
 
     String getProductDetailsRequest = "getProductDetailsRequest";
     @GET("/api/products/product/{product_id}/")

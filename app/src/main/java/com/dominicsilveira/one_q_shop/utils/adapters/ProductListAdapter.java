@@ -80,6 +80,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             public void onClick(View view) {
                 Intent intent=new Intent(context, ProductDetailsActivity.class);
                 intent.putExtra("PRODUCT_DETAILS",productDetails);
+                intent.putExtra("BARCODE_VALUE",productDetails.getBarcode());
                 context.startActivity(intent);
             }
         });

@@ -2,7 +2,7 @@
     <string name="app_name">one-Q-shop</string>
 
     <string name="host_protocol">https</string>
-    <string name="host_url">dms24-v2.loca.lt</string>
+    <string name="host_url">7fa64f49bd0f.ngrok.io</string>
 
     <string name="landing_page_protocol">https</string>
     <string name="landing_page_url">one-q-shop.firebaseapp.com</string>

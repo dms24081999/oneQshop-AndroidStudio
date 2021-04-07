@@ -15,12 +15,13 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 
 public class RestApiClient {
+    public static final String BACKEND_URL = "https://".concat("7fa64f49bd0f.ngrok.io");
 
     public static RestApiMethods buildHTTPClient() {
 
         //TODO Replace with your URL [Must have backslash '/' in end]
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://".concat("dms24-v2.loca.lt"))
+                .baseUrl(BACKEND_URL)
                 .client(getClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+
 
 
 public class AppConstants extends Application {
@@ -22,7 +24,7 @@ public class AppConstants extends Application {
     Source type::JSON
     Annotation style: Gson
     */
-    public static final String BACKEND_URL = "https://".concat("dms24-v2.loca.lt");
+    public static final String BACKEND_URL = RestApiClient.BACKEND_URL;
 
     private User userObj;
     private Bitmap userProfilePic;

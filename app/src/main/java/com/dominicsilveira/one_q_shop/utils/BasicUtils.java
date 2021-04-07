@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -40,6 +42,21 @@ public class BasicUtils {
         } else {
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         }
+    }
+
+    public static void displayImageOriginal(Context ctx, ImageView img, @DrawableRes int drawable) {
+        try {
+            Glide.with(ctx).load(drawable)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(img);
+        } catch (Exception e) {
+        }
+    }
+
+    public static int dpToPx(Context c, int dp) {
+        Resources r = c.getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     public Bitmap uriToBitmap(Context context,Uri newImg) {

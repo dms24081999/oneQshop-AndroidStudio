@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,24 +31,37 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration;
 import com.bumptech.glide.request.animation.ViewAnimation;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
+import com.dominicsilveira.one_q_shop.utils.adapters.AdapterGridShopProductCard;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductRecommendations;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.hootsuite.nachos.NachoTextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ProductDetailsActivity extends AppCompatActivity {
+import retrofit2.Call;
+
+public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
 
     TextView priceText,productName,brandName;
     ImageView productImage;
@@ -55,10 +71,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
     ImageButton bt_toggle_description;
     LinearLayout lyt_expand_description;
     NestedScrollView nested_scroll_view;
+    AppConstants globalClass;
+
+    private View parent_view;
+    private RecyclerView recyclerView;
+    private AdapterGridShopProductCard mAdapter;
 
     Intent prevIntent;
     Integer productId;
     ProductDetails productDetails;
+    RestApiMethods restMethods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +96,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private void initPrevIntent() {
         prevIntent=getIntent();
-        productId=prevIntent.getIntExtra("BARCODE_VALUE",-1);
         productDetails = (ProductDetails) prevIntent.getSerializableExtra("PRODUCT_DETAILS");
+        productId=Integer.parseInt(productDetails.getBarcode());
     }
 
     private void initToolbar() {
@@ -103,6 +125,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        globalClass=(AppConstants)getApplicationContext();
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
         productName=findViewById(R.id.productName);
         brandName=findViewById(R.id.brandName);
         priceText=findViewById(R.id.priceText);
@@ -139,6 +163,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
 
         }
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.addItemDecoration(new SpacingItemDecoration(2, BasicUtils.dpToPx(ProductDetailsActivity.this,8)));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        Map<String, String> data = new HashMap<String, String>();;
+        Call<ProductRecommendations> req = restMethods.getProductRecommendationListDetails(productId,data);
+        ApiResponse.callRetrofitApi(req, RestApiMethods.getProductRecommendationListDetailsRequest, this);
+//        List<ShopProduct> items = DataGenerator.getShoppingProduct(this);
+
     }
 
     private void attachListeners() {
@@ -178,4 +215,29 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onApiResponse(String strApiName, int status, Object data, String error) {
+        if (strApiName.equals(RestApiMethods.getProductRecommendationListDetailsRequest)) {
+            ProductRecommendations productRecommendations = (ProductRecommendations) data;
+            //set data and list adapter
+            mAdapter = new AdapterGridShopProductCard(this, productRecommendations.getResults());
+            recyclerView.setAdapter(mAdapter);
+
+            // on item list clicked
+            mAdapter.setOnItemClickListener(new AdapterGridShopProductCard.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, ProductDetails obj, int position) {
+                    Snackbar.make(parent_view, "Item " + obj.getName() + " clicked", Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
+            mAdapter.setOnMoreButtonClickListener(new AdapterGridShopProductCard.OnMoreButtonClickListener() {
+                @Override
+                public void onItemClick(View view, ProductDetails obj, MenuItem item) {
+                    Snackbar.make(parent_view, obj.getName() + " (" + item.getTitle() + ") clicked", Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 }
