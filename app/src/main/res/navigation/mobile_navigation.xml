@@ -30,23 +30,9 @@
         tools:layout="@layout/fragment_cart" />
 
     <fragment
-        android:id="@+id/nav_profile"
+        android:id="@+id/navigation_profile"
         android:name="com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/nav_feedback"
-        android:name="com.dominicsilveira.one_q_shop.ui.BlankFragment"
-        android:label="@string/title_feedback"
-        tools:layout="@layout/fragment_blank" >
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.dominicsilveira.one_q_shop.ui.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" >
-    </fragment>
 
 </navigation>

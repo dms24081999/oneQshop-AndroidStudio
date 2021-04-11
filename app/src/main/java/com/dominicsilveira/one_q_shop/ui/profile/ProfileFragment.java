@@ -27,7 +27,7 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
-import com.dominicsilveira.one_q_shop.utils.CallbackUtils;
+
 
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
@@ -54,7 +54,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResponse, ApiListener {
+public class ProfileFragment extends Fragment implements ApiListener {
     LinearLayout personalDetailsBtn,changePasswordBtn,aboutMeBtn,logoutBtn,upiDetailsBtn;
     TextView nameText;
     User userObj;
@@ -63,7 +63,6 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     RestApiMethods restMethods;
     private Uri mCropImageUri;
     String token;
-    CallbackUtils callbackUtils;
     BasicUtils basicUtils=new BasicUtils();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,8 +78,6 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
         userObj=globalClass.getUserObj();
-        callbackUtils =new CallbackUtils(getActivity().getApplicationContext(), ProfileFragment.this);
-
 
         logoutBtn = root.findViewById(R.id.logoutBtn);
         nameText = root.findViewById(R.id.nameText);
@@ -180,7 +177,7 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
                 userAvatar.setImageURI(newImg);
                 Bitmap bitmap=basicUtils.uriToBitmap(getActivity(),newImg);
                 globalClass.setUserProfilePic(bitmap);
-                ((MainActivity)getActivity()).callbackMethod(bitmap);
+
                 uploadProfilePic(newImg);
 //                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -227,15 +224,4 @@ public class ProfileFragment extends Fragment implements CallbackUtils.AsyncResp
                 .setMultiTouchEnabled(true)
                 .start(getContext(), this);
     }
-
-    @Override
-    public void callbackMethod(Bitmap output) {
-        Log.e("ProfileFragment","Callback from utils");
-        if(output==null){
-            userAvatar.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_baseline_account_circle_000000_24));
-        }else{
-            userAvatar.setImageBitmap(output);
-        }
-    }
-
 }
