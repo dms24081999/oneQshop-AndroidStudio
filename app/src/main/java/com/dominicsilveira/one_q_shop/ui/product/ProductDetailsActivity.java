@@ -7,6 +7,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -38,6 +39,7 @@ import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.AdapterGridShopProductCard;
+import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
@@ -76,7 +78,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
 
     private View parent_view;
     private RecyclerView recyclerView;
-    private AdapterGridShopProductCard mAdapter;
+    private ProductListAdapter mAdapter;
 
     Intent prevIntent;
     Integer productId;
@@ -163,21 +165,16 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
                 });
                 categoryTags.addView(categoryView);
             }
-
         }
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(2, BasicUtils.dpToPx(ProductDetailsActivity.this,8)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(ProductDetailsActivity.this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
         Map<String, String> data = new HashMap<String, String>();;
         Call<ProductRecommendations> req = restMethods.getProductRecommendationListDetails(productId,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getProductRecommendationListDetailsRequest, this);
-//        List<ShopProduct> items = DataGenerator.getShoppingProduct(this);
-
     }
 
     private void attachListeners() {
@@ -222,23 +219,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         if (strApiName.equals(RestApiMethods.getProductRecommendationListDetailsRequest)) {
             ProductRecommendations productRecommendations = (ProductRecommendations) data;
             //set data and list adapter
-            mAdapter = new AdapterGridShopProductCard(this, productRecommendations.getResults());
+            mAdapter = new ProductListAdapter( productRecommendations.getResults());
             recyclerView.setAdapter(mAdapter);
-
-            // on item list clicked
-            mAdapter.setOnItemClickListener(new AdapterGridShopProductCard.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, ProductDetails obj, int position) {
-                    Snackbar.make(parent_view, "Item " + obj.getName() + " clicked", Snackbar.LENGTH_SHORT).show();
-                }
-            });
-
-            mAdapter.setOnMoreButtonClickListener(new AdapterGridShopProductCard.OnMoreButtonClickListener() {
-                @Override
-                public void onItemClick(View view, ProductDetails obj, MenuItem item) {
-                    Snackbar.make(parent_view, obj.getName() + " (" + item.getTitle() + ") clicked", Snackbar.LENGTH_SHORT).show();
-                }
-            });
         }
 
     }

@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.dominicsilveira.one_q_shop.R;
 
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.cart.CartFragment;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -91,5 +96,30 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cart_setting, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_cart:
+                intent=new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }
