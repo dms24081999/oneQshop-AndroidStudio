@@ -62,6 +62,7 @@ import java.util.Map;
 import retrofit2.Call;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
+    private static String TAG = ProductDetailsActivity.class.getSimpleName();
 
     TextView priceText,productName,brandName;
     ImageView productImage;
@@ -138,14 +139,15 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         bt_toggle_description = findViewById(R.id.bt_toggle_description);
         lyt_expand_description = findViewById(R.id.lyt_expand_description);
 
-
-        if(productId!=-1){
+        Log.e(TAG,"productId"+Integer.toString(productId));
+        if(productId==-1){
             productName.setText(String.valueOf(productId));
         }else{
             productName.setText(productDetails.getName());
             brandName.setText(productDetails.getBrandDetails().getName());
             priceText.setText("₹ ".concat(productDetails.getPrice()));
             Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
+            Log.e(TAG, AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage()));
             for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
                 View categoryView = getLayoutInflater().inflate(R.layout.include_round_chips, null);
                 Button chipName=categoryView.findViewById(R.id.chipName);

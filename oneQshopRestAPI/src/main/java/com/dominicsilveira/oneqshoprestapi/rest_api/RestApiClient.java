@@ -15,7 +15,7 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 
 public class RestApiClient {
-    public static final String BACKEND_URL = "https://".concat("7fa64f49bd0f.ngrok.io");
+    public static final String BACKEND_URL = "https://".concat("dms24-v2.loca.lt");
 
     public static RestApiMethods buildHTTPClient() {
 

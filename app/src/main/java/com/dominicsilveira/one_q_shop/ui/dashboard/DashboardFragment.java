@@ -12,14 +12,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration;
 import com.dominicsilveira.one_q_shop.R;
 
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
+import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
+import com.dominicsilveira.one_q_shop.utils.adapters.AdapterGridShopProductCard;
+import com.dominicsilveira.one_q_shop.utils.adapters.AdapterListShopCategory;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
@@ -47,9 +55,11 @@ public class DashboardFragment extends Fragment implements ApiListener {
     FloatingActionButton allCategoriesBtn;
     LinearLayout categoryListView;
     RestApiMethods restMethods;
+    private RecyclerView recyclerView;
+    private AdapterListShopCategory mAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 //        TextView textView = root.findViewById(R.id.text);
 //        textView.setText("Dashboard");
@@ -64,17 +74,15 @@ public class DashboardFragment extends Fragment implements ApiListener {
         //Builds HTTP Client for API Calls
         restMethods = RestApiClient.buildHTTPClient();
 
-        allCategoriesBtn=root.findViewById(R.id.allCategoriesBtn);
-        categoryListView=root.findViewById(R.id.categoryListView);
+
+        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private void attachListeners(View root) {
-        allCategoriesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), ProductCategoriesActivity.class));
-            }
-        });
+
 
         Map<String, String> data = new HashMap<>();
         Call<CategoriesListDetails> req = restMethods.getCategoriesListDetails(data);
@@ -86,26 +94,14 @@ public class DashboardFragment extends Fragment implements ApiListener {
         if (strApiName.equals(RestApiMethods.getCategoriesListDetailsRequest)) {
             if(data!=null){
                 CategoriesListDetails categoriesListDetails = (CategoriesListDetails) data;
-                List<CategoriesDetails> categoriesDetailsList=categoriesListDetails.getResults();
-                for (final CategoriesDetails temp : categoriesDetailsList) {
-                    View categoryView = getLayoutInflater().inflate(R.layout.include_category_btn, null);
-                    FloatingActionButton categoryBtn=categoryView.findViewById(R.id.categoryBtn);
-                    Log.i(TAG,AppConstants.BACKEND_URL.concat(temp.getImage())+" "+temp.getId());
-                    Picasso.get().load(temp.getImage()).into(categoryBtn);
-                    categoryBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent=new Intent(getActivity(),ProductCategoriesActivity.class);
-                            intent.putExtra("CATEGORY_ID",temp.getId());
-                            intent.putExtra("CATEGORY_NAME",temp.getName());
-                            startActivity(intent);
-                        }
-                    });
-                    categoryListView.addView(categoryView);
-                }
+                //set data and list adapter
+                mAdapter = new AdapterListShopCategory(getActivity(), categoriesListDetails.getResults());
+                recyclerView.setAdapter(mAdapter);
+
             }else{
                 Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
     }
 }
+
