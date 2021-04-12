@@ -1,12 +1,9 @@
 package com.dominicsilveira.one_q_shop.ui;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.dominicsilveira.one_q_shop.R;
 
 import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
-import com.dominicsilveira.one_q_shop.ui.cart.CartFragment;
+import com.dominicsilveira.one_q_shop.ui.search.SearchActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -24,21 +21,15 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
@@ -75,7 +66,7 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_dashboard, R.id.navigation_search,R.id.navigation_scan,R.id.navigation_cart,R.id.navigation_profile)
+                R.id.navigation_home, R.id.navigation_scan, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -84,11 +75,11 @@ public class MainActivity extends AppCompatActivity{
         Intent mIntent = getIntent();
         int bottomInt= mIntent.getIntExtra("FRAGMENT_NO",0);
         if(bottomInt==0){
-            navView.setSelectedItemId(R.id.navigation_dashboard);
+            navView.setSelectedItemId(R.id.navigation_home);
         }else if(bottomInt==1){
             navView.setSelectedItemId(R.id.navigation_scan);
         }else if(bottomInt==2){
-            navView.setSelectedItemId(R.id.navigation_search);
+            navView.setSelectedItemId(R.id.navigation_profile);
         }
     }
 
@@ -100,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_cart_setting, menu);
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
         return true;
     }
 
@@ -114,6 +105,10 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(intent);
                 break;
             // action with ID action_settings was selected
+            case R.id.action_search:
+                intent=new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                break;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
                 break;
