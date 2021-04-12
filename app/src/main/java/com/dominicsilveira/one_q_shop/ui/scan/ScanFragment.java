@@ -23,21 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import com.dominicsilveira.one_q_shop.R;
-
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
@@ -47,15 +42,10 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class ScanFragment extends Fragment implements ApiListener {
@@ -97,8 +87,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
 
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
 
         SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();
@@ -135,8 +124,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         productDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                // dialog dismiss without button press
-                isProductDialogOpen=false;
+                isProductDialogOpen=false;// dialog dismiss without button press
             }
         });
     }

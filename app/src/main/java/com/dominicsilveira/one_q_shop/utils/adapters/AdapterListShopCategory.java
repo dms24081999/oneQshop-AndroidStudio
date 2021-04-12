@@ -2,22 +2,16 @@ package com.dominicsilveira.one_q_shop.utils.adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
-import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
 import com.squareup.picasso.Picasso;
-
-
 import java.util.ArrayList;
 import java.util.List;
 

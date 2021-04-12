@@ -1,46 +1,32 @@
 package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
-import com.google.gson.Gson;
-
-import java.util.Objects;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements ApiListener {
 
-    private Button sendMailBtn;
-    private EditText email;
+    Button sendMailBtn;
+    EditText email;
     RestApiMethods restMethods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
-
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         initComponents();
         attachListeners();
     }

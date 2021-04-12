@@ -44,21 +44,6 @@ public class BasicUtils {
         }
     }
 
-    public static void displayImageOriginal(Context ctx, ImageView img, @DrawableRes int drawable) {
-        try {
-            Glide.with(ctx).load(drawable)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(img);
-        } catch (Exception e) {
-        }
-    }
-
-    public static int dpToPx(Context c, int dp) {
-        Resources r = c.getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
     public Bitmap uriToBitmap(Context context,Uri newImg) {
         Bitmap bitmap;
         if (Build.VERSION.SDK_INT >= 29) {

@@ -17,7 +17,6 @@ import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 public class AppConstants extends Application {
     public static final int CAMERA_REQUEST_CODE = 100;
 
-
     /*
     http://www.jsonschema2pojo.org
     Target language: Java

@@ -1,12 +1,8 @@
 package com.dominicsilveira.oneqshoprestapi.api_calls;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.google.gson.Gson;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

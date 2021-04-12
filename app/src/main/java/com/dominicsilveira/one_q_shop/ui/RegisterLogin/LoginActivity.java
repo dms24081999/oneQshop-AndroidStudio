@@ -22,12 +22,11 @@ import retrofit2.Call;
 
 
 public class LoginActivity extends AppCompatActivity implements ApiListener {
-    private static String TAG = LoginActivity.class.getSimpleName();
-
-    private EditText email;
-    private EditText password;
-    private Button loginBtn;
-    private TextView forgotPasswordText,registerSwitchText;
+    static String TAG = LoginActivity.class.getSimpleName();
+    EditText email;
+    EditText password;
+    Button loginBtn;
+    TextView forgotPasswordText,registerSwitchText;
     AppConstants globalClass;
     RestApiMethods restMethods;
 
@@ -35,10 +34,8 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-
         initComponents();
         attachListeners();
     }
@@ -79,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
 
 
     private void loginUser(String email, String password) {
-        final
         Call<Login> loginApiCall = restMethods.postLogin(email, password);
         ApiResponse.callRetrofitApi(loginApiCall, RestApiMethods.postLoginRequest, this);
     }

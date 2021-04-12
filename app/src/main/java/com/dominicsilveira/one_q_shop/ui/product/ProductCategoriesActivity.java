@@ -3,46 +3,33 @@ package com.dominicsilveira.one_q_shop.ui.product;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.MainActivity;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ProductCategoriesActivity extends AppCompatActivity implements ApiListener {
-    private static String TAG = ProductCategoriesActivity.class.getSimpleName();
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    LinearLayout backBtn,nextBtn,recyclerLinearLayout;
+    static String TAG = ProductCategoriesActivity.class.getSimpleName();
+    RecyclerView recyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager layoutManager;
+    LinearLayout backBtn,nextBtn;
 
     RestApiMethods restMethods;
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
@@ -51,25 +38,23 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
     String categoryName;
     Map<String, String> nextURL,backURL;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_categories);
-
         initComponents();
         attachListeners();
     }
 
     private void initComponents() {
         Intent intent=getIntent();
+        globalClass=(AppConstants)getApplicationContext();
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+
         categoryId=intent.getIntExtra("CATEGORY_ID",-1);
         categoryName=intent.getStringExtra("CATEGORY_NAME");
         if(categoryName==null)
             categoryName="All Categories";
-
-        globalClass=(AppConstants)getApplicationContext();
-        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
 
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -1,14 +1,10 @@
 package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-
-
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,18 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
-
-import org.json.JSONObject;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements ApiListener {
     EditText emailField,firstNameField,lastNameField,usernameField,passwordField;
@@ -41,10 +32,8 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-
         initComponents();
         attachListeners();
     }

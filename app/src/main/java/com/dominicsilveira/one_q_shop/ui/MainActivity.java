@@ -35,24 +35,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
 
     Toolbar mToolbar;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    AppBarConfiguration mAppBarConfiguration;
-    BottomNavigationView bottomNavigation;
-    CircularImageView userAvatar;
     RestApiMethods restMethods;
-    List<Integer> arr=new ArrayList<>();
     User userObj;
     AppConstants globalClass;
-    TextView userName,userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         globalClass=(AppConstants)getApplicationContext();
         userObj=globalClass.getUserObj();
 
@@ -83,7 +75,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,12 +90,10 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            // action with ID action_refresh was selected
             case R.id.action_cart:
                 intent=new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
                 break;
-            // action with ID action_settings was selected
             case R.id.action_search:
                 intent=new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);

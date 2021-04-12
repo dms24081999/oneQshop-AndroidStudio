@@ -1,40 +1,28 @@
 package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
-
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
-
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class SplashScreen extends AppCompatActivity implements ApiListener {
-    private static String TAG = SplashScreen.class.getSimpleName();
+    static String TAG = SplashScreen.class.getSimpleName();
 
     RestApiMethods restMethods;
     String token;
@@ -44,16 +32,11 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         globalClass=(AppConstants)SplashScreen.this.getApplicationContext();
-
         SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
         Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
-
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
-
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         initPrevUrlIntent();
     }
 

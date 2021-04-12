@@ -26,7 +26,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     Context context;
     List<ProductDetails> productDetailsArrayList = new ArrayList<ProductDetails>();
 
-
     public ProductListAdapter(List<ProductDetails> productDetailsArrayList){
         this.productDetailsArrayList = productDetailsArrayList;
         Log.d("ProductList Value", String.valueOf(productDetailsArrayList));
@@ -94,6 +93,4 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public int getItemCount() {
         return productDetailsArrayList.size();
     }
-
-
 }

@@ -2,7 +2,6 @@ package com.dominicsilveira.one_q_shop.ui.profile;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,40 +15,26 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
-
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
-
-
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.ErrorMessage;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
-import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
 import java.io.File;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -61,17 +46,15 @@ public class ProfileFragment extends Fragment implements ApiListener {
     AppConstants globalClass;
     CircularImageView userAvatar;
     RestApiMethods restMethods;
-    private Uri mCropImageUri;
+    Uri mCropImageUri;
     String token;
     BasicUtils basicUtils=new BasicUtils();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-
         initComponents(root);
         attachListeners();
-
         return root;
     }
 
@@ -91,10 +74,8 @@ public class ProfileFragment extends Fragment implements ApiListener {
         SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
 
-        //Builds HTTP Client for API Calls
-        restMethods = RestApiClient.buildHTTPClient();
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
 
-//        callbackUtils.setBitmapFromURL(userObj.getPicturePath());
         if(userObj.getPicturePath()!=null)
             Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
 
@@ -113,7 +94,6 @@ public class ProfileFragment extends Fragment implements ApiListener {
             public void onClick(View view) {
                 SharedPreferences preferences = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);
                 preferences.edit().remove("token").apply();
-//                AlarmUtils.cancelAllAlarms(getActivity(),new Intent(getActivity(), NotificationReceiver.class));
                 Toast.makeText(getActivity(), "Logout Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();

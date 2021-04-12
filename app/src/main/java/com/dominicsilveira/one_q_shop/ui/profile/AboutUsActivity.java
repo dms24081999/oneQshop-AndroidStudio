@@ -1,7 +1,6 @@
 package com.dominicsilveira.one_q_shop.ui.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

@@ -1,9 +1,7 @@
 package com.dominicsilveira.one_q_shop.ui.cart;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.dominicsilveira.one_q_shop.R;
 
 public class CartActivity extends AppCompatActivity {

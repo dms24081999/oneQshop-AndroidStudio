@@ -2,70 +2,41 @@ package com.dominicsilveira.one_q_shop.ui.product;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.balysv.materialripple.MaterialRippleLayout;
-import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration;
-import com.bumptech.glide.request.animation.ViewAnimation;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
-import com.dominicsilveira.one_q_shop.utils.adapters.AdapterGridShopProductCard;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductRecommendations;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.hootsuite.nachos.NachoTextView;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import retrofit2.Call;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
-    private static String TAG = ProductDetailsActivity.class.getSimpleName();
-
+    static String TAG = ProductDetailsActivity.class.getSimpleName();
     TextView priceText,productName,brandName;
     ImageView productImage;
     AppBarLayout app_bar_layout;
@@ -75,10 +46,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     LinearLayout lyt_expand_description;
     NestedScrollView nested_scroll_view;
     AppConstants globalClass;
-
-    private View parent_view;
-    private RecyclerView recyclerView;
-    private ProductListAdapter mAdapter;
+    RecyclerView recyclerView;
+    ProductListAdapter mAdapter;
 
     Intent prevIntent;
     Integer productId;
@@ -89,13 +58,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-
         initPrevIntent();
         initToolbar();
         initComponents();
         attachListeners();
     }
-
 
     private void initPrevIntent() {
         prevIntent=getIntent();
@@ -184,7 +151,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
                 toggleSection(view, lyt_expand_description);
             }
         });
-
         // expand first description
         toggleArrow(bt_toggle_description);
         lyt_expand_description.setVisibility(View.VISIBLE);
@@ -222,6 +188,5 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
             mAdapter = new ProductListAdapter( productRecommendations.getResults());
             recyclerView.setAdapter(mAdapter);
         }
-
     }
 }
