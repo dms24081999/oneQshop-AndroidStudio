@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
     AppConstants globalClass;
     Integer categoryId;
-    String categoryName;
+    String categoryName,token;
     Map<String, String> nextURL,backURL;
 
     @Override
@@ -50,6 +51,9 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
         Intent intent=getIntent();
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+
+        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        token=sh.getString("token", "0");// We can then use the data
 
         categoryId=intent.getIntExtra("CATEGORY_ID",-1);
         categoryName=intent.getStringExtra("CATEGORY_NAME");
@@ -108,7 +112,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
             data = new HashMap<String, String>();
         if(categoryId!=-1)
             data.put("category", String.valueOf(categoryId));
-        Call<ProductListDetails> req = restMethods.getProductListDetails(data);
+        Call<ProductListDetails> req = restMethods.getProductListDetails(token,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
     }
 

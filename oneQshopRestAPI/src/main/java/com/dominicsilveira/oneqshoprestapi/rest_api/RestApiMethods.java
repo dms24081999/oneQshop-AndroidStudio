@@ -1,6 +1,8 @@
 package com.dominicsilveira.oneqshoprestapi.rest_api;
 
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
@@ -103,8 +105,12 @@ public interface RestApiMethods {
 
     String getProductListDetailsRequest = "getProductListDetailsRequest";
     @GET("/api/products/product/")
-    Call<ProductListDetails> getProductListDetails(@QueryMap Map<String, String> param);
-//    @Header("Authorization") String authHeader
+    Call<ProductListDetails> getProductListDetails(
+            @Header("Authorization") String authHeader,
+            @QueryMap Map<String,
+                    String> param
+    );
+
 
     String getProductRecommendationListDetailsRequest = "getProductRecommendationListDetailsRequest";
     @GET("/api/products/recommend/visual/{product_id}/")
@@ -122,9 +128,22 @@ public interface RestApiMethods {
 
     String getProductBarCodesRequest = "getProductBarCodesRequest";
     @GET("/api/products/barcodes/")
-    Call<ProductBarCodes> getProductBarCodes(@QueryMap Map<String, String> param);
+    Call<ProductBarCodes> getProductBarCodes(
+            @QueryMap Map<String,
+                    String> param
+    );
 
     String getCategoriesListDetailsRequest = "getCategoriesListDetailsRequest";
     @GET("/api/products/category/")
-    Call<CategoriesListDetails> getCategoriesListDetails(@QueryMap Map<String, String> param);
+    Call<CategoriesListDetails> getCategoriesListDetails(
+            @QueryMap Map<String,
+                    String> param
+    );
+
+    String getCartListDetailsRequest = "getCartListDetailsRequest";
+    @GET("/api/products/cart/")
+    Call<CartListDetails> getCartListDetails(
+            @Header("Authorization") String authHeader,
+            @QueryMap Map<String, String> param
+    );
 }

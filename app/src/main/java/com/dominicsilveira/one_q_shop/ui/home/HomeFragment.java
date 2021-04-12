@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.utils.adapters.AdapterListShopCategory;
+import com.dominicsilveira.one_q_shop.utils.adapters.CategoryListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment implements ApiListener {
     static String TAG = HomeFragment.class.getSimpleName();
     RestApiMethods restMethods;
     RecyclerView recyclerView;
-    AdapterListShopCategory mAdapter;
+    CategoryListAdapter mAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements ApiListener {
         if (strApiName.equals(RestApiMethods.getCategoriesListDetailsRequest)) {
             if(data!=null){
                 CategoriesListDetails categoriesListDetails = (CategoriesListDetails) data;
-                mAdapter = new AdapterListShopCategory(getActivity(), categoriesListDetails.getResults());  //set data and list adapter
+                mAdapter = new CategoryListAdapter(getActivity(), categoriesListDetails.getResults());  //set data and list adapter
                 recyclerView.setAdapter(mAdapter);
             }else{
                 Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();

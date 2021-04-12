@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterListShopCategory extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<CategoriesDetails> items = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class AdapterListShopCategory extends RecyclerView.Adapter<RecyclerView.V
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterListShopCategory(Context context, List<CategoriesDetails> items) {
+    public CategoryListAdapter(Context context, List<CategoriesDetails> items) {
         this.items = items;
         ctx = context;
     }

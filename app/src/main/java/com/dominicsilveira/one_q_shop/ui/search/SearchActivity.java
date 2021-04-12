@@ -1,6 +1,8 @@
 package com.dominicsilveira.one_q_shop.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +40,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     RestApiMethods restMethods;
     List<ProductDetails> productDetailsArrayList=new ArrayList<ProductDetails>();
     AppConstants globalClass;
-    String searchQuery="";
+    String searchQuery="",token;
     Map<String, String> nextURL,backURL;
 
     @Override
@@ -53,6 +55,9 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+
+        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        token=sh.getString("token", "0");// We can then use the data
 
         backBtn=findViewById(R.id.backBtn);
         nextBtn=findViewById(R.id.nextBtn);
@@ -89,7 +94,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
             data = new HashMap<String, String>();
             data.put("s", searchQuery);
         }
-        Call<ProductListDetails> req = restMethods.getProductListDetails(data);
+        Call<ProductListDetails> req = restMethods.getProductListDetails(token,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
     }
 
