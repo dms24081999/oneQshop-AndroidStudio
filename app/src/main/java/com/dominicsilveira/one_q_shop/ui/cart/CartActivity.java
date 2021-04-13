@@ -1,12 +1,15 @@
 package com.dominicsilveira.one_q_shop.ui.cart;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -30,21 +33,17 @@ import retrofit2.Call;
 public class CartActivity extends AppCompatActivity implements ApiListener {
     static String TAG = com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity.class.getSimpleName();
     RecyclerView recyclerView;
-    RecyclerView.Adapter mAdapter;
+    CartListAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
-    LinearLayout backBtn,nextBtn;
 
     RestApiMethods restMethods;
     AppConstants globalClass;
-    Integer categoryId;
-    String categoryName;
-    Map<String, String> nextURL,backURL;
     String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_categories);
+        setContentView(R.layout.activity_cart);
         initComponents();
         attachListeners();
     }
@@ -57,17 +56,10 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         token=sh.getString("token", "0");// We can then use the data
 
-        categoryId=intent.getIntExtra("CATEGORY_ID",-1);
-        categoryName=intent.getStringExtra("CATEGORY_NAME");
-        if(categoryName==null)
-            categoryName="All Categories";
-
-        getSupportActionBar().setTitle(categoryName);
+        getSupportActionBar().setTitle("My Cart");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        backBtn=findViewById(R.id.backBtn);
-        nextBtn=findViewById(R.id.nextBtn);
         recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(CartActivity.this);
@@ -75,22 +67,10 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     }
 
     private void attachListeners() {
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadData(true,false);
-            }
-        });
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadData(false,true);
-            }
-        });
-        loadData(false,false);
+        loadData();
     }
 
-    private void loadData(Boolean goBack,Boolean goNext) {
+    private void loadData() {
         Map<String, String> data=new HashMap<String, String>();
         Call<CartListDetails> req = restMethods.getCartListDetails(token,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
@@ -110,5 +90,39 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                 Toast.makeText(CartActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if(mAdapter!=null){
+                    mAdapter.getFilter().filter(query);
+                }
+                return false;
+            }
+        });
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }

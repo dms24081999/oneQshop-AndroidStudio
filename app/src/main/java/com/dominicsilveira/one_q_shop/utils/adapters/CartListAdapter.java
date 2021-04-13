@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,14 +21,17 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder>{
     Context context;
-    List<CartDetails> cartDetails = new ArrayList<CartDetails>();
+    List<CartDetails> cartDetails, filteredList,arrayListFiltered;
 
     public CartListAdapter(List<CartDetails> cartDetails){
         this.cartDetails = cartDetails;
+        this.arrayListFiltered = new ArrayList<>(cartDetails);
+        this.filteredList = new ArrayList<>(cartDetails);
 //        Log.d("ProductList Value", String.valueOf(cartDetailsList));
     }
 
@@ -93,5 +97,38 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
     public int getItemCount() {
         return cartDetails.size();
     }
+
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(arrayListFiltered);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (CartDetails item : arrayListFiltered) {
+                    if (item.getCartDetails().getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            cartDetails.clear();
+            try{cartDetails.addAll((Collection<? extends CartDetails>) results.values);}
+            catch (Exception e){e.printStackTrace();}
+            notifyDataSetChanged();
+        }
+    };
 }
 
