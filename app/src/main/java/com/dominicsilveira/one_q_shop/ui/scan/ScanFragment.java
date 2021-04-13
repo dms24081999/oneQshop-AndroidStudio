@@ -24,13 +24,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
+import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.MiniCartDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
@@ -40,6 +44,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
@@ -58,10 +63,15 @@ public class ScanFragment extends Fragment implements ApiListener {
     ProductBarCodes productBarCodes;
     RestApiMethods restMethods;
     Dialog productDialog;
-
-    TextView productNamePop,brandNamePop,pricePop;
+    FloatingActionButton cart_decrease, cart_increase,open_in_new_tab;
+    AppCompatButton add_to_cart, update_cart, remove_from_cart;
+    LinearLayout in_cart, not_in_cart,categoryTagsPop;
+    TextView productNamePop,brandNamePop,pricePop,cart_count;
     ImageView productImagePop;
-    LinearLayout categoryTagsPop;
+    MiniCartDetails miniCartDetails;
+    ProductDetails productDetails;
+    AppConstants globalClass;
+    Integer product_id;
 
     String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,
@@ -80,6 +90,7 @@ public class ScanFragment extends Fragment implements ApiListener {
     }
 
     private void initComponents(View root) {
+        globalClass=(AppConstants)getActivity().getApplicationContext();
         image=root.findViewById(R.id.image);
         cameraOn=root.findViewById(R.id.cameraOn);
         cameraOff=root.findViewById(R.id.cameraOff);
@@ -106,6 +117,63 @@ public class ScanFragment extends Fragment implements ApiListener {
                 askCameraPermission();
             }
         });
+
+        cart_decrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(cart_count.getText().toString());
+                if (qty > 1) {
+                    miniCartDetails.setCount(--qty);
+                    cart_count.setText(qty+"");
+                }
+            }
+        });
+
+        cart_increase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(cart_count.getText().toString());
+                if (qty < productDetails.getCount()) {
+                    miniCartDetails.setCount(++qty);
+                    cart_count.setText(qty+"");
+                }
+            }
+        });
+
+        add_to_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadUpdateCartDetailsAPI();
+            }
+        });
+        update_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadUpdateCartDetailsAPI();
+            }
+        });
+        remove_from_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<CartDetails> req = restMethods.deleteCartDetails(token,miniCartDetails.getId());
+                ApiResponse.callRetrofitApi(req, RestApiMethods.deleteCartDetailsRequest, ScanFragment.this);
+            }
+        });
+        open_in_new_tab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productDialog.dismiss();
+                Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
+                intent.putExtra("PRODUCT_DETAILS", productDetails);
+                intent.putExtra("BARCODE_VALUE", productDetails.getBarcode());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void loadUpdateCartDetailsAPI() {
+        Call<CartDetails> req = restMethods.updateCartDetails(token,globalClass.getUserObj().getId(),productDetails.getId(),miniCartDetails.getCount());
+        ApiResponse.callRetrofitApi(req, RestApiMethods.updateCartDetailsRequest, ScanFragment.this);
     }
 
     private void initProductDialog() {
@@ -118,6 +186,15 @@ public class ScanFragment extends Fragment implements ApiListener {
         pricePop=productDialog.findViewById(R.id.pricePop);
         productImagePop=productDialog.findViewById(R.id.productImagePop);
         categoryTagsPop=productDialog.findViewById(R.id.categoryTagsPop);
+        cart_decrease=productDialog.findViewById(R.id.cart_decrease);
+        cart_increase=productDialog.findViewById(R.id.cart_increase);
+        cart_count=productDialog.findViewById(R.id.cart_count);
+        open_in_new_tab=productDialog.findViewById(R.id.open_in_new_tab);
+        add_to_cart=productDialog.findViewById(R.id.add_to_cart);
+        update_cart=productDialog.findViewById(R.id.update_cart);
+        remove_from_cart=productDialog.findViewById(R.id.remove_from_cart);
+        not_in_cart=productDialog.findViewById(R.id.not_in_cart);
+        in_cart=productDialog.findViewById(R.id.in_cart);
     }
 
     private void showProductDialog() {
@@ -132,10 +209,16 @@ public class ScanFragment extends Fragment implements ApiListener {
         });
     }
 
-    private void populateProductDialog(ProductDetails productDetails) {
+    private void populateProductDialog() {
         productNamePop.setText(productDetails.getName());
         brandNamePop.setText(productDetails.getBrandDetails().getName());
         pricePop.setText("₹ ".concat(productDetails.getPrice()));
+        if(productDetails.getCartDetails()==null){
+            updateNotInCartAndCartCount();
+        }else{
+            miniCartDetails=productDetails.getCartDetails();
+            updateInCartAndCartCount(productDetails.getCartDetails().getCount());
+        }
         Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImagePop);
         categoryTagsPop.removeAllViews();
         for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
@@ -153,9 +236,23 @@ public class ScanFragment extends Fragment implements ApiListener {
             });
             categoryTagsPop.addView(categoryView);
         }
+
         showProductDialog();
     }
 
+    private void updateNotInCartAndCartCount() {
+        miniCartDetails=new MiniCartDetails();
+        miniCartDetails.setCount(1);
+        not_in_cart.setVisibility(View.VISIBLE);
+        in_cart.setVisibility(View.GONE);
+        cart_count.setText("1");
+    }
+
+    private void updateInCartAndCartCount(Integer count) {
+        not_in_cart.setVisibility(View.GONE);
+        in_cart.setVisibility(View.VISIBLE);
+        cart_count.setText(count+"");
+    }
 
     private void updateUI() {
         if(ActivityCompat.checkSelfPermission(getActivity(),
@@ -239,9 +336,6 @@ public class ScanFragment extends Fragment implements ApiListener {
                     Log.i("Barcode/QR-code value:", barCodeValue);
                     if (productBarCodes.getResults().containsKey(barCodeValue)) {
                         getProductDetails(productBarCodes.getResults().get(barCodeValue));
-//                        Intent intent=new Intent(getActivity(), ProductDetailsActivity.class);
-//                        intent.putExtra("BARCODE_VALUE",productBarCodes.getResults().get(barCodeValue));
-//                        startActivity(intent);
                     }
                 }else{
                     barCodeValue="";
@@ -257,24 +351,39 @@ public class ScanFragment extends Fragment implements ApiListener {
                 Toast.makeText(getActivity(), "Product Found!", Toast.LENGTH_SHORT).show();
                 if(!isProductDialogOpen){
                     isProductDialogOpen=true;
-                    Map<String, String> data = new HashMap<>();
-                    Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(token,product_id,data);
-                    ApiResponse.callRetrofitApi(getProductBarCodes, RestApiMethods.getProductDetailsRequest, ScanFragment.this);
+                    ScanFragment.this.product_id=product_id;
+                    loadData();
                 }
             }
         });
+    }
+
+    private void loadData() {
+        Map<String, String> data = new HashMap<>();
+        Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(token,product_id,data);
+        ApiResponse.callRetrofitApi(getProductBarCodes, RestApiMethods.getProductDetailsRequest, ScanFragment.this);
     }
 
     @Override
     public void onApiResponse(String strApiName, int status, Object data, String error) {
         if (strApiName.equals(RestApiMethods.getProductDetailsRequest)) {
             if(data!=null){
-                ProductDetails productDetails = (ProductDetails) data;
-                populateProductDialog(productDetails);
+                productDetails = (ProductDetails) data;
+                populateProductDialog();
             }else{
                 isProductDialogOpen=false;
                 Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
             }
+        }
+        if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
+            CartDetails cartDetails = (CartDetails) data;
+            miniCartDetails.setCount(cartDetails.getCount());
+            updateInCartAndCartCount(cartDetails.getCount());
+            Toast.makeText(getActivity(),"Updated!",Toast.LENGTH_SHORT).show();
+        }
+        if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
+            updateNotInCartAndCartCount();
+            Toast.makeText(getActivity(),"Deleted!",Toast.LENGTH_SHORT).show();
         }
     }
 }
