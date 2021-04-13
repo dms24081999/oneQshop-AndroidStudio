@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder>{
-    Context context;
+    Activity context;
     List<CartDetails> cartDetails, filteredList,arrayListFiltered;
 
     public CartListAdapter(List<CartDetails> cartDetails){
@@ -54,7 +55,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        context = recyclerView.getContext();
+        context = (Activity) recyclerView.getContext();
     }
 
     // Create new views (invoked by the layout manager)
@@ -84,7 +85,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                 Intent intent=new Intent(context, ProductDetailsActivity.class);
                 intent.putExtra("PRODUCT_DETAILS", cartDetails.getCartDetails());
                 intent.putExtra("BARCODE_VALUE", cartDetails.getCartDetails().getBarcode());
-                context.startActivity(intent);
+                context.startActivityForResult(intent, 101);
+//                context.startActivity(intent);
             }
         });
         holder.priceText.setText("₹ ".concat(cartDetails.getCartDetails().getPrice()));

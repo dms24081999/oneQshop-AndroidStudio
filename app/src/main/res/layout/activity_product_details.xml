@@ -159,6 +159,85 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/cart_decrease"
+                            android:layout_width="@dimen/spacing_xmlarge"
+                            android:layout_height="@dimen/spacing_xmlarge"
+                            android:layout_margin="@dimen/spacing_middle"
+                            android:clickable="true"
+                            android:tint="@android:color/black"
+                            app:backgroundTint="@color/white"
+                            app:elevation="0dp"
+                            app:fabSize="mini"
+                            app:rippleColor="@android:color/white"
+                            app:srcCompat="@drawable/ic_baseline_remove_000000_24" />
+
+                    <TextView
+                            android:id="@+id/cart_count"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:gravity="center"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/cart_increase"
+                            android:layout_width="@dimen/spacing_xmlarge"
+                            android:layout_height="@dimen/spacing_xmlarge"
+                            android:layout_margin="@dimen/spacing_middle"
+                            android:clickable="true"
+                            android:tint="@android:color/black"
+                            app:backgroundTint="@color/white"
+                            app:elevation="0dp"
+                            app:fabSize="mini"
+                            app:rippleColor="@android:color/white"
+                            app:srcCompat="@drawable/ic_baseline_add_000000_24" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/not_in_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/add_to_cart"
+                        android:layout_width="0dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="ADD TO CART"
+                        android:theme="@style/Button.Green" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/in_cart"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/update_cart"
+                        android:layout_width="0dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="UPDATE CART"
+                        android:theme="@style/Button.Green" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/remove_from_cart"
+                        android:layout_width="0dp"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="REMOVE ITEM"
+                        android:theme="@style/Button.Green" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

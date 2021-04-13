@@ -1,5 +1,6 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder>{
-    Context context;
+    Activity context;
     List<ProductDetails> productDetailsArrayList = new ArrayList<ProductDetails>();
 
     public ProductListAdapter(List<ProductDetails> productDetailsArrayList){
@@ -50,7 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        context = recyclerView.getContext();
+        context = (Activity) recyclerView.getContext();
     }
 
     // Create new views (invoked by the layout manager)
@@ -80,7 +81,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 Intent intent=new Intent(context, ProductDetailsActivity.class);
                 intent.putExtra("PRODUCT_DETAILS",productDetails);
                 intent.putExtra("BARCODE_VALUE",productDetails.getBarcode());
-                context.startActivity(intent);
+                context.startActivityForResult(intent, 101);
+//                context.startActivity(intent);
             }
         });
         holder.priceText.setText("₹ ".concat(productDetails.getPrice()));

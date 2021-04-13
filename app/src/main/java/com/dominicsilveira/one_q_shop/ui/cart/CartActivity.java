@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,12 +74,23 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     private void loadData() {
         Map<String, String> data=new HashMap<String, String>();
         Call<CartListDetails> req = restMethods.getCartListDetails(token,data);
-        ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
+        ApiResponse.callRetrofitApi(req, RestApiMethods.getCartListDetailsRequest, this);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            int reload = data.getIntExtra("reload",0);
+            if(reload==1){
+                Log.i(TAG,"Reloading Cart...");
+                loadData();
+            }
+        }
     }
 
     @Override
     public void onApiResponse(String strApiName, int status, Object data, String error) {
-        if (strApiName.equals(RestApiMethods.getProductListDetailsRequest)) {
+        if (strApiName.equals(RestApiMethods.getCartListDetailsRequest)) {
             if(data!=null){
                 CartListDetails cartListDetails = (CartListDetails) data;
                 mAdapter = new CartListAdapter(cartListDetails.getResults());

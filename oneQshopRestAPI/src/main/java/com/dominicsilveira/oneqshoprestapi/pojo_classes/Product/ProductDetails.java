@@ -37,6 +37,12 @@ public class ProductDetails implements Serializable {
     @SerializedName("price")
     @Expose
     private Double price;
+    @SerializedName("count")
+    @Expose
+    private Integer count;
+    @SerializedName("cart_details")
+    @Expose
+    private MiniCartDetails cartDetails;
     @SerializedName("is_deleted")
     @Expose
     private Boolean isDeleted;
@@ -123,6 +129,22 @@ public class ProductDetails implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getCount() {
+        return this.count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public MiniCartDetails getCartDetails() {
+        return cartDetails;
+    }
+
+    public void setCartDetails(MiniCartDetails cartDetails) {
+        this.cartDetails = cartDetails;
     }
 
     public Boolean getIsDeleted() {

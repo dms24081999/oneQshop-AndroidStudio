@@ -38,6 +38,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
     Integer categoryId;
     String categoryName,token;
     Map<String, String> nextURL,backURL;
+    Map<String, String> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
         if(categoryName==null)
             categoryName="All Categories";
 
+        data = new HashMap<String, String>();
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -102,18 +104,26 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
     }
 
     private void loadData(Boolean goBack,Boolean goNext) {
-        Map<String, String> data;
         productDetailsArrayList.clear();
         if(goBack)
             data = backURL;
         else if(goNext)
             data = nextURL;
-        else
-            data = new HashMap<String, String>();
         if(categoryId!=-1)
             data.put("category", String.valueOf(categoryId));
         Call<ProductListDetails> req = restMethods.getProductListDetails(token,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getProductListDetailsRequest, this);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            int reload = data.getIntExtra("reload",0);
+            if(reload==1){
+                Log.i(TAG,"Reloading Product Categories...");
+                loadData(false,false);
+            }
+        }
     }
 
     @Override

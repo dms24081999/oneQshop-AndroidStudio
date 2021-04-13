@@ -75,4 +75,10 @@
         <item name="colorControlNormal">@color/grey_40</item>
     </style>
 
+    <style name="Button.Green" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/light_green_500</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <color name="light_green_500">#8BC34A</color>
 </resources>

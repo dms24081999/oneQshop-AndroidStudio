@@ -1,14 +1,17 @@
 package com.dominicsilveira.one_q_shop.ui.product;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
@@ -24,35 +29,43 @@ import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.MiniCartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductRecommendations;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
     static String TAG = ProductDetailsActivity.class.getSimpleName();
-    TextView priceText,productName,brandName;
+    TextView priceText,productName,brandName,cart_count;
     ImageView productImage;
     AppBarLayout app_bar_layout;
     Drawable upArrow;
-    LinearLayout categoryTags;
+    LinearLayout categoryTags,in_cart,not_in_cart,lyt_expand_description;
     ImageButton bt_toggle_description;
-    LinearLayout lyt_expand_description;
     NestedScrollView nested_scroll_view;
     AppConstants globalClass;
     RecyclerView recyclerView;
     ProductListAdapter mAdapter;
+    FloatingActionButton cart_increase,cart_decrease;
+    AppCompatButton add_to_cart,update_cart,remove_from_cart;
 
     Intent prevIntent;
     Integer productId;
+    String token;
     ProductDetails productDetails;
     RestApiMethods restMethods;
+    MiniCartDetails miniCartDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +116,21 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         productImage=findViewById(R.id.productImage);
         categoryTags=findViewById(R.id.categoryTags);
         nested_scroll_view=findViewById(R.id.nested_scroll_view);
+        cart_increase=findViewById(R.id.cart_increase);
+        cart_decrease=findViewById(R.id.cart_decrease);
+        add_to_cart=findViewById(R.id.add_to_cart);
+        update_cart=findViewById(R.id.update_cart);
+        remove_from_cart=findViewById(R.id.remove_from_cart);
+        in_cart=findViewById(R.id.in_cart);
+        not_in_cart=findViewById(R.id.not_in_cart);
+        cart_count=findViewById(R.id.cart_count);
 
         // section description
         bt_toggle_description = findViewById(R.id.bt_toggle_description);
         lyt_expand_description = findViewById(R.id.lyt_expand_description);
+
+        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        token=sh.getString("token", "0");// We can then use the data
 
         Log.e(TAG,"productId"+Integer.toString(productId));
         if(productId==-1){
@@ -115,6 +139,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
             productName.setText(productDetails.getName());
             brandName.setText(productDetails.getBrandDetails().getName());
             priceText.setText("₹ ".concat(productDetails.getPrice()));
+            if(productDetails.getCartDetails()==null){
+                miniCartDetails=new MiniCartDetails();
+                miniCartDetails.setCount(1);
+                not_in_cart.setVisibility(View.VISIBLE);
+                in_cart.setVisibility(View.GONE);
+                cart_count.setText("1");
+            }else{
+                miniCartDetails=productDetails.getCartDetails();
+                not_in_cart.setVisibility(View.GONE);
+                in_cart.setVisibility(View.VISIBLE);
+                cart_count.setText(productDetails.getCartDetails().getCount()+"");
+            }
+
             Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
             Log.e(TAG, AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage()));
             for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
@@ -132,6 +169,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
                 });
                 categoryTags.addView(categoryView);
             }
+
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -154,6 +192,59 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         // expand first description
         toggleArrow(bt_toggle_description);
         lyt_expand_description.setVisibility(View.VISIBLE);
+
+        cart_decrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(cart_count.getText().toString());
+                if (qty > 1) {
+                    miniCartDetails.setCount(--qty);
+                    cart_count.setText(qty+"");
+                }
+            }
+        });
+
+        cart_increase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(cart_count.getText().toString());
+                if (qty < productDetails.getCount()) {
+                    miniCartDetails.setCount(++qty);
+                    cart_count.setText(qty+"");
+                }
+            }
+        });
+
+        add_to_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<CartDetails> req = restMethods.updateCartDetails(token,globalClass.getUserObj().getId(),productId,miniCartDetails.getCount());
+                ApiResponse.callRetrofitApi(req, RestApiMethods.updateCartDetailsRequest, ProductDetailsActivity.this);
+//                addToCart();
+            }
+        });
+        update_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<CartDetails> req = restMethods.updateCartDetails(token,globalClass.getUserObj().getId(),productId,miniCartDetails.getCount());
+                ApiResponse.callRetrofitApi(req, RestApiMethods.updateCartDetailsRequest, ProductDetailsActivity.this);
+            }
+        });
+        remove_from_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<CartDetails> req = restMethods.deleteCartDetails(token,productDetails.getCartDetails().getId());
+                ApiResponse.callRetrofitApi(req, RestApiMethods.deleteCartDetailsRequest, ProductDetailsActivity.this);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("reload", 1);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void toggleSection(View bt, final View lyt) {
@@ -184,9 +275,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     public void onApiResponse(String strApiName, int status, Object data, String error) {
         if (strApiName.equals(RestApiMethods.getProductRecommendationListDetailsRequest)) {
             ProductRecommendations productRecommendations = (ProductRecommendations) data;
-            //set data and list adapter
-            mAdapter = new ProductListAdapter( productRecommendations.getResults());
+            mAdapter = new ProductListAdapter( productRecommendations.getResults()); //set data and list adapter
             recyclerView.setAdapter(mAdapter);
+        }
+        if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
+            Toast.makeText(ProductDetailsActivity.this,"Updated!",Toast.LENGTH_SHORT).show();
+        }
+        if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
+            miniCartDetails=new MiniCartDetails();
+            miniCartDetails.setCount(1);
+            not_in_cart.setVisibility(View.VISIBLE);
+            in_cart.setVisibility(View.GONE);
+            cart_count.setText("1");
+            Toast.makeText(ProductDetailsActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
         }
     }
 }

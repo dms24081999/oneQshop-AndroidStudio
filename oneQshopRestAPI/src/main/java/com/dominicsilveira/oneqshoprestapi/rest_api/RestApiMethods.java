@@ -16,6 +16,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -145,5 +146,22 @@ public interface RestApiMethods {
     Call<CartListDetails> getCartListDetails(
             @Header("Authorization") String authHeader,
             @QueryMap Map<String, String> param
+    );
+
+    String updateCartDetailsRequest = "updateCartDetailsRequest";
+    @FormUrlEncoded
+    @POST("/api/products/cart/")
+    Call<CartDetails> updateCartDetails(
+            @Header("Authorization") String authHeader,
+            @Field("user_id") Integer user_id,
+            @Field("product_id") Integer product_id,
+            @Field("count") Integer count
+    );
+
+    String deleteCartDetailsRequest = "deleteCartDetailsRequest";
+    @DELETE("/api/products/cart/{cart_id}/")
+    Call<CartDetails> deleteCartDetails(
+            @Header("Authorization") String authHeader,
+            @Path(value = "cart_id", encoded = true) Integer cart_id
     );
 }
