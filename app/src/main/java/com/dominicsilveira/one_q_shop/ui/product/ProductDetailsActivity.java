@@ -129,9 +129,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         bt_toggle_description = findViewById(R.id.bt_toggle_description);
         lyt_expand_description = findViewById(R.id.lyt_expand_description);
 
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
-
         Log.e(TAG,"productId"+Integer.toString(productId));
         if(productId==-1){
             productName.setText(String.valueOf(productId));

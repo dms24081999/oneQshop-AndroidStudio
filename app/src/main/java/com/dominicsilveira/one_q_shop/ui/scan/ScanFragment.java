@@ -54,7 +54,7 @@ public class ScanFragment extends Fragment implements ApiListener {
     SurfaceView image;
     RelativeLayout cameraOn,cameraOff;
     Button turnOnCameraBtn,btn_camera;
-    String barCodeValue="";
+    String barCodeValue="",token;
     ProductBarCodes productBarCodes;
     RestApiMethods restMethods;
     Dialog productDialog;
@@ -87,9 +87,12 @@ public class ScanFragment extends Fragment implements ApiListener {
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
 
+        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        token=sh.getString("token", "0");// We can then use the data
+
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
 
-        SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();
         String json = sh.getString("barcodesObj", "");// We can then use the data
         productBarCodes = gson.fromJson(json, ProductBarCodes.class);
@@ -255,7 +258,7 @@ public class ScanFragment extends Fragment implements ApiListener {
                 if(!isProductDialogOpen){
                     isProductDialogOpen=true;
                     Map<String, String> data = new HashMap<>();
-                    Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(product_id,data);
+                    Call<ProductDetails> getProductBarCodes = restMethods.getProductDetails(token,product_id,data);
                     ApiResponse.callRetrofitApi(getProductBarCodes, RestApiMethods.getProductDetailsRequest, ScanFragment.this);
                 }
             }

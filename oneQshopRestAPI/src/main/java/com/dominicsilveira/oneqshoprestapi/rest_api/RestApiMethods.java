@@ -123,6 +123,7 @@ public interface RestApiMethods {
     String getProductDetailsRequest = "getProductDetailsRequest";
     @GET("/api/products/product/{product_id}/")
     Call<ProductDetails> getProductDetails(
+            @Header("Authorization") String authHeader,
             @Path(value = "product_id", encoded = true) Integer product_id,
             @QueryMap Map<String, String> param
     );
