@@ -26,12 +26,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ApiList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
+
         initComponents();
         attachListeners();
     }
 
     private void initComponents() {
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         Intent in = getIntent();
         String prevEmail = in.getStringExtra("EMAIL");
         sendMailBtn=findViewById(R.id.sendMailBtn);

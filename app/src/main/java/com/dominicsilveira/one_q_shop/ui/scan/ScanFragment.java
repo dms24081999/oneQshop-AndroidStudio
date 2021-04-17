@@ -31,6 +31,7 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
@@ -91,6 +92,9 @@ public class ScanFragment extends Fragment implements ApiListener {
 
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
+        token=BasicUtils.getToken(getActivity());
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
+
         image=root.findViewById(R.id.image);
         cameraOn=root.findViewById(R.id.cameraOn);
         cameraOff=root.findViewById(R.id.cameraOff);
@@ -98,16 +102,11 @@ public class ScanFragment extends Fragment implements ApiListener {
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
 
-        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
-
-        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
-
-        sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();
         String json = sh.getString("barcodesObj", "");// We can then use the data
         productBarCodes = gson.fromJson(json, ProductBarCodes.class);
-        Log.i("ScanFragment", String.valueOf(productBarCodes.getResults().size()));
+//        Log.i("ScanFragment", String.valueOf(productBarCodes.getResults().size()));
     }
 
     private void addListeners() {
@@ -180,7 +179,6 @@ public class ScanFragment extends Fragment implements ApiListener {
         productDialog = new Dialog(getActivity());
         productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         productDialog.setContentView(R.layout.include_dialog_product_card);
-
         productNamePop=productDialog.findViewById(R.id.productNamePop);
         brandNamePop=productDialog.findViewById(R.id.brandNamePop);
         pricePop=productDialog.findViewById(R.id.pricePop);
@@ -236,7 +234,6 @@ public class ScanFragment extends Fragment implements ApiListener {
             });
             categoryTagsPop.addView(categoryView);
         }
-
         showProductDialog();
     }
 

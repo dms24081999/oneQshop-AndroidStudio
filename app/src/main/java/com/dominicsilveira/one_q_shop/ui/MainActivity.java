@@ -36,34 +36,19 @@ public class MainActivity extends AppCompatActivity{
 
     Toolbar mToolbar;
     RestApiMethods restMethods;
-    User userObj;
-    AppConstants globalClass;
+    BottomNavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
-        globalClass=(AppConstants)getApplicationContext();
-        userObj=globalClass.getUserObj();
+        initComponents();
+        initBottomNavigation();
+        initPrevIntent();
+    }
 
-        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
-        mToolbar = (Toolbar) findViewById ( R.id.toolbar );
-        setSupportActionBar ( mToolbar );
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        // Bottom Nav
-        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
-        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_scan, R.id.navigation_profile)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-
+    private void initPrevIntent() {
         Intent mIntent = getIntent();
         int bottomInt= mIntent.getIntExtra("FRAGMENT_NO",0);
         if(bottomInt==0){
@@ -73,6 +58,25 @@ public class MainActivity extends AppCompatActivity{
         }else if(bottomInt==2){
             navView.setSelectedItemId(R.id.navigation_profile);
         }
+    }
+
+    private void initBottomNavigation() {
+        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
+        mToolbar = (Toolbar) findViewById ( R.id.toolbar );
+        setSupportActionBar ( mToolbar );
+
+        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_scan, R.id.navigation_profile)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    private void initComponents() {
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
+        navView = findViewById(R.id.bottom_navigation);
     }
 
     @Override

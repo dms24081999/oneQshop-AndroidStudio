@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
@@ -88,9 +89,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        BasicUtils.setActionBar(ProductDetailsActivity.this,null);
         app_bar_layout=findViewById(R.id.app_bar_layout);
         upArrow = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_arrow_back_000000_24,null);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -126,6 +125,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         in_cart=findViewById(R.id.in_cart);
         not_in_cart=findViewById(R.id.not_in_cart);
         cart_count=findViewById(R.id.cart_count);
+
+        token=BasicUtils.getToken(ProductDetailsActivity.this);
 
         // section description
         bt_toggle_description = findViewById(R.id.bt_toggle_description);

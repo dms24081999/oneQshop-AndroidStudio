@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
@@ -60,6 +61,8 @@ public class ProfileFragment extends Fragment implements ApiListener {
 
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
+        token=BasicUtils.getToken(getActivity());
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         userObj=globalClass.getUserObj();
 
         logoutBtn = root.findViewById(R.id.logoutBtn);
@@ -71,24 +74,19 @@ public class ProfileFragment extends Fragment implements ApiListener {
         nameText.setText(userObj.getUsername());
         userAvatar = root.findViewById(R.id.userAvatar);
 
-        SharedPreferences sh = getActivity().getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
-
-        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
-
         if(userObj.getPicturePath()!=null)
             Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
-
-        userAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickImageFromGallery();
-            }
-        });
 
     }
 
     private void attachListeners() {
+        userAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CropImage.startPickImageActivity(getContext(), ProfileFragment.this);
+            }
+        });
+
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,10 +131,6 @@ public class ProfileFragment extends Fragment implements ApiListener {
         });
     }
 
-
-    private void pickImageFromGallery() {
-        CropImage.startPickImageActivity(getContext(), this);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -51,15 +53,12 @@ public class PersonalDetailsActivity extends AppCompatActivity implements ApiLis
     }
 
     private void initComponents() {
-        getSupportActionBar().setTitle("Personal Details");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        BasicUtils.setActionBar(PersonalDetailsActivity.this,"Personal Details");
 
         globalClass=(AppConstants)getApplicationContext();
         userObj=globalClass.getUserObj();
 
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
+        token= BasicUtils.getToken(PersonalDetailsActivity.this);
 
         firstNameText=findViewById(R.id.firstNameText);
         lastNameText=findViewById(R.id.lastNameText);

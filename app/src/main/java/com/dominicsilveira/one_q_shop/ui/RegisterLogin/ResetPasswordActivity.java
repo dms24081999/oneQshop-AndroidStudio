@@ -27,16 +27,16 @@ public class ResetPasswordActivity extends AppCompatActivity implements ApiListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
-        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
+
         initComponents();
         attachListeners();
     }
 
     private void initComponents() {
+        restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         newPasswordField=findViewById(R.id.newPasswordField);
         confirmPasswordField=findViewById(R.id.confirmPasswordField);
         resetBtn=findViewById(R.id.resetBtn);
-
         prevIntent=getIntent();
         password_reset_token=prevIntent.getStringExtra("TOKEN");
     }

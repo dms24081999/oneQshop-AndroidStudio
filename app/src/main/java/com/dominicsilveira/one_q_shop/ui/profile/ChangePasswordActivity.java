@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -52,9 +54,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
     }
 
     private void initComponents() {
-        getSupportActionBar().setTitle("Change Password");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        BasicUtils.setActionBar(ChangePasswordActivity.this,"Change Password");
         oldPasswordText=findViewById(R.id.oldPasswordText);
         newPasswordText=findViewById(R.id.newPasswordText);
         confirmPasswordText=findViewById(R.id.confirmPasswordText);
@@ -63,8 +63,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
         confirmPasswordLayout=findViewById(R.id.confirmPasswordLayout);
         bt_submit=findViewById(R.id.bt_submit);
 
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
+        token= BasicUtils.getToken(ChangePasswordActivity.this);
     }
 
     private void attachListeners() {

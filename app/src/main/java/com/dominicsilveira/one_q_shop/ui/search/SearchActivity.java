@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
@@ -50,17 +51,17 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
 
         initComponents();
         attachListeners();
+        loadData(false,false);
     }
 
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
+        token=BasicUtils.getToken(SearchActivity.this);
 
         backBtn=findViewById(R.id.backBtn);
         nextBtn=findViewById(R.id.nextBtn);
+
         recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(SearchActivity.this);
@@ -80,7 +81,6 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
                 loadData(false,true);
             }
         });
-        loadData(false,false);
     }
 
     private void loadData(Boolean goBack,Boolean goNext) {

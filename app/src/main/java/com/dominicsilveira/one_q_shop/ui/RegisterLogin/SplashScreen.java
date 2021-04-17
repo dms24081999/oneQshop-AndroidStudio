@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -33,8 +35,7 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         globalClass=(AppConstants)SplashScreen.this.getApplicationContext();
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
+        token= BasicUtils.getToken(SplashScreen.this);
         Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         initPrevUrlIntent();

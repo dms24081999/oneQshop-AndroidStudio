@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 
 public class AboutUsActivity extends AppCompatActivity {
 
@@ -39,9 +40,7 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        getSupportActionBar().setTitle("About Me");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        BasicUtils.setActionBar(AboutUsActivity.this,"About Me");
         dominicBtn=findViewById(R.id.dominicBtn);
         joelBtn=findViewById(R.id.joelBtn);
         leninBtn=findViewById(R.id.leninBtn);

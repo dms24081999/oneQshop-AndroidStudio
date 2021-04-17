@@ -32,13 +32,13 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        globalClass=(AppConstants)getApplicationContext();
-        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
         initComponents();
         attachListeners();
     }
 
     private void initComponents() {
+        globalClass=(AppConstants)getApplicationContext();
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
         firstNameField=findViewById(R.id.firstNameField);
         lastNameField=findViewById(R.id.lastNameField);
         usernameField=findViewById(R.id.usernameField);

@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
@@ -53,8 +55,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
 
-        SharedPreferences sh = getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        token=sh.getString("token", "0");// We can then use the data
+        token= BasicUtils.getToken(ProductCategoriesActivity.this);
 
         categoryId=intent.getIntExtra("CATEGORY_ID",-1);
         categoryName=intent.getStringExtra("CATEGORY_NAME");
@@ -62,9 +63,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
             categoryName="All Categories";
 
         data = new HashMap<String, String>();
-        getSupportActionBar().setTitle(categoryName);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        BasicUtils.setActionBar(ProductCategoriesActivity.this,categoryName);
 
         backBtn=findViewById(R.id.backBtn);
         nextBtn=findViewById(R.id.nextBtn);
