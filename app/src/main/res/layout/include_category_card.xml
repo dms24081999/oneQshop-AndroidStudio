@@ -22,7 +22,7 @@
             android:layout_width="@dimen/spacing_mxlarge"
             android:layout_height="@dimen/spacing_mxlarge"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_baseline_shopping_cart_000000_24"
+            app:srcCompat="@drawable/ic_baseline_shopping_cart_24_000000"
             app:tint="@color/grey_60" />
 
         <View
@@ -81,7 +81,7 @@
                     android:layout_gravity="center_vertical"
                     android:background="@android:color/transparent"
                     android:tint="@color/grey_40"
-                    app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_000000_24" />
+                    app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24_000000" />
 
             </LinearLayout>
 

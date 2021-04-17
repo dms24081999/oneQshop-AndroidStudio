@@ -1,7 +1,6 @@
 package com.dominicsilveira.one_q_shop.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;

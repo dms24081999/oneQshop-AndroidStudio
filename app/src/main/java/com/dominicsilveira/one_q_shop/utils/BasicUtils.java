@@ -1,9 +1,7 @@
 package com.dominicsilveira.one_q_shop.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
@@ -13,22 +11,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
-
 import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
-
 import java.io.IOException;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class BasicUtils {

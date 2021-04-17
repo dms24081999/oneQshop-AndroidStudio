@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
-import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.SimpleToDeleteCallback;
@@ -29,12 +25,10 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import retrofit2.Call;
 
 
@@ -120,7 +114,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101 && resultCode == RESULT_OK) {
+        if (requestCode == AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST && resultCode == RESULT_OK) {
             int reload = data.getIntExtra("reload",0);
             if(reload==1){
                 Log.i(TAG,"Reloading Cart...");

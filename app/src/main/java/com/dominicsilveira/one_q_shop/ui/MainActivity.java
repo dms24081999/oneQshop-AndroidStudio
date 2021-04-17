@@ -4,33 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
-
 import com.dominicsilveira.one_q_shop.R;
-
 import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.ui.search.SearchActivity;
-import com.dominicsilveira.one_q_shop.utils.AppConstants;
-
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-import com.mikhaellopez.circularimageview.CircularImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     static String TAG = MainActivity.class.getSimpleName();

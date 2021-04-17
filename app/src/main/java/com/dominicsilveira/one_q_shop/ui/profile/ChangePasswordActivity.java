@@ -2,7 +2,6 @@ package com.dominicsilveira.one_q_shop.ui.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;

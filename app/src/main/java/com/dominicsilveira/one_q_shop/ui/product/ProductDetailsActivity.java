@@ -19,9 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
@@ -40,7 +38,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
@@ -87,7 +84,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         setSupportActionBar(toolbar);
         BasicUtils.setActionBar(ProductDetailsActivity.this,null);
         app_bar_layout=findViewById(R.id.app_bar_layout);
-        upArrow = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_arrow_back_000000_24,null);
+        upArrow = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_arrow_back_24_000000,null);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

@@ -44,7 +44,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_baseline_chevron_left_000000_24"
+                        app:srcCompat="@drawable/ic_baseline_chevron_left_24_000000"
                         app:tint="@color/grey_60" />
 
                     <TextView
@@ -83,7 +83,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_baseline_chevron_right_000000_24"
+                        app:srcCompat="@drawable/ic_baseline_chevron_right_24_000000"
                         app:tint="@color/grey_60" />
 
                 </LinearLayout>

@@ -1,7 +1,5 @@
 package com.dominicsilveira.one_q_shop.utils;
 
-
-
 //https://www.journaldev.com/23164/android-recyclerview-swipe-to-delete-undo
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,15 +9,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.dominicsilveira.one_q_shop.R;
 
 
@@ -40,7 +35,7 @@ abstract public class SimpleToDeleteCallback extends ItemTouchHelper.Callback {
         backgroundColor = Color.parseColor("#F44336");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        deleteDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_baseline_delete_sweep_50);
+        deleteDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_baseline_delete_sweep_50_000000);
         deleteDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();

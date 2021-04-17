@@ -104,7 +104,7 @@
                             android:layout_height="@dimen/spacing_xmlarge"
                             android:background="@android:color/transparent"
                             android:tint="@color/grey_40"
-                            app:srcCompat="@drawable/ic_baseline_info_000000_24" />
+                            app:srcCompat="@drawable/ic_baseline_info_24_000000" />
 
                         <View
                             android:layout_width="@dimen/spacing_mlarge"
@@ -343,7 +343,7 @@
                             android:layout_height="@dimen/spacing_xmlarge"
                             android:background="@android:color/transparent"
                             android:tint="@color/grey_40"
-                            app:srcCompat="@drawable/ic_baseline_business_000000_24" />
+                            app:srcCompat="@drawable/ic_baseline_business_24_000000" />
 
                         <View
                             android:layout_width="@dimen/spacing_mlarge"
@@ -394,7 +394,7 @@
                             android:layout_height="@dimen/spacing_xmlarge"
                             android:background="@android:color/transparent"
                             android:tint="@color/grey_40"
-                            app:srcCompat="@drawable/ic_baseline_location_on_000000_24" />
+                            app:srcCompat="@drawable/ic_baseline_location_on_24_000000" />
 
                         <View
                             android:layout_width="@dimen/spacing_mlarge"

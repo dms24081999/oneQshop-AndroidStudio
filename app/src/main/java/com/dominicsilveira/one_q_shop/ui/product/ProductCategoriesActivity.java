@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -114,7 +113,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101 && resultCode == RESULT_OK) {
+        if (requestCode == AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST && resultCode == RESULT_OK) {
             int reload = data.getIntExtra("reload",0);
             if(reload==1){
                 Log.i(TAG,"Reloading Product Categories...");

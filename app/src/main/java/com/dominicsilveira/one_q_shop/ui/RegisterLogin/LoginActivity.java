@@ -1,7 +1,6 @@
 package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;

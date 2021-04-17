@@ -11,7 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 public class ViewAnimationUtils {
-
+    static String TAG = ViewAnimationUtils.class.getSimpleName();
     public static void expand(final View v, final AnimListener animListener) {
         Animation a = expandAction(v);
         a.setAnimationListener(new Animation.AnimationListener() {

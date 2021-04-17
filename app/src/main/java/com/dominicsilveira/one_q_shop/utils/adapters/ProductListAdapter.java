@@ -1,7 +1,6 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,16 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
-import com.dominicsilveira.one_q_shop.ui.profile.PersonalDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +29,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout parent,productCardBtn;
-        TextView productName,brandName,priceText;
+        LinearLayout parent,productCardBtn,quantity_label;
+        TextView productName,brandName,priceText,cart_count;
         ImageView productImage;
 
         MyViewHolder(View itemView) {
@@ -46,6 +41,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             brandName = (TextView)itemView.findViewById(R.id.brandName);
             priceText = (TextView)itemView.findViewById(R.id.priceText);
             productImage = (ImageView) itemView.findViewById(R.id.productImage);
+            cart_count = (TextView) itemView.findViewById(R.id.cart_count);
+            quantity_label = (LinearLayout) itemView.findViewById(R.id.quantity_label);
         }
     }
 
@@ -82,10 +79,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 Intent intent=new Intent(context, ProductDetailsActivity.class);
                 intent.putExtra("PRODUCT_DETAILS",productDetails);
                 intent.putExtra("BARCODE_VALUE",productDetails.getBarcode());
-                context.startActivityForResult(intent, 101);
-//                context.startActivity(intent);
+                context.startActivityForResult(intent, AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST);
             }
         });
+        if(productDetails.getCartDetails()!=null){
+            holder.cart_count.setText("QTY : ".concat(Integer.toString(productDetails.getCartDetails().getCount())));
+        }else{
+            holder.quantity_label.setVisibility(View.GONE);
+        }
         holder.priceText.setText("₹ ".concat(productDetails.getPrice()));
         Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
 

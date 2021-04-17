@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;

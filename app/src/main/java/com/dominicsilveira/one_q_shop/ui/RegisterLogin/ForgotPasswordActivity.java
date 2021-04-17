@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;

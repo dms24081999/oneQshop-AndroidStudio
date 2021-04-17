@@ -5,10 +5,8 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 
@@ -16,6 +14,7 @@ import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 
 public class AppConstants extends Application {
     public static final int CAMERA_REQUEST_CODE = 100;
+    public static final int PRODUCT_CART_PAGE_RELOAD_REQUEST = 101;
     static String TAG = AppConstants.class.getSimpleName();
 
     /*

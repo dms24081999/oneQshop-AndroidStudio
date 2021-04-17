@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -52,7 +51,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import retrofit2.Call;
-import static android.content.Context.MODE_PRIVATE;
 
 public class ScanFragment extends Fragment implements ApiListener {
     static String TAG = ScanFragment.class.getSimpleName();
@@ -175,7 +173,7 @@ public class ScanFragment extends Fragment implements ApiListener {
     private void initProductDialog() {
         productDialog = new Dialog(getActivity());
         productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        productDialog.setContentView(R.layout.include_dialog_product_card);
+        productDialog.setContentView(R.layout.include_product_card_dialog);
         productNamePop=productDialog.findViewById(R.id.productNamePop);
         brandNamePop=productDialog.findViewById(R.id.brandNamePop);
         pricePop=productDialog.findViewById(R.id.pricePop);
