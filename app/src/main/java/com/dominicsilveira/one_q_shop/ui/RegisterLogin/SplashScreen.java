@@ -40,7 +40,7 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
     private void initComponents() {
         globalClass=(AppConstants)SplashScreen.this.getApplicationContext();
         token=BasicUtils.getSharedPreferencesString(SplashScreen.this,"TokenAuth","token","0");
-        Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
+        Log.i(TAG,token);
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
     }
 

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.ForgotPasswordActivity;
 import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder>{
+    static String TAG = CartListAdapter.class.getSimpleName();
     Activity context;
     List<CartDetails> cartDetails, filteredList,arrayListFiltered;
 
@@ -33,7 +35,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
         this.cartDetails = cartDetails;
         this.arrayListFiltered = new ArrayList<>(cartDetails);
         this.filteredList = new ArrayList<>(cartDetails);
-//        Log.d("ProductList Value", String.valueOf(cartDetailsList));
+//        Log.d(TAG, String.valueOf(cartDetailsList));
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

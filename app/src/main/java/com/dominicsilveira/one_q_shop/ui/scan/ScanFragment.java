@@ -103,7 +103,7 @@ public class ScanFragment extends Fragment implements ApiListener {
 
         Gson gson = new Gson();
         productBarCodes = gson.fromJson(BasicUtils.getSharedPreferencesString(getActivity(),"ProductBarCodes","barcodesObj",""), ProductBarCodes.class);
-//        Log.i("ScanFragment", String.valueOf(productBarCodes.getResults().size()));
+//        Log.i(TAG, String.valueOf(productBarCodes.getResults().size()));
     }
 
     private void addListeners() {
@@ -274,11 +274,11 @@ public class ScanFragment extends Fragment implements ApiListener {
         if (requestCode == AppConstants.CAMERA_REQUEST_CODE) {// If request is cancelled, the result arrays are empty.
             if (ActivityCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) { // permission was granted, yay! Do the contacts-related task you need to do.
-                Log.e(String.valueOf(getActivity().getClass()),"Permission Granted!");
+                Log.e(TAG,"Permission Granted!");
                 Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
                 updateUI();
             } else { // permission denied, boo! Disable the functionality that depends on this permission.
-                Log.e(String.valueOf(getActivity().getClass()),"Permission Denied!");
+                Log.e(TAG,"Permission Denied!");
                 Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
                 updateUI();
             }
@@ -291,7 +291,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int screenWidth = displayMetrics.widthPixels;
         int screenHeight = displayMetrics.heightPixels;
-        Log.d("Metrics","Metrics Preview width and height="+screenWidth+" "+screenHeight);
+        Log.d(TAG,"Metrics Preview width and height="+screenWidth+" "+screenHeight);
         final CameraSource cameraSource = new CameraSource.Builder(getActivity(), barcodeDetector)
                 .setAutoFocusEnabled(true)
                 .setRequestedPreviewSize(screenWidth, screenHeight)
@@ -327,7 +327,7 @@ public class ScanFragment extends Fragment implements ApiListener {
                 final SparseArray<Barcode> barcodeSparseArray=detections.getDetectedItems();
                 if(barcodeSparseArray.size()>0 && !isProductDialogOpen) {
                     barCodeValue = barcodeSparseArray.valueAt(0).displayValue;
-                    Log.i("Barcode/QR-code value:", barCodeValue);
+                    Log.i(TAG,"Barcode/QR-code value:"+ barCodeValue);
                     if (productBarCodes.getResults().containsKey(barCodeValue)) {
                         getProductDetails(productBarCodes.getResults().get(barCodeValue));
                     }

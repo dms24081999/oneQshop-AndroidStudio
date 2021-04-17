@@ -92,11 +92,11 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0) {
-//                    Log.i("ProductDetailsActivity", "Collapsed");
+//                    Log.i(TAG, "Collapsed");
                     BasicUtils.setColorFilter(upArrow, Color.parseColor("#FFFFFF"));
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
                 } else {
-//                    Log.i("ProductDetailsActivity", "Expanded");
+//                    Log.i(TAG, "Expanded");
                     BasicUtils.setColorFilter(upArrow, Color.parseColor("#000000"));
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
                 }

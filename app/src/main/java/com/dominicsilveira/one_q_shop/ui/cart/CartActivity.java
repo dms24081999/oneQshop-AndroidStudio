@@ -1,7 +1,9 @@
 package com.dominicsilveira.one_q_shop.ui.cart;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,33 +12,42 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
+import com.dominicsilveira.one_q_shop.ui.product.ProductDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
+import com.dominicsilveira.one_q_shop.utils.SimpleToDeleteCallback;
 import com.dominicsilveira.one_q_shop.utils.adapters.CartListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 
 
 public class CartActivity extends AppCompatActivity implements ApiListener {
-    static String TAG = com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity.class.getSimpleName();
+    static String TAG = CartActivity.class.getSimpleName();
     RecyclerView recyclerView;
     CartListAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     RestApiMethods restMethods;
     AppConstants globalClass;
     String token;
+    List<CartDetails> cartDetails = new ArrayList<CartDetails>();
+    boolean restored=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +71,51 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     }
 
     private void loadData() {
+        SimpleToDeleteCallback itemTouchHelperCallback=new SimpleToDeleteCallback(CartActivity.this) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position=viewHolder.getAdapterPosition();
+                final CartDetails data = cartDetails.get(position);
+                restored=false;
+                Snackbar snackbar = Snackbar
+                        .make(recyclerView, "Removed", Snackbar.LENGTH_LONG)
+                        .addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar snackbar, int event) {
+                                if(!restored){
+                                    Call<CartDetails> req = restMethods.deleteCartDetails(token,data.getId());
+                                    ApiResponse.callRetrofitApi(req, RestApiMethods.deleteCartDetailsRequest, CartActivity.this);
+                                }
+                                Log.i(TAG,"onDismiss");
+                            }
+
+                            @Override
+                            public void onShown(Snackbar snackbar) {}
+                        }).setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                restored=true;
+                                cartDetails.add(position, data);
+                                mAdapter.notifyItemInserted(position);
+                                recyclerView.scrollToPosition(position);
+                            }
+                        });
+                snackbar.show();
+                cartDetails.remove(position);
+                mAdapter.notifyItemRemoved(position);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         Map<String, String> data=new HashMap<String, String>();
         Call<CartListDetails> req = restMethods.getCartListDetails(token,data);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getCartListDetailsRequest, this);
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -81,7 +134,8 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         if (strApiName.equals(RestApiMethods.getCartListDetailsRequest)) {
             if(data!=null){
                 CartListDetails cartListDetails = (CartListDetails) data;
-                mAdapter = new CartListAdapter(cartListDetails.getResults());
+                cartDetails=cartListDetails.getResults();
+                mAdapter = new CartListAdapter(cartDetails);
                 recyclerView.setAdapter(mAdapter);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 llm.scrollToPositionWithOffset(0, 0);
@@ -89,6 +143,9 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
             }else{
                 Toast.makeText(CartActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
+        }
+        if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
+            Toast.makeText(CartActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -24,12 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder>{
+    static String TAG = ProductListAdapter.class.getSimpleName();
     Activity context;
     List<ProductDetails> productDetailsArrayList = new ArrayList<ProductDetails>();
 
     public ProductListAdapter(List<ProductDetails> productDetailsArrayList){
         this.productDetailsArrayList = productDetailsArrayList;
-        Log.d("ProductList Value", String.valueOf(productDetailsArrayList));
+        Log.d(TAG, String.valueOf(productDetailsArrayList));
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

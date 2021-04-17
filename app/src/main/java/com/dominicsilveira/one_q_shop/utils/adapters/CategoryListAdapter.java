@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    static String TAG = CategoryListAdapter.class.getSimpleName();
     private List<CategoriesDetails> items = new ArrayList<>();
 
     private Context ctx;
@@ -68,7 +68,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.title.setText(p.getName());
             view.brief.setText(p.getDescription());
             Picasso.get().load(p.getImage()).into(view.image);
-//            Log.e("debug",p.getImage());
+//            Log.e(TAG,p.getImage());
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

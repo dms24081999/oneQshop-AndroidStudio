@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
                 Login login = (Login) data;
                 globalClass.setUserObj(login.getUser());
                 String token = login.getToken();
-                Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(token));
+                Log.i(TAG, String.valueOf(token));
                 BasicUtils.editSharedPreferencesString(RegisterActivity.this,"TokenAuth","token","Token "+token);
                 Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);

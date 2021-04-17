@@ -135,7 +135,7 @@ public class ProfileFragment extends Fragment implements ApiListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("ProfileFragment","CROP_IMAGE");
+        Log.e(TAG,"CROP_IMAGE");
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {// handle result of pick image chooser
             Uri imageUri = CropImage.getPickImageResultUri(getActivity(), data);
             if (CropImage.isReadExternalStoragePermissionsRequired(getActivity(), imageUri)) {// For API >= 23 we need to check specifically that we have permissions to read external storage.

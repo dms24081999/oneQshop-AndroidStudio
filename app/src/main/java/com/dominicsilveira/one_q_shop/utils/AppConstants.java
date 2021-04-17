@@ -16,6 +16,7 @@ import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 
 public class AppConstants extends Application {
     public static final int CAMERA_REQUEST_CODE = 100;
+    static String TAG = AppConstants.class.getSimpleName();
 
     /*
     http://www.jsonschema2pojo.org
@@ -81,7 +82,7 @@ public class AppConstants extends Application {
 
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
-                Log.i(String.valueOf(activity.getComponentName().getClassName()),"Application onActivityDestroyed");
+                Log.i(TAG,"Application onActivityDestroyed");
             }
         });
 
