@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
         attachListeners();
     }
 
+
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
@@ -73,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                 finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
     }

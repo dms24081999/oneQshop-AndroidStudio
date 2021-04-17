@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
         attachListeners();
     }
 
+
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -92,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }else{
                 Toast.makeText(LoginActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }

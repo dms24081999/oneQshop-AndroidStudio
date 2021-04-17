@@ -43,6 +43,12 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     Map<String, String> nextURL,backURL;
 
     @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -70,12 +76,14 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                recyclerView.smoothScrollToPosition(0);
                 loadData(true,false);
             }
         });
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                recyclerView.smoothScrollToPosition(0);
                 loadData(false,true);
             }
         });
@@ -161,6 +169,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
                 return true;
             }
         });

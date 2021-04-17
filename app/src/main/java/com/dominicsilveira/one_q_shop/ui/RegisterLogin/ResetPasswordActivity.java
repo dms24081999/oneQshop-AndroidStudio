@@ -32,6 +32,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements ApiListe
         attachListeners();
     }
 
+
     private void initComponents() {
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         newPasswordField=findViewById(R.id.newPasswordField);

@@ -82,6 +82,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                 intent.putExtra("PRODUCT_DETAILS", cartDetails.getCartDetails());
                 intent.putExtra("BARCODE_VALUE", cartDetails.getCartDetails().getBarcode());
                 context.startActivityForResult(intent, AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST);
+                context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         holder.cart_count.setText("QTY : ".concat(Integer.toString(cartDetails.getCount())));

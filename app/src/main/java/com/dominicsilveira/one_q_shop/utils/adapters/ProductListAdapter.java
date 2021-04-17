@@ -76,10 +76,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productCardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context, ProductDetailsActivity.class);
-                intent.putExtra("PRODUCT_DETAILS",productDetails);
-                intent.putExtra("BARCODE_VALUE",productDetails.getBarcode());
-                context.startActivityForResult(intent, AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST);
+                if(productDetails.getCount()>0){
+                    Intent intent=new Intent(context, ProductDetailsActivity.class);
+                    intent.putExtra("PRODUCT_DETAILS",productDetails);
+                    intent.putExtra("BARCODE_VALUE",productDetails.getBarcode());
+                    context.startActivityForResult(intent, AppConstants.PRODUCT_CART_PAGE_RELOAD_REQUEST);
+                    context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
             }
         });
         if(productDetails.getCartDetails()!=null){

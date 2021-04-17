@@ -83,10 +83,12 @@ public class MainActivity extends AppCompatActivity{
             case R.id.action_cart:
                 intent=new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.action_search:
                 intent=new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();

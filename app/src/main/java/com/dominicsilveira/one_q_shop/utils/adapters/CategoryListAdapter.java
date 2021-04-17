@@ -1,5 +1,6 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
@@ -19,7 +20,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static String TAG = CategoryListAdapter.class.getSimpleName();
     private List<CategoriesDetails> items = new ArrayList<>();
 
-    private Context ctx;
+    private Activity context;
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
@@ -32,7 +33,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public CategoryListAdapter(Context context, List<CategoriesDetails> items) {
         this.items = items;
-        ctx = context;
+        this.context = (Activity) context;
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
@@ -72,10 +73,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(ctx, ProductCategoriesActivity.class);
+                    Intent intent=new Intent(context, ProductCategoriesActivity.class);
                     intent.putExtra("CATEGORY_ID",p.getId());
                     intent.putExtra("CATEGORY_NAME",p.getName());
-                    ctx.startActivity(intent);
+                    context.startActivity(intent);
+                    context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
         }

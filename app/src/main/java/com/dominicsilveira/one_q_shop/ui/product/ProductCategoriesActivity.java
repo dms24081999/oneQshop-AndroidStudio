@@ -49,6 +49,12 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
         loadData(false,false);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+    }
+
     private void initComponents() {
         Intent intent=getIntent();
         globalClass=(AppConstants)getApplicationContext();
@@ -76,12 +82,14 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
             @Override
             public void onClick(View view) {
                 loadData(true,false);
+//                recyclerView.smoothScrollToPosition(0);
             }
         });
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadData(false,true);
+//                recyclerView.smoothScrollToPosition(0);
             }
         });
     }

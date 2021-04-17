@@ -31,6 +31,12 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ApiList
         attachListeners();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+    }
+
     private void initComponents() {
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         Intent in = getIntent();
@@ -65,7 +71,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ApiList
         if (strApiName.equals(RestApiMethods.postRequestResetPasswordRequest)) {
             if(status==200){
                 Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent!", Toast.LENGTH_SHORT).show();
-//                Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent to "+email, Toast.LENGTH_SHORT).show();
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
             }else{
                 Toast.makeText(ForgotPasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }

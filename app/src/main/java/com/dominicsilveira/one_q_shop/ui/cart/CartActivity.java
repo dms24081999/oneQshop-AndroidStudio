@@ -51,6 +51,12 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         loadData();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+    }
+
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls

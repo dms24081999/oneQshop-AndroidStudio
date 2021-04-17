@@ -73,6 +73,18 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         attachListeners();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("reload", 1);
+        setResult(RESULT_OK, intent);
+
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+
+    }
+
+
     private void initPrevIntent() {
         prevIntent=getIntent();
         productDetails = (ProductDetails) prevIntent.getSerializableExtra("PRODUCT_DETAILS");
@@ -231,13 +243,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         ApiResponse.callRetrofitApi(req, RestApiMethods.updateCartDetailsRequest, ProductDetailsActivity.this);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("reload", 1);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+
 
     @Override
     public void onApiResponse(String strApiName, int status, Object data, String error) {
