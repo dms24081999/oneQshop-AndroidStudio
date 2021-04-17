@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -88,10 +89,7 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
                 globalClass.setUserObj(loginData.getUser());
                 String token = loginData.getToken();
                 Log.i(TAG, String.valueOf(token));
-                SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-                myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
-                myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                BasicUtils.editSharedPreferencesString(LoginActivity.this,"TokenAuth","token","Token "+token);
                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

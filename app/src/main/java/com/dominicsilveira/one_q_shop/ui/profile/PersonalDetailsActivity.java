@@ -2,14 +2,14 @@ package com.dominicsilveira.one_q_shop.ui.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
@@ -20,7 +20,7 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import retrofit2.Call;
 
 public class PersonalDetailsActivity extends AppCompatActivity implements ApiListener {
-
+    static String TAG = PersonalDetailsActivity.class.getSimpleName();
     AppCompatEditText firstNameText,lastNameText,phoneText,emailText;
     Button bt_submit;
     User userObj;
@@ -53,12 +53,11 @@ public class PersonalDetailsActivity extends AppCompatActivity implements ApiLis
     }
 
     private void initComponents() {
-        BasicUtils.setActionBar(PersonalDetailsActivity.this,"Personal Details");
-
         globalClass=(AppConstants)getApplicationContext();
         userObj=globalClass.getUserObj();
+        token=BasicUtils.getSharedPreferencesString(PersonalDetailsActivity.this,"TokenAuth","token","0");
 
-        token= BasicUtils.getToken(PersonalDetailsActivity.this);
+        BasicUtils.setActionBar(PersonalDetailsActivity.this,"Personal Details");
 
         firstNameText=findViewById(R.id.firstNameText);
         lastNameText=findViewById(R.id.lastNameText);

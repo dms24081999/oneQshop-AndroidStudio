@@ -2,7 +2,7 @@ package com.dominicsilveira.one_q_shop.ui.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
@@ -22,7 +22,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ChangePasswordActivity extends AppCompatActivity implements ApiListener {
-
+    static String TAG = ChangePasswordActivity.class.getSimpleName();
     AppCompatEditText oldPasswordText,newPasswordText,confirmPasswordText;
     Button bt_submit;
     TextInputLayout oldPasswordLayout,newPasswordLayout,confirmPasswordLayout;
@@ -33,7 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+
         initComponents();
         attachListeners();
     }
@@ -54,7 +54,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
     }
 
     private void initComponents() {
+        restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+        token=BasicUtils.getSharedPreferencesString(ChangePasswordActivity.this,"TokenAuth","token","0");
+
         BasicUtils.setActionBar(ChangePasswordActivity.this,"Change Password");
+
         oldPasswordText=findViewById(R.id.oldPasswordText);
         newPasswordText=findViewById(R.id.newPasswordText);
         confirmPasswordText=findViewById(R.id.confirmPasswordText);
@@ -62,8 +66,6 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
         newPasswordLayout=findViewById(R.id.newPasswordLayout);
         confirmPasswordLayout=findViewById(R.id.confirmPasswordLayout);
         bt_submit=findViewById(R.id.bt_submit);
-
-        token= BasicUtils.getToken(ChangePasswordActivity.this);
     }
 
     private void attachListeners() {

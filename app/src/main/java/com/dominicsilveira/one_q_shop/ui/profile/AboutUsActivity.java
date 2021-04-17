@@ -12,7 +12,7 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 
 public class AboutUsActivity extends AppCompatActivity {
-
+    static String TAG = AboutUsActivity.class.getSimpleName();
     LinearLayout dominicBtn,joelBtn,leninBtn;
 
     @Override

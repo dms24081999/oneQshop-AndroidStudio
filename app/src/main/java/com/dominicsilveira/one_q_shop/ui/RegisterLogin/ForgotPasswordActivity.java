@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -17,7 +18,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements ApiListener {
-
+    static String TAG = ForgotPasswordActivity.class.getSimpleName();
     Button sendMailBtn;
     EditText email;
     RestApiMethods restMethods;

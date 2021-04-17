@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
@@ -41,6 +41,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class ProfileFragment extends Fragment implements ApiListener {
+    static String TAG = ProfileFragment.class.getSimpleName();
     LinearLayout personalDetailsBtn,changePasswordBtn,aboutMeBtn,logoutBtn,upiDetailsBtn;
     TextView nameText;
     User userObj;
@@ -61,7 +62,7 @@ public class ProfileFragment extends Fragment implements ApiListener {
 
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
-        token=BasicUtils.getToken(getActivity());
+        token=BasicUtils.getSharedPreferencesString(getActivity(),"TokenAuth","token","0");
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
         userObj=globalClass.getUserObj();
 

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -22,6 +23,7 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import retrofit2.Call;
 
 public class RegisterActivity extends AppCompatActivity implements ApiListener {
+    static String TAG = RegisterActivity.class.getSimpleName();
     EditText emailField,firstNameField,lastNameField,usernameField,passwordField;
     Button registerBtn;
     TextView loginSwitchText;
@@ -89,10 +91,7 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
                 globalClass.setUserObj(login.getUser());
                 String token = login.getToken();
                 Log.i(String.valueOf(RegisterActivity.this.getComponentName().getClassName()), String.valueOf(token));
-                SharedPreferences sharedPreferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);// Storing data into SharedPreferences
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
-                myEdit.putString("token", "Token "+token); // Storing the key and its value as the data fetched from edittext
-                myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                BasicUtils.editSharedPreferencesString(RegisterActivity.this,"TokenAuth","token","Token "+token);
                 Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

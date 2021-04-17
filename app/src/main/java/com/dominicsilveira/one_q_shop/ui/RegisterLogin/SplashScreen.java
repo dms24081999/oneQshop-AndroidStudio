@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
@@ -34,11 +33,15 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initComponents();
+        initPrevUrlIntent();
+    }
+
+    private void initComponents() {
         globalClass=(AppConstants)SplashScreen.this.getApplicationContext();
-        token= BasicUtils.getToken(SplashScreen.this);
+        token=BasicUtils.getSharedPreferencesString(SplashScreen.this,"TokenAuth","token","0");
         Log.i(String.valueOf(SplashScreen.this.getComponentName().getClassName()),token);
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
-        initPrevUrlIntent();
     }
 
     private void initPrevUrlIntent() {
@@ -92,12 +95,9 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
         if (strApiName.equals(RestApiMethods.getProductBarCodesRequest)) {
             if(data!=null){
                 ProductBarCodes productBarCodes = (ProductBarCodes) data;
-                SharedPreferences sharedPreferences = getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// Storing data into SharedPreferences
-                SharedPreferences.Editor prefsEditor = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
                 Gson gson = new Gson();
                 String json = gson.toJson(productBarCodes);
-                prefsEditor.putString("barcodesObj", json);// Storing the key and its value as the data fetched from edittext
-                prefsEditor.apply();// Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
+                BasicUtils.editSharedPreferencesString(SplashScreen.this,"ProductBarCodes","barcodesObj",json);
                 checkUserAuth();
             }else{
                 Toast.makeText(SplashScreen.this, "Error "+error, Toast.LENGTH_SHORT).show();

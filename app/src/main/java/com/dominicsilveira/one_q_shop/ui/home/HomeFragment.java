@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment implements ApiListener {
 
     private void initComponents(View root) {
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
+
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);

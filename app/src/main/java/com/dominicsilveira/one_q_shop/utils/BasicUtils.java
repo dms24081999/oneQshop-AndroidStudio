@@ -50,15 +50,22 @@ public class BasicUtils {
         }
     }
 
-    public static String getToken(Context context){
-        SharedPreferences sh = context.getSharedPreferences("TokenAuth", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
-        return sh.getString("token", "0");
+    public static String getSharedPreferencesString(Context context,String sharedPreferenceName,String key,String defaultValue){
+        SharedPreferences sh = context.getSharedPreferences(sharedPreferenceName, MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
+        return sh.getString(key, defaultValue);
     }
 
     public static void setActionBar(AppCompatActivity appCompatActivity, String title) {
         appCompatActivity.getSupportActionBar().setTitle(title);
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appCompatActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    public static void editSharedPreferencesString(Context context,String sharedPreferenceName,String key,String value) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(sharedPreferenceName, MODE_PRIVATE);// Storing data into SharedPreferences
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();// Creating an Editor object to edit(write to the file)
+        myEdit.putString(key, value); // Storing the key and its value as the data fetched from edittext
+        myEdit.apply(); // Once the changes have been made, we need to commit to apply those changes made, otherwise, it will throw an error
     }
 
     public Bitmap uriToBitmap(Context context,Uri newImg) {

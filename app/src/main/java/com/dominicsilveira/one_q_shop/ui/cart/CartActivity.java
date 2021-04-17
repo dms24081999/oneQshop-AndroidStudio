@@ -6,23 +6,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.CartListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 
@@ -37,7 +34,6 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     RecyclerView recyclerView;
     CartListAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
-
     RestApiMethods restMethods;
     AppConstants globalClass;
     String token;
@@ -47,24 +43,20 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         initComponents();
-        attachListeners();
+        loadData();
     }
 
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-        token=BasicUtils.getToken(CartActivity.this);
-        BasicUtils.setActionBar(CartActivity.this,"My Cart");
+        token=BasicUtils.getSharedPreferencesString(CartActivity.this,"TokenAuth","token","0");
 
+        BasicUtils.setActionBar(CartActivity.this,"My Cart");
 
         recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(CartActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-    }
-
-    private void attachListeners() {
-        loadData();
     }
 
     private void loadData() {
@@ -114,9 +106,8 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                if(mAdapter!=null){
+                if(mAdapter!=null)
                     mAdapter.getFilter().filter(query);
-                }
                 return false;
             }
         });

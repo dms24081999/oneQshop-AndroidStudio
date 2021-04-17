@@ -8,10 +8,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.ViewAnimationUtils;
@@ -43,7 +41,6 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ApiListener {
@@ -60,7 +57,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     ProductListAdapter mAdapter;
     FloatingActionButton cart_increase,cart_decrease;
     AppCompatButton add_to_cart,update_cart,remove_from_cart;
-
     Intent prevIntent;
     Integer productId;
     String token;
@@ -111,6 +107,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+        token=BasicUtils.getSharedPreferencesString(ProductDetailsActivity.this,"TokenAuth","token","0");
+
         productName=findViewById(R.id.productName);
         brandName=findViewById(R.id.brandName);
         priceText=findViewById(R.id.priceText);
@@ -125,8 +123,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         in_cart=findViewById(R.id.in_cart);
         not_in_cart=findViewById(R.id.not_in_cart);
         cart_count=findViewById(R.id.cart_count);
-
-        token=BasicUtils.getToken(ProductDetailsActivity.this);
 
         // section description
         bt_toggle_description = findViewById(R.id.bt_toggle_description);

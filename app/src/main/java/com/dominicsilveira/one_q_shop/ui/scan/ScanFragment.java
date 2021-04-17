@@ -55,7 +55,7 @@ import retrofit2.Call;
 import static android.content.Context.MODE_PRIVATE;
 
 public class ScanFragment extends Fragment implements ApiListener {
-
+    static String TAG = ScanFragment.class.getSimpleName();
     Boolean isProductDialogOpen=false;
     SurfaceView image;
     RelativeLayout cameraOn,cameraOff;
@@ -86,13 +86,12 @@ public class ScanFragment extends Fragment implements ApiListener {
         initProductDialog();
         updateUI();
         addListeners();
-
         return root;
     }
 
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
-        token=BasicUtils.getToken(getActivity());
+        token=BasicUtils.getSharedPreferencesString(getActivity(),"TokenAuth","token","0");
         restMethods = RestApiClient.buildHTTPClient();//Builds HTTP Client for API Calls
 
         image=root.findViewById(R.id.image);
@@ -102,10 +101,8 @@ public class ScanFragment extends Fragment implements ApiListener {
         cameraOn.setVisibility(View.GONE);
         cameraOff.setVisibility(View.GONE);
 
-        SharedPreferences sh = getActivity().getSharedPreferences("ProductBarCodes", MODE_PRIVATE);// The value will be default as empty string because for the very first time when the app is opened, there is nothing to show
         Gson gson = new Gson();
-        String json = sh.getString("barcodesObj", "");// We can then use the data
-        productBarCodes = gson.fromJson(json, ProductBarCodes.class);
+        productBarCodes = gson.fromJson(BasicUtils.getSharedPreferencesString(getActivity(),"ProductBarCodes","barcodesObj",""), ProductBarCodes.class);
 //        Log.i("ScanFragment", String.valueOf(productBarCodes.getResults().size()));
     }
 

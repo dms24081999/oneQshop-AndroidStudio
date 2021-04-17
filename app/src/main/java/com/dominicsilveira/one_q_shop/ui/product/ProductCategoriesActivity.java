@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -48,21 +47,21 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
         setContentView(R.layout.activity_product_categories);
         initComponents();
         attachListeners();
+        loadData(false,false);
     }
 
     private void initComponents() {
         Intent intent=getIntent();
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-
-        token= BasicUtils.getToken(ProductCategoriesActivity.this);
+        token=BasicUtils.getSharedPreferencesString(ProductCategoriesActivity.this,"TokenAuth","token","0");
 
         categoryId=intent.getIntExtra("CATEGORY_ID",-1);
         categoryName=intent.getStringExtra("CATEGORY_NAME");
         if(categoryName==null)
             categoryName="All Categories";
-
         data = new HashMap<String, String>();
+
         BasicUtils.setActionBar(ProductCategoriesActivity.this,categoryName);
 
         backBtn=findViewById(R.id.backBtn);
@@ -86,7 +85,6 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
                 loadData(false,true);
             }
         });
-        loadData(false,false);
     }
 
     public static Map<String, String> getQueryMap(String urlString) {

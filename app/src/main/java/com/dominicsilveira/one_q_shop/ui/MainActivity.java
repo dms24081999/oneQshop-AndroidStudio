@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
-
+    static String TAG = MainActivity.class.getSimpleName();
     Toolbar mToolbar;
     RestApiMethods restMethods;
     BottomNavigationView navView;

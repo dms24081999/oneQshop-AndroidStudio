@@ -2,7 +2,6 @@ package com.dominicsilveira.one_q_shop.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.SplashScreen;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -57,7 +57,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
-        token=BasicUtils.getToken(SearchActivity.this);
+        token=BasicUtils.getSharedPreferencesString(SearchActivity.this,"TokenAuth","token","0");
 
         backBtn=findViewById(R.id.backBtn);
         nextBtn=findViewById(R.id.nextBtn);
