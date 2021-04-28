@@ -12,10 +12,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
+import com.dominicsilveira.one_q_shop.utils.InvoiceGenerator;
 import com.dominicsilveira.one_q_shop.utils.SimpleToDeleteCallback;
 import com.dominicsilveira.one_q_shop.utils.adapters.CartListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
@@ -25,6 +29,8 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +43,12 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     RecyclerView recyclerView;
     CartListAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
+    MaterialRippleLayout checkout_btn;
     RestApiMethods restMethods;
     AppConstants globalClass;
     String token;
+    CartListDetails cartListDetails;
+    TextView total_price;
     List<CartDetails> cartDetails = new ArrayList<CartDetails>();
     boolean restored=false;
 
@@ -64,10 +73,13 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
         BasicUtils.setActionBar(CartActivity.this,"My Cart");
 
+        checkout_btn=findViewById(R.id.checkout_btn);
+        total_price=findViewById(R.id.total_price);
         recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(CartActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+
     }
 
     private void loadData() {
@@ -90,6 +102,10 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                                 if(!restored){
                                     Call<CartDetails> req = restMethods.deleteCartDetails(token,data.getId());
                                     ApiResponse.callRetrofitApi(req, RestApiMethods.deleteCartDetailsRequest, CartActivity.this);
+                                    cartListDetails.setCount(cartListDetails.getCount()-1);
+                                    cartListDetails.setPrice( cartListDetails.getPrice() - (data.getCount() * Double.parseDouble(data.getCartDetails().getPrice())) );
+                                    total_price.setText("₹ ".concat(Double.toString(cartListDetails.getPrice())));
+                                    cartDetails.get(position);
                                 }
                                 Log.i(TAG,"onDismiss");
                             }
@@ -133,13 +149,23 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     public void onApiResponse(String strApiName, int status, Object data, String error) {
         if (strApiName.equals(RestApiMethods.getCartListDetailsRequest)) {
             if(data!=null){
-                CartListDetails cartListDetails = (CartListDetails) data;
+                cartListDetails = (CartListDetails) data;
                 cartDetails=cartListDetails.getResults();
+                total_price.setText("₹ ".concat(Double.toString(cartListDetails.getPrice())));
                 mAdapter = new CartListAdapter(cartDetails);
                 recyclerView.setAdapter(mAdapter);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 llm.scrollToPositionWithOffset(0, 0);
 //                Log.i(TAG, String.valueOf(productDetailsArrayList));
+                checkout_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        File file = new File(CartActivity.this.getExternalCacheDir(), File.separator + "invoice.pdf");
+                        InvoiceGenerator invoiceGenerator=new InvoiceGenerator(cartListDetails,globalClass.getUserObj(),file);
+                        invoiceGenerator.create();
+                        invoiceGenerator.openFile(CartActivity.this);
+                    }
+                });
             }else{
                 Toast.makeText(CartActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }

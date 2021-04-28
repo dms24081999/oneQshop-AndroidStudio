@@ -1,5 +1,7 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart;
 
+import android.content.Intent;
+
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,6 +12,9 @@ public class CartDetails implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("cart_history_id ")
+    @Expose
+    private Integer cartHistoryId;
     @SerializedName("cart_details")
     @Expose
     private ProductDetails cartDetails;
@@ -35,6 +40,14 @@ public class CartDetails implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCartHistoryId() {
+        return cartHistoryId;
+    }
+
+    public void setCartHistoryId(Integer cartHistoryId) {
+        this.cartHistoryId = cartHistoryId;
     }
 
     public ProductDetails getCartDetails() {

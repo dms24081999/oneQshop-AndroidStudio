@@ -23,6 +23,7 @@
     <color name="deep_purple_500">#673AB7</color>
 
     <color name="green_500">#4CAF50</color>
+    <color name="light_green_600">#7CB342</color>
 
     <color name="yellow_600">#FDD835</color>
 
@@ -35,6 +36,8 @@
     <color name="purple_A700">#AA00FF</color>
 
     <color name="blue_400">#42A5F5</color>
+    <color name="light_green_700">#689F38</color>
+    <color name="blue_600">#1E88E5</color>
 
     <!--for random color generator -->
 </resources>
