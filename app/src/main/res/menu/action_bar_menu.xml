@@ -9,13 +9,14 @@
         android:title="Search"
         app:showAsAction="always" />
 
+
     <item
         android:id="@+id/action_cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24_000000"
-        android:orderInCategory="100"
         android:title="Cart"
-        app:showAsAction="always" />
-
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+    <!--        app:actionLayout="@layout/custom_action_item_layout"-->
 
     <item
         android:id="@+id/action_settings"

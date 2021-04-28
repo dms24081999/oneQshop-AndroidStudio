@@ -86,7 +86,11 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
             }
         });
         holder.cart_count.setText("QTY : ".concat(Integer.toString(cartDetails.getCount())));
-        holder.priceText.setText("₹ ".concat(cartDetails.getCartDetails().getPrice()));
+        holder.priceText.setText("₹ ".concat(
+                Float.toString(
+                        Float.parseFloat(cartDetails.getCartDetails().getPrice()) * cartDetails.getCount()
+                )
+        ));
         Picasso.get().load(AppConstants.BACKEND_URL.concat(cartDetails.getCartDetails().getImagesDetails().get(0).getImage())).into(holder.productImage);
 
     }

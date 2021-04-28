@@ -3,7 +3,11 @@ package com.dominicsilveira.one_q_shop.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import com.dominicsilveira.one_q_shop.R;
@@ -23,6 +27,9 @@ public class MainActivity extends AppCompatActivity{
     Toolbar mToolbar;
     RestApiMethods restMethods;
     BottomNavigationView navView;
+//    int mCartItemCount = 3;
+//    TextView textCartItemCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +78,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
@@ -98,4 +99,35 @@ public class MainActivity extends AppCompatActivity{
         }
         return true;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+//        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+//        View actionView = menuItem.getActionView();
+//        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+//        setupBadge();
+//        actionView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onOptionsItemSelected(menuItem);
+//            }
+//        });
+        return true;
+    }
+
+//    private void setupBadge() {
+//        if (textCartItemCount != null) {
+//            if (mCartItemCount == 0) {
+//                if (textCartItemCount.getVisibility() != View.GONE) {
+//                    textCartItemCount.setVisibility(View.GONE);
+//                }
+//            } else {
+//                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+//                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+//                    textCartItemCount.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        }
+//    }
 }
