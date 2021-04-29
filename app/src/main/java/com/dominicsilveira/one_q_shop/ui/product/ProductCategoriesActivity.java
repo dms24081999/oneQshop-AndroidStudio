@@ -6,10 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.ui.cart.CartHistoryActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -147,5 +150,14 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
                 Toast.makeText(ProductCategoriesActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+        }
+        return true;
     }
 }

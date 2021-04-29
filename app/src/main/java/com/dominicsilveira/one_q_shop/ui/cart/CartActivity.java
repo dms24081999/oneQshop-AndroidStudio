@@ -230,6 +230,10 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
+        }
         return true;
     }
 }

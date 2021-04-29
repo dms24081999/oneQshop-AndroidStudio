@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
         attachListeners();
     }
 
-
     private void initComponents() {
         globalClass=(AppConstants)getApplicationContext();
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls

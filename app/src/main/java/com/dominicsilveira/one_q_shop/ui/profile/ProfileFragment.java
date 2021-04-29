@@ -70,7 +70,6 @@ public class ProfileFragment extends Fragment implements ApiListener {
         personalDetailsBtn = root.findViewById(R.id.personalDetailsBtn);
         changePasswordBtn = root.findViewById(R.id.changePasswordBtn);
         aboutMeBtn = root.findViewById(R.id.aboutMeBtn);
-        upiDetailsBtn = root.findViewById(R.id.upiDetailsBtn);
         nameText.setText(userObj.getUsername());
         userAvatar = root.findViewById(R.id.userAvatar);
 
@@ -106,13 +105,6 @@ public class ProfileFragment extends Fragment implements ApiListener {
                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-
-//        upiDetailsBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getActivity(), UpiDetailsActivity.class));
-//            }
-//        });
 
         changePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
