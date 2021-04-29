@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
+import com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment;
+import com.dominicsilveira.one_q_shop.ui.search.SearchActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.InvoiceGenerator;
@@ -26,6 +29,9 @@ import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,6 +41,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 
 
@@ -163,7 +173,13 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                         File file = new File(CartActivity.this.getExternalCacheDir(), File.separator + "invoice.pdf");
                         InvoiceGenerator invoiceGenerator=new InvoiceGenerator(cartListDetails,globalClass.getUserObj(),file);
                         invoiceGenerator.create();
-                        invoiceGenerator.openFile(CartActivity.this);
+                        RequestBody reqFile = RequestBody.create(okhttp3.MediaType.parse("application/pdf"), file);
+                        MultipartBody.Part body = MultipartBody.Part.createFormData("pdf_file",
+                                file.getName(), reqFile);
+                        RequestBody name = RequestBody.create(MediaType.parse("application/pdf"), "pdf_file");
+                        Call<InvoiceListDetails> req = restMethods.postInvoiceDetails(1,"Token 569b8c80478e5b8c75571c75036a5c4c22d5135023d9e6aa27b33cc89cc78183",body, name);
+                        ApiResponse.callRetrofitApi(req, RestApiMethods.postInvoiceDetailsRequest, CartActivity.this);
+//                        invoiceGenerator.openFile(CartActivity.this);
                     }
                 });
             }else{
@@ -177,7 +193,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu, menu);
+        getMenuInflater().inflate(R.menu.cart_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) item.getActionView();
 
@@ -206,5 +222,16 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        if (item.getItemId() == R.id.action_history) {
+            intent=new Intent(CartActivity.this, CartHistoryActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+        return true;
     }
 }

@@ -13,6 +13,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
+/*
+    http://www.jsonschema2pojo.org
+    Target language: Java
+    Source type::JSON
+    Annotation style: Gson
+    */
 
 public class RestApiClient {
     public static final String BACKEND_URL = "https://".concat("dms24-v2.loca.lt");

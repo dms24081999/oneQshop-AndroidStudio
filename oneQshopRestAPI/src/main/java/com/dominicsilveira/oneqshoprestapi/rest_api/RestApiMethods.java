@@ -3,6 +3,7 @@ package com.dominicsilveira.oneqshoprestapi.rest_api;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
@@ -165,4 +166,40 @@ public interface RestApiMethods {
             @Header("Authorization") String authHeader,
             @Path(value = "cart_id", encoded = true) Integer cart_id
     );
+
+    String postInvoiceDetailsRequest = "postInvoiceDetailsRequest";
+    @Multipart
+    @POST("/api/products/invoice/")
+    Call<InvoiceListDetails> postInvoiceDetails(
+            @Part ("user_id") Integer user_id,
+            @Header("Authorization") String authHeader,
+            @Part MultipartBody.Part uploadFile,
+            @Part("pdf_file") RequestBody pdf_file
+    );
+
+    String getInvoiceListDetailsRequest = "getInvoiceListDetailsRequest";
+    @GET("/api/products/invoice/")
+    Call<InvoiceListDetails> getInvoiceListDetails(
+            @Header("Authorization") String authHeader
+    );
+
+//    String getInvoiceDetailsRequest = "getInvoiceDetailsRequest";
+//    @Multipart
+//    @POST("/api/products/invoice/")
+//    Call<InvoiceListDetails> getInvoiceDetails(
+//            @Part ("user_id") Integer user_id,
+//            @Header("Authorization") String authHeader,
+//            @Part MultipartBody.Part uploadFile,
+//            @Part("pdf_file") RequestBody pdf_file
+//    );
+
+//    String postProfileImageRequest = "postProfileImageRequest";
+//    @Multipart
+//    @PATCH("/api/users/{user_id}/")
+//    Call<User> postProfileImage(
+//            @Path(value = "user_id", encoded = true) Integer user_id,
+//            @Header("Authorization") String authHeader,
+//            @Part MultipartBody.Part imageBitmap,
+//            @Part("picture") RequestBody picture
+//    );
 }
