@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.product.ProductCategoriesActivity;
+import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.LineItemDecoration;
 import com.dominicsilveira.one_q_shop.utils.adapters.InvoiceListAdapter;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -32,6 +33,7 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
     private RecyclerView recyclerView;
     private InvoiceListAdapter mAdapter;
     RestApiMethods restMethods;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,15 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
         recyclerView.addItemDecoration(new LineItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        Call<InvoiceListDetails> req = restMethods.getInvoiceListDetails("Token 569b8c80478e5b8c75571c75036a5c4c22d5135023d9e6aa27b33cc89cc78183");
+        token = BasicUtils.getSharedPreferencesString(CartHistoryActivity.this,"TokenAuth","token","0");
+        Call<InvoiceListDetails> req = restMethods.getInvoiceListDetails(token);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getInvoiceListDetailsRequest, this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
     }
 
     @Override

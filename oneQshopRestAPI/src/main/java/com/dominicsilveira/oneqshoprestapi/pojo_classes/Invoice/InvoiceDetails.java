@@ -12,6 +12,9 @@ public class InvoiceDetails {
     @SerializedName("pdf_file")
     @Expose
     private String pdfFile;
+    @SerializedName("pdf_file_name")
+    @Expose
+    private String pdfFileName;
     @SerializedName("uploaded_at")
     @Expose
     private String uploadedAt;
@@ -36,6 +39,14 @@ public class InvoiceDetails {
 
     public void setPdfFile(String pdfFile) {
         this.pdfFile = pdfFile;
+    }
+
+    public String getPdfFileName() {
+        return pdfFileName;
+    }
+
+    public void setPdfFileName(String pdfFileName) {
+        this.pdfFileName = pdfFileName;
     }
 
     public String getUploadedAt() {

@@ -37,10 +37,13 @@ import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -170,16 +173,13 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                 checkout_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        File file = new File(CartActivity.this.getExternalCacheDir(), File.separator + "invoice.pdf");
-                        InvoiceGenerator invoiceGenerator=new InvoiceGenerator(cartListDetails,globalClass.getUserObj(),file);
+                        Date date = new Date();
+                        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
+//                        dateTimeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
+                        File file = new File(CartActivity.this.getExternalCacheDir(), File.separator + dateTimeFormatter.format(date) +".pdf");
+                        InvoiceGenerator invoiceGenerator=new InvoiceGenerator(CartActivity.this,cartListDetails,globalClass.getUserObj(),file,date, restMethods);
                         invoiceGenerator.create();
-                        RequestBody reqFile = RequestBody.create(okhttp3.MediaType.parse("application/pdf"), file);
-                        MultipartBody.Part body = MultipartBody.Part.createFormData("pdf_file",
-                                file.getName(), reqFile);
-                        RequestBody name = RequestBody.create(MediaType.parse("application/pdf"), "pdf_file");
-                        Call<InvoiceListDetails> req = restMethods.postInvoiceDetails(1,"Token 569b8c80478e5b8c75571c75036a5c4c22d5135023d9e6aa27b33cc89cc78183",body, name);
-                        ApiResponse.callRetrofitApi(req, RestApiMethods.postInvoiceDetailsRequest, CartActivity.this);
-//                        invoiceGenerator.openFile(CartActivity.this);
+                        invoiceGenerator.uploadFile();
                     }
                 });
             }else{
@@ -188,6 +188,9 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         }
         if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
             Toast.makeText(CartActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
+        }
+        if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
+            Toast.makeText(CartActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
         }
     }
 

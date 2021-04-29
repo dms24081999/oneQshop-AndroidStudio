@@ -1,5 +1,6 @@
 package com.dominicsilveira.one_q_shop.utils;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -16,9 +17,13 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
+import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.gms.tasks.OnFailureListener;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +35,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+
 public class InvoiceGenerator {
     List<CartDetails> cartDetails = new ArrayList<CartDetails>();
     String bookingKey;
@@ -37,24 +47,30 @@ public class InvoiceGenerator {
     File file;
     Integer count;
     double total_price;
+    Date date;
+    ApiListener context;
+    RestApiMethods restMethods;
 
     public InvoiceGenerator(){}
 
-    public InvoiceGenerator(CartListDetails cartListDetails, User userObj, File file){
+    public InvoiceGenerator(ApiListener context, CartListDetails cartListDetails, User userObj, File file, Date date, RestApiMethods restMethods){
         this.cartDetails=cartListDetails.getResults();
         this.total_price=cartListDetails.getPrice();
         this.count=cartListDetails.getCount();
         this.userObj=userObj;
         this.file=file;
+        this.date=date;
+        this.context=context;
+        this.restMethods=restMethods;
     }
 
     public void create(){
-        Date date = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
-        dateFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
-        timeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
+        SimpleDateFormat bookFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a");
+        bookingKey=bookFormatter.format(date);
+//        dateFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
+//        timeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
 
         PdfDocument pdfDocument=new PdfDocument();
         Paint paint=new Paint();
@@ -66,11 +82,11 @@ public class InvoiceGenerator {
         canvas.drawText("one-Q-shop",30,60,paint);
 
         paint.setTextSize(25);
-        canvas.drawText("name",30,90,paint);
+        canvas.drawText("",30,90,paint);
 
         paint.setTextAlign(Paint.Align.RIGHT);
         canvas.drawText("Invoice no",canvas.getWidth()-40,40,paint);
-        canvas.drawText("bookingKey",canvas.getWidth()-40,80,paint);
+        canvas.drawText(bookingKey,canvas.getWidth()-40,80,paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setColor(Color.rgb(150,150,150));
@@ -110,21 +126,21 @@ public class InvoiceGenerator {
         canvas.drawRect(30,415,canvas.getWidth()-30,465,paint);
 
         paint.setColor(Color.WHITE);
-        canvas.drawText("Plate-Number",50,450,paint);
-        canvas.drawText("Wheeler-Type",240,450,paint);
+        canvas.drawText("Product Name",50,450,paint);
+        canvas.drawText("Brand Name",470,450,paint);
         paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("Start-Time",canvas.getWidth()-320,450,paint);
-        canvas.drawText("End-Time",canvas.getWidth()-50,450,paint);
+        canvas.drawText("Quantity",canvas.getWidth()-230,450,paint);
+        canvas.drawText("Price (Rs.)",canvas.getWidth()-60,450,paint);
 
         int i=0;
         for (CartDetails cartDetail : cartDetails) {
             paint.setTextAlign(Paint.Align.LEFT);
             paint.setColor(Color.BLACK);
             canvas.drawText(cartDetail.getCartDetails().getName(),50,495+i,paint);
-            canvas.drawText(cartDetail.getCartDetails().getBrandDetails().getName(),240,495+i,paint);
+            canvas.drawText(cartDetail.getCartDetails().getBrandDetails().getName(),470,495+i,paint);
             paint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(Integer.toString(cartDetail.getCount()),canvas.getWidth()-320,495+i,paint);
-            canvas.drawText(Float.toString(Float.parseFloat(cartDetail.getCartDetails().getPrice()) * cartDetail.getCount()),canvas.getWidth()-50,495+i,paint);
+            canvas.drawText(Integer.toString(cartDetail.getCount()),canvas.getWidth()-230,495+i,paint);
+            canvas.drawText(Float.toString(Float.parseFloat(cartDetail.getCartDetails().getPrice()) * cartDetail.getCount()),canvas.getWidth()-60,495+i,paint);
             paint.setTextAlign(Paint.Align.LEFT);
             i += 45;
         }
@@ -151,25 +167,15 @@ public class InvoiceGenerator {
 
 
 //    //this method will upload the file
-//    public void uploadFile(final Context context,Application application) {
-////        if(utils.isNetworkAvailable(application)) {
-//            //if there is a file to upload
-//            Uri filePath = Uri.fromFile(file);
-//            if (filePath != null) {
-//                //displaying a progress dialog while upload is going on
-//                final ProgressDialog progressDialog = new ProgressDialog(context);
-//                progressDialog.setTitle("Uploading");
-//                progressDialog.show();
-//
-//            //if there is not any file
-//            else {
-//                //you can display an error toast
-//                Toast.makeText(context, "No file Available!", Toast.LENGTH_SHORT).show();
-//            }
-////        }else{
-////            Toast.makeText(context, "No Network Available!", Toast.LENGTH_SHORT).show();
-////        }
-//    }
+    public void uploadFile() {
+        RequestBody reqFile = RequestBody.create(okhttp3.MediaType.parse("application/pdf"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("pdf_file",
+                                file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("application/pdf"), "pdf_file");
+        String token=BasicUtils.getSharedPreferencesString((Activity)context,"TokenAuth","token","0");
+        Call<InvoiceListDetails> req = restMethods.postInvoiceDetails(1,token,body, name);
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postInvoiceDetailsRequest, this.context);
+    }
 //
 //    public void downloadFile(String userID, String bookingKey, Context context, Application application) {
 //        if(utils.isNetworkAvailable(application)){

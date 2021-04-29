@@ -3,6 +3,7 @@ package com.dominicsilveira.oneqshoprestapi.rest_api;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
@@ -34,7 +35,7 @@ import retrofit2.http.Url;
 public interface RestApiMethods {
     String getImageFileRequest = "getImageFileRequest";
     @GET
-    Call<ResponseBody> getImageFile(@Url String url); // don't need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
+    Call<ResponseBody> getImageFile(@Url String url); // no need add 'Content-Type' header, it's useless @Headers({"Content-Type: image/png"})
 
     String postRegisterRequest = "postRegisterRequest";
     @FormUrlEncoded
@@ -183,23 +184,11 @@ public interface RestApiMethods {
             @Header("Authorization") String authHeader
     );
 
-//    String getInvoiceDetailsRequest = "getInvoiceDetailsRequest";
-//    @Multipart
-//    @POST("/api/products/invoice/")
-//    Call<InvoiceListDetails> getInvoiceDetails(
-//            @Part ("user_id") Integer user_id,
-//            @Header("Authorization") String authHeader,
-//            @Part MultipartBody.Part uploadFile,
-//            @Part("pdf_file") RequestBody pdf_file
-//    );
-
-//    String postProfileImageRequest = "postProfileImageRequest";
-//    @Multipart
-//    @PATCH("/api/users/{user_id}/")
-//    Call<User> postProfileImage(
-//            @Path(value = "user_id", encoded = true) Integer user_id,
-//            @Header("Authorization") String authHeader,
-//            @Part MultipartBody.Part imageBitmap,
-//            @Part("picture") RequestBody picture
-//    );
+    String getInvoiceDetailsRequest = "getInvoiceDetailsRequest";
+    @FormUrlEncoded
+    @POST("/api/products/invoice/{id}")
+    Call<InvoiceDetails> getInvoiceDetails(
+            @Field ("id") Integer id,
+            @Header("Authorization") String authHeader
+    );
 }

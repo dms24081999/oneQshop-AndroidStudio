@@ -1,18 +1,25 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.dominicsilveira.one_q_shop.R;;
+import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
-import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +27,7 @@ import java.util.List;
 public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.MyViewHolder> {
 
     private List<InvoiceDetails> items = new ArrayList<>();
-    private Context context;
+    Context context;
 
     public InvoiceListAdapter(Context context, List<InvoiceDetails> items) {
         this.items = items;
@@ -42,7 +49,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        context = (Activity) recyclerView.getContext();
+        this.context = (Activity) recyclerView.getContext();
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,7 +69,31 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
     }
 
     public void setDatas(InvoiceListAdapter.MyViewHolder holder, final InvoiceDetails invoiceDetails){
-        holder.date_time_text.setText(invoiceDetails.getUploadedAt());
+        holder.date_time_text.setText(invoiceDetails.getPdfFileName());
+        holder.open_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("InvoiceAdapter",invoiceDetails.getPdfFile());
+                String url = invoiceDetails.getPdfFile();
+                Uri builtUri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(builtUri);
+                intent.setPackage("com.android.chrome");
+                context.startActivity(intent);
+            }
+        });
+
+        holder.share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                String shareBody = invoiceDetails.getPdfFile();
+                intent.setType("text/plain");
+                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Sharing");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                context.startActivity(Intent.createChooser(intent, "Sharing File"));
+            }
+        });
     }
 
     @Override
