@@ -46,6 +46,7 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
     private void initComponent() {
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
 
+        BasicUtils.setActionBar(CartHistoryActivity.this,"Cart History");
         recyclerView = (RecyclerView) findViewById(R.id.invoiceListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new LineItemDecoration(this, LinearLayout.VERTICAL));

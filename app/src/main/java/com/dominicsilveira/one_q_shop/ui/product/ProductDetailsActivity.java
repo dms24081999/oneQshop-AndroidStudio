@@ -78,10 +78,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         Intent intent = new Intent();
         intent.putExtra("reload", 1);
         setResult(RESULT_OK, intent);
-
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
-
     }
 
 

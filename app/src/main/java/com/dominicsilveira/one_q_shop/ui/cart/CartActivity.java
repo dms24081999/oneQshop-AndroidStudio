@@ -169,17 +169,14 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                 recyclerView.setAdapter(mAdapter);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 llm.scrollToPositionWithOffset(0, 0);
-//                Log.i(TAG, String.valueOf(productDetailsArrayList));
+
                 checkout_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Date date = new Date();
-                        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
-//                        dateTimeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
-                        File file = new File(CartActivity.this.getExternalCacheDir(), File.separator + dateTimeFormatter.format(date) +".pdf");
-                        InvoiceGenerator invoiceGenerator=new InvoiceGenerator(CartActivity.this,cartListDetails,globalClass.getUserObj(),file,date, restMethods);
-                        invoiceGenerator.create();
-                        invoiceGenerator.uploadFile();
+                        Intent intent=new Intent(CartActivity.this, CheckoutActivity.class);
+                        intent.putExtra("CART_DETAILS",cartListDetails);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
                 });
             }else{
@@ -189,9 +186,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
         if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
             Toast.makeText(CartActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
         }
-        if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
-            Toast.makeText(CartActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     @Override

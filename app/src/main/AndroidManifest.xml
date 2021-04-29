@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.cart.CartHistoryActivity"></activity>
+        <activity android:name=".ui.cart.CheckoutActivity"></activity>
+        <activity android:name=".ui.cart.CartHistoryActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.cart.CartActivity" />
         <activity

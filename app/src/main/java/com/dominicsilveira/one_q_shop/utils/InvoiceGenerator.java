@@ -42,7 +42,7 @@ import retrofit2.Call;
 
 public class InvoiceGenerator {
     List<CartDetails> cartDetails = new ArrayList<CartDetails>();
-    String bookingKey;
+    String bookingKey,line1,line2;
     User userObj;
     File file;
     Integer count;
@@ -53,7 +53,7 @@ public class InvoiceGenerator {
 
     public InvoiceGenerator(){}
 
-    public InvoiceGenerator(ApiListener context, CartListDetails cartListDetails, User userObj, File file, Date date, RestApiMethods restMethods){
+    public InvoiceGenerator(ApiListener context, CartListDetails cartListDetails, User userObj, File file, Date date, String line1, String line2, RestApiMethods restMethods){
         this.cartDetails=cartListDetails.getResults();
         this.total_price=cartListDetails.getPrice();
         this.count=cartListDetails.getCount();
@@ -62,12 +62,14 @@ public class InvoiceGenerator {
         this.date=date;
         this.context=context;
         this.restMethods=restMethods;
+        this.line1=line1;
+        this.line2=line2;
     }
 
     public void create(){
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-        SimpleDateFormat bookFormatter = new SimpleDateFormat("dd MMM, yyyy hh:mm a");
+        SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
         bookingKey=bookFormatter.format(date);
 //        dateFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
 //        timeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
@@ -93,11 +95,9 @@ public class InvoiceGenerator {
         canvas.drawRect(30,120,canvas.getWidth()-30,130,paint);
 
         paint.setColor(Color.BLACK);
-        canvas.drawText(": ",50,170,paint);
-        canvas.drawText(dateFormatter.format(date),250,170,paint);
-        canvas.drawText(": ",620,170,paint);
-        paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(timeFormatter.format(date),canvas.getWidth()-50,170,paint);
+        canvas.drawText("Address: ",50,165,paint);
+        canvas.drawText(line1,170,165,paint);
+        canvas.drawText(line2,170,195,paint);
 
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setColor(Color.rgb(150,150,150));
