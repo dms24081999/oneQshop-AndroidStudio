@@ -15,6 +15,7 @@ import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 public class AppConstants extends Application {
     public static final int CAMERA_REQUEST_CODE = 100;
     public static final int PRODUCT_CART_PAGE_RELOAD_REQUEST = 101;
+    public static final int UPI_PAYMENT  = 110;
     static String TAG = AppConstants.class.getSimpleName();
 
     /*

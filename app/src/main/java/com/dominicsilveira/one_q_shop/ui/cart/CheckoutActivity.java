@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -13,7 +14,9 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.InvoiceGenerator;
+import com.dominicsilveira.one_q_shop.utils.UPIPayment;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
+import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
@@ -24,10 +27,15 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 public class CheckoutActivity extends AppCompatActivity implements ApiListener {
-
+    static String TAG = CheckoutActivity.class.getSimpleName();
     AutoCompleteTextView full_name_txt,address_txt,city_txt,state_txt,postal_code_txt,country_txt;
     Button bt_submit;
     RestApiMethods restMethods;
@@ -35,6 +43,9 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
     String token;
     Intent prevIntent;
     CartListDetails cartListDetails;
+    UPIPayment upiPayment=new UPIPayment();
+    InvoiceGenerator invoiceGenerator;
+    Boolean upi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +96,70 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
                 SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
 //                        dateTimeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
                 File file = new File(CheckoutActivity.this.getExternalCacheDir(), File.separator + dateTimeFormatter.format(date) +".pdf");
-                InvoiceGenerator invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,restMethods);
+                SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
+                invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,bookFormatter.format(date),restMethods);
                 invoiceGenerator.create();
-                invoiceGenerator.uploadFile();
+                String note ="Payment for ".concat(bookFormatter.format(date));
+//                upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
+//                upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);;
+                afterSuccessfulPayment();
             }
         });
+    }
+
+    private void afterSuccessfulPayment() {
+        invoiceGenerator.uploadFile();
+        Call<ResponseBody> req = restMethods.postCartsPaid(token);
+        ApiResponse.callRetrofitApi(req, RestApiMethods.postCartsPaidRequest, CheckoutActivity.this);
     }
 
     @Override
     public void onApiResponse(String strApiName, int status, Object data, String error) {
         if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
             Toast.makeText(CheckoutActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
+        }
+        if (strApiName.equals(RestApiMethods.postCartsPaidRequest)) {
+            Toast.makeText(CheckoutActivity.this,"Updated Cart!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case AppConstants.UPI_PAYMENT:
+                Boolean paid=false;
+                if ((RESULT_OK == resultCode) || (resultCode == 11)) {
+                    if (data != null) {
+                        String trxt = data.getStringExtra("response");
+                        Log.d(String.valueOf(CheckoutActivity.this.getClass()),"UPI:" +"onActivityResult: " + trxt);
+                        Map<String, String> myMap = new HashMap<String, String>();
+                        String[] pairs = trxt.split("&");
+                        for (String pair : pairs) {
+                            String[] keyValue = pair.split("=");
+                            myMap.put(keyValue[0].toLowerCase(), keyValue[1].toLowerCase());
+                        }
+                        paid=upiPayment.upiPaymentDataOperation(myMap,CheckoutActivity.this);
+
+                    } else {
+                        Log.d(String.valueOf(CheckoutActivity.this.getClass()),"UPI:" + "onActivityResult: " + "Return data is null");
+                        Map<String, String> myMap = new HashMap<String, String>();
+                        myMap.put("status", "-1");
+                        paid=upiPayment.upiPaymentDataOperation(myMap,CheckoutActivity.this);
+                    }
+                } else {
+                    Log.d(String.valueOf(CheckoutActivity.this.getClass()),"UPI:" + "onActivityResult: " + "Return data is null"); //when user simply back without payment
+                    Map<String, String> myMap = new HashMap<String, String>();
+                    myMap.put("status", "-1");
+                    paid=upiPayment.upiPaymentDataOperation(myMap,CheckoutActivity.this);
+                }
+                if(paid){
+                    afterSuccessfulPayment();
+                    Log.i(TAG,"User has paid");
+                }else{
+                    Log.i(TAG,"User has not paid");
+                }
+                break;
         }
     }
 }

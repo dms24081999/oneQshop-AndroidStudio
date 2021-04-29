@@ -53,7 +53,7 @@ public class InvoiceGenerator {
 
     public InvoiceGenerator(){}
 
-    public InvoiceGenerator(ApiListener context, CartListDetails cartListDetails, User userObj, File file, Date date, String line1, String line2, RestApiMethods restMethods){
+    public InvoiceGenerator(ApiListener context, CartListDetails cartListDetails, User userObj, File file, Date date, String line1, String line2,String bookingKey, RestApiMethods restMethods){
         this.cartDetails=cartListDetails.getResults();
         this.total_price=cartListDetails.getPrice();
         this.count=cartListDetails.getCount();
@@ -64,13 +64,12 @@ public class InvoiceGenerator {
         this.restMethods=restMethods;
         this.line1=line1;
         this.line2=line2;
+        this.bookingKey=bookingKey;
     }
 
     public void create(){
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-        SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
-        bookingKey=bookFormatter.format(date);
 //        dateFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
 //        timeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
 

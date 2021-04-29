@@ -29,7 +29,7 @@ import java.util.List;
 import retrofit2.Call;
 
 public class CartHistoryActivity extends AppCompatActivity implements ApiListener {
-
+    static String TAG = CartHistoryActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private InvoiceListAdapter mAdapter;
     RestApiMethods restMethods;

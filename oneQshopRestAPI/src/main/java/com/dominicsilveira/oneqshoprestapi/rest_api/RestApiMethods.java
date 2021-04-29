@@ -184,11 +184,11 @@ public interface RestApiMethods {
             @Header("Authorization") String authHeader
     );
 
-    String getInvoiceDetailsRequest = "getInvoiceDetailsRequest";
-    @FormUrlEncoded
-    @POST("/api/products/invoice/{id}")
-    Call<InvoiceDetails> getInvoiceDetails(
-            @Field ("id") Integer id,
+    String postCartsPaidRequest = "postCartsPaidRequest";
+    @POST("/api/products/paid/cart/")
+    Call<ResponseBody> postCartsPaid(
             @Header("Authorization") String authHeader
     );
+
+
 }
