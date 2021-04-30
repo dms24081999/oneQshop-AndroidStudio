@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.utils;
+package com.dominicsilveira.one_q_shop.utils.animations;
 
 
 import android.animation.Animator;

@@ -18,37 +18,23 @@ import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.MainActivity;
-import com.dominicsilveira.one_q_shop.ui.profile.ProfileFragment;
-import com.dominicsilveira.one_q_shop.ui.search.SearchActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
-import com.dominicsilveira.one_q_shop.utils.InvoiceGenerator;
-import com.dominicsilveira.one_q_shop.utils.SimpleToDeleteCallback;
+import com.dominicsilveira.one_q_shop.utils.animations.SimpleToDeleteCallback;
 import com.dominicsilveira.one_q_shop.utils.adapters.CartListAdapter;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 
 
@@ -223,7 +209,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cart_menu, menu);
+        getMenuInflater().inflate(R.menu.action_bar_cart_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) item.getActionView();
 

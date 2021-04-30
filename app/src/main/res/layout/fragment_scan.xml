@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.dominicsilveira.one_q_shop.utils.ScannerOverlay
+        <com.dominicsilveira.one_q_shop.utils.animations.ScannerOverlay
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#88000000"

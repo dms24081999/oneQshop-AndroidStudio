@@ -160,7 +160,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu, menu);
+        getMenuInflater().inflate(R.menu.action_bar_search_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         item.expandActionView();
         SearchView searchView = (SearchView) item.getActionView();

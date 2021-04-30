@@ -1,4 +1,4 @@
-package com.dominicsilveira.one_q_shop.utils;
+package com.dominicsilveira.one_q_shop.utils.animations;
 
 //https://www.journaldev.com/23164/android-recyclerview-swipe-to-delete-undo
 import android.content.Context;
