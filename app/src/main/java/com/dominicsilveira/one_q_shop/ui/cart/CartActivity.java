@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     String token;
     CartListDetails cartListDetails;
     TextView total_price;
+    LinearLayout emptyView;
+    TextView emptyViewTxt;
     List<CartDetails> cartDetails = new ArrayList<CartDetails>();
     boolean restored=false;
 
@@ -88,7 +91,9 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
 
         checkout_btn=findViewById(R.id.checkout_btn);
         total_price=findViewById(R.id.total_price);
-        recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
+        emptyView=findViewById(R.id.emptyView);
+        emptyViewTxt=findViewById(R.id.emptyViewTxt);
+        recyclerView = (RecyclerView) findViewById(R.id.cartListRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(CartActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -118,7 +123,6 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                                     cartListDetails.setCount(cartListDetails.getCount()-1);
                                     cartListDetails.setPrice( cartListDetails.getPrice() - (data.getCount() * Double.parseDouble(data.getCartDetails().getPrice())) );
                                     total_price.setText("₹ ".concat(Double.toString(cartListDetails.getPrice())));
-                                    cartDetails.get(position);
                                 }
                                 Log.i(TAG,"onDismiss");
                             }
@@ -132,6 +136,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                                 cartDetails.add(position, data);
                                 mAdapter.notifyItemInserted(position);
                                 recyclerView.scrollToPosition(position);
+                                checkEmpty();
                             }
                         });
                 snackbar.show();
@@ -167,6 +172,26 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                 total_price.setText("₹ ".concat(Double.toString(cartListDetails.getPrice())));
                 mAdapter = new CartListAdapter(cartDetails);
                 recyclerView.setAdapter(mAdapter);
+                mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        emptyViewTxt.setText("No items match your Search...");
+                        checkEmpty();
+                    }
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        super.onItemRangeInserted(positionStart, itemCount);
+                    }
+                    @Override
+                    public void onItemRangeRemoved(int positionStart, int itemCount) {
+                        super.onItemRangeRemoved(positionStart, itemCount);
+                        emptyViewTxt.setText("Cart is Empty");
+                        checkEmpty();
+                    }
+                });
+                emptyViewTxt.setText("Cart is Empty");
+                checkEmpty();
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 llm.scrollToPositionWithOffset(0, 0);
 
@@ -180,13 +205,20 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
                     }
                 });
             }else{
+                emptyViewTxt.setText("Cart is Empty");
+                checkEmpty();
                 Toast.makeText(CartActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
         if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {
             Toast.makeText(CartActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void checkEmpty() {
+        Log.i(TAG, "Check isEmpty"+(mAdapter.getItemCount() == 0 ? "View.VISIBLE" : "View.GONE"));
+        emptyView.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(mAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override

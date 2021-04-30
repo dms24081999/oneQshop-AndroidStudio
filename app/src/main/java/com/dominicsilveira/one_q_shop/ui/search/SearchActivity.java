@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     AppConstants globalClass;
     String searchQuery="",token;
     Map<String, String> nextURL,backURL;
+    LinearLayout emptyView;
 
     @Override
     public void onBackPressed() {
@@ -74,6 +75,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
 
         backBtn=findViewById(R.id.backBtn);
         nextBtn=findViewById(R.id.nextBtn);
+        emptyView=findViewById(R.id.emptyView);
 
         recyclerView = (RecyclerView) findViewById(R.id.productListRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -126,10 +128,17 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 llm.scrollToPositionWithOffset(0, 0);
                 Log.i(TAG, String.valueOf(productDetailsArrayList));
+                checkEmpty();
             }else{
                 Toast.makeText(SearchActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void checkEmpty() {
+        Log.i(TAG, "Check isEmpty"+(mAdapter.getItemCount() == 0 ? "View.VISIBLE" : "View.GONE"));
+        emptyView.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(mAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE);
     }
 
     public static Map<String, String> getQueryMap(String urlString) {

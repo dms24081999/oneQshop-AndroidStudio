@@ -1,6 +1,7 @@
 package com.dominicsilveira.one_q_shop.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.LoginActivity;
 import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
 import com.dominicsilveira.one_q_shop.ui.search.SearchActivity;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
@@ -91,8 +93,12 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+            case R.id.action_logout:
+                SharedPreferences preferences = getSharedPreferences("TokenAuth", MODE_PRIVATE);
+                preferences.edit().remove("token").apply();
+                Toast.makeText(MainActivity.this, "Logout Success", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
                 break;
             default:
                 break;

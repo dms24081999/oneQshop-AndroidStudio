@@ -87,7 +87,8 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
     @Override
     public void onApiResponse(String strApiName, int status, Object data, String error) {
         if (strApiName.equals(RestApiMethods.postRegisterRequest)) {
-            if(status==200){
+            if(status==201){
+                Toast.makeText(RegisterActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Login login = (Login) data;
                 globalClass.setUserObj(login.getUser());
                 String token = login.getToken();

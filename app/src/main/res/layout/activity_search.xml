@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.product.ProductCategoriesActivity"
     android:orientation="vertical">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:scrollingCache="true">
         <LinearLayout
             android:id="@+id/recyclerLinearLayout"
             android:layout_width="match_parent"
@@ -22,15 +21,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productListRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentBottom="true"
                 android:background="@color/grey_3"
                 android:orientation="horizontal">
-
                 <LinearLayout
                     android:id="@+id/backBtn"
                     android:layout_width="wrap_content"
@@ -40,13 +37,11 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="@dimen/spacing_middle">
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_baseline_chevron_left_24_000000"
                         app:tint="@color/grey_60" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,14 +49,11 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/grey_60"
                         android:textStyle="bold" />
-
                 </LinearLayout>
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
-
                 <LinearLayout
                     android:id="@+id/nextBtn"
                     android:layout_width="wrap_content"
@@ -71,7 +63,6 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="@dimen/spacing_middle">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,17 +70,29 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/grey_60"
                         android:textStyle="bold" />
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_baseline_chevron_right_24_000000"
                         app:tint="@color/grey_60" />
-
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_gravity="center">
+        <TextView
+            android:id="@+id/emptyViewTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No items match your Search..." />
+    </LinearLayout>
+
 </LinearLayout>

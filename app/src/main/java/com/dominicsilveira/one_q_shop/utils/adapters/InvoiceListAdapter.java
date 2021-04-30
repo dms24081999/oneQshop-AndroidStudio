@@ -78,7 +78,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
                 Uri builtUri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(builtUri);
-                intent.setPackage("com.android.chrome");
+//                intent.setPackage("com.android.chrome"); // uncomment if not local tunnel as local tunnel has warning page by default
                 context.startActivity(intent);
             }
         });

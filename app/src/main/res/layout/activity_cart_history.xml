@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cart.CartHistoryActivity">
+    tools:context=".ui.cart.CartHistoryActivity"
+    android:orientation="vertical">
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:scrollingCache="true">
         <LinearLayout
             android:id="@+id/recyclerLinearLayout"
             android:layout_width="match_parent"
@@ -24,7 +25,20 @@
                 android:layout_height="match_parent"
                 />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Cart History is empty" />
+    </LinearLayout>
 
 </LinearLayout>

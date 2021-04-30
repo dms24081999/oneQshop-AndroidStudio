@@ -36,6 +36,7 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
     private InvoiceListAdapter mAdapter;
     RestApiMethods restMethods;
     String token;
+    LinearLayout emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,15 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
 
     private void initComponent() {
         restMethods = RestApiClient.buildHTTPClient(); //Builds HTTP Client for API Calls
+        token = BasicUtils.getSharedPreferencesString(CartHistoryActivity.this,"TokenAuth","token","0");
 
         BasicUtils.setActionBar(CartHistoryActivity.this,"Cart History");
         recyclerView = (RecyclerView) findViewById(R.id.invoiceListRecyclerView);
+        emptyView=findViewById(R.id.emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new LineItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        token = BasicUtils.getSharedPreferencesString(CartHistoryActivity.this,"TokenAuth","token","0");
         Call<InvoiceListDetails> req = restMethods.getInvoiceListDetails(token);
         ApiResponse.callRetrofitApi(req, RestApiMethods.getInvoiceListDetailsRequest, this);
     }
@@ -72,10 +74,17 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
                 InvoiceListDetails invoiceListDetails = (InvoiceListDetails) data;
                 mAdapter = new InvoiceListAdapter(CartHistoryActivity.this,invoiceListDetails.getResults());
                 recyclerView.setAdapter(mAdapter);
+                checkHistoryEmpty();
             }else{
                 Toast.makeText(CartHistoryActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void checkHistoryEmpty() {
+        Log.i(TAG, "Check isEmpty"+(mAdapter.getItemCount() == 0 ? "View.VISIBLE" : "View.GONE"));
+        emptyView.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(mAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override

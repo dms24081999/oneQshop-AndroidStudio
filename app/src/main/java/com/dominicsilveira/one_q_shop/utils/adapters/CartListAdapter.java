@@ -31,6 +31,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
 //        Log.d(TAG, String.valueOf(cartDetailsList));
     }
 
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout parent,productCardBtn;
         TextView productName,brandName,priceText,cart_count;
