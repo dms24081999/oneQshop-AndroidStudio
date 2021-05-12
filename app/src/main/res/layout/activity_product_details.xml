@@ -131,18 +131,8 @@
                         android:layout_height="wrap_content"
                         android:clickable="false"
                         android:numStars="5"
-                        android:rating="3.5"
-                        android:stepSize="1"
+                        android:rating="4.5"
                         android:theme="@style/Yellow.Small.AppCompatRatingBar.White" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_medium"
-                        android:layout_marginLeft="@dimen/spacing_medium"
-                        android:text="381,380"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="@color/grey_10" />
 
                     <View
                         android:layout_width="0dp"
@@ -236,7 +226,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="REMOVE ITEM"
-                        android:theme="@style/Button.Green" />
+                        android:theme="@style/Button.Red" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -319,7 +309,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/grey_20" />
+                    android:background="@color/grey_10" />
 
                 <LinearLayout
                     android:id="@+id/lyt_expand_reviews"
@@ -499,7 +489,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/grey_20" />
+                    android:background="@color/grey_10" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -513,27 +503,19 @@
                         android:layout_height="?attr/actionBarSize"
                         android:background="@android:color/transparent"
                         android:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_baseline_account_circle_24_000000" />
+                        app:srcCompat="@drawable/ic_baseline_compare_24_000000" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Warranty"
+                        android:text="Similar Products"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/grey_80" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
                         android:layout_height="wrap_content" />
-
-                    <ImageButton
-                        android:id="@+id/bt_toggle_warranty"
-                        android:layout_width="?attr/actionBarSize"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24_000000" />
 
                 </LinearLayout>
 

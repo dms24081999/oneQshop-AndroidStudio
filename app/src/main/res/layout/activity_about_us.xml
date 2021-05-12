@@ -280,7 +280,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Only Documentation"
+                                android:text="Associate Developer"
                                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                                 android:textColor="@color/grey_60"
                                 app:fontFamily="sans-serif-light" />
@@ -290,7 +290,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
 
             <View
                 android:layout_width="0dp"

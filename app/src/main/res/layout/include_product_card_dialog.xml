@@ -96,19 +96,8 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:numStars="5"
-                    android:rating="3.5"
-                    android:stepSize="1"
+                    android:rating="4.5"
                     android:theme="@style/Yellow.Small.AppCompatRatingBar.White" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="@dimen/spacing_medium"
-                    android:layout_marginLeft="@dimen/spacing_medium"
-                    android:text="381,380"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_60" />
 
                 <View
                     android:layout_width="0dp"
@@ -121,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:text="$ 9.20"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/green_500"
+                    android:textColor="@color/light_green_600"
                     app:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
@@ -227,7 +216,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="REMOVE ITEM"
-                android:theme="@style/Button.Green" />
+                android:theme="@style/Button.Red" />
         </LinearLayout>
 
     </LinearLayout>

@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentBottom="true"
-                android:background="@color/grey_3"
+                android:background="@color/grey_5"
                 android:orientation="horizontal">
 
                 <LinearLayout

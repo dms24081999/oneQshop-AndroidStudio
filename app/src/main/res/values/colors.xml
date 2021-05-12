@@ -2,13 +2,13 @@
 <resources>
     <color name="colorPrimary">#1976D2</color>
     <color name="colorPrimaryDark">#1565C0</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorAccentDark">#F50057</color>
+    <color name="colorAccent">#D500F9</color>
+    <color name="colorAccentDark">#673AB7</color>
+
+    <!--Material color list from https://material.io/guidelines/style/color.html-->
 
     <color name="white">#ffffff</color>
 
-
-    <color name="grey_3">#f7f7f7</color>
     <color name="grey_5">#f2f2f2</color>
     <color name="grey_10">#e6e6e6</color>
     <color name="grey_20">#cccccc</color>
@@ -17,27 +17,14 @@
     <color name="grey_80">#37474F</color>
     <color name="grey_90">#263238</color>
 
-
-    <!--Material color list from https://material.io/guidelines/style/color.html-->
-
-    <color name="deep_purple_500">#673AB7</color>
-
-    <color name="green_500">#4CAF50</color>
     <color name="light_green_600">#7CB342</color>
-
+    <color name="red">#ff4444</color>
     <color name="yellow_600">#FDD835</color>
+    <color name="button_color">#FF4081</color>
 
     <color name="blue_grey_300">#90A4AE</color>
-    <color name="blue_grey_400">#78909C</color>
     <color name="blue_grey_600">#546E7A</color>
     <color name="blue_grey_800">#37474F</color>
-
-    <color name="purple_A400">#D500F9</color>
-    <color name="purple_A700">#AA00FF</color>
-
-    <color name="blue_400">#42A5F5</color>
-    <color name="light_green_700">#689F38</color>
-    <color name="blue_600">#1E88E5</color>
 
     <!--for random color generator -->
 </resources>

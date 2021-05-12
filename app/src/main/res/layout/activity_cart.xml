@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="₹ 0.0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/light_green_700"
+                android:textColor="@color/light_green_600"
                 android:textStyle="bold" />
         </LinearLayout>
 

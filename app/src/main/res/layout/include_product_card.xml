@@ -129,8 +129,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:numStars="5"
-                    android:rating="3.5"
-                    android:stepSize="1"
+                    android:rating="4.5"
                     android:theme="@style/Yellow.Small.AppCompatRatingBar" />
 
                 <View
@@ -144,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:text="₹ 80.00"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/green_500"
+                    android:textColor="@color/light_green_600"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -156,6 +155,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/spacing_middle"
-        android:background="@color/grey_20" />
+        android:background="@color/grey_10" />
 
 </LinearLayout>

@@ -8,7 +8,7 @@
         android:id="@+id/chipName"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/spacing_xlarge"
-        android:background="@drawable/tab_rounded_accent"
+        android:background="@drawable/btn_tab_rounded"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:text="Home"
         android:textColor="@android:color/white" />
