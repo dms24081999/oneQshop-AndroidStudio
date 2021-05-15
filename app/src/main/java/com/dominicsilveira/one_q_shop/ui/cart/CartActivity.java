@@ -150,9 +150,9 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getCartListDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 cartListDetails = (CartListDetails) data;
                 cartDetails=cartListDetails.getResults();
                 total_price.setText("₹ ".concat(Double.toString(cartListDetails.getPrice())));
@@ -193,7 +193,7 @@ public class CartActivity extends AppCompatActivity implements ApiListener {
             }else{
                 emptyViewTxt.setText("Cart is Empty");
                 checkEmpty();
-                Toast.makeText(CartActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
         if (strApiName.equals(RestApiMethods.deleteCartDetailsRequest)) {

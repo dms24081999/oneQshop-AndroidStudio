@@ -12,24 +12,21 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.InvoiceGenerator;
 import com.dominicsilveira.one_q_shop.utils.UPIPayment;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -91,19 +88,28 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
         bt_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = new Date();
-                String line1=address_txt.getText().toString()+", "+city_txt.getText().toString()+",";
-                String line2=state_txt.getText().toString()+"-"+postal_code_txt.getText().toString()+", "+country_txt.getText().toString();
-                SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
+                String address_txt_str=address_txt.getText().toString();
+                String city_txt_str=city_txt.getText().toString();
+                String state_txt_str=state_txt.getText().toString();
+                String postal_code_txt_str=postal_code_txt.getText().toString();
+                String country_txt_str=country_txt.getText().toString();
+                if(address_txt_str.matches("") || city_txt_str.matches("") || state_txt_str.matches("") || postal_code_txt_str.matches("") || country_txt_str.matches("")){
+                    Toast.makeText(CheckoutActivity.this, "Please fill all fields!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Date date = new Date();
+                    String line1=address_txt_str+", "+city_txt_str+",";
+                    String line2=state_txt_str+"-"+postal_code_txt_str+", "+country_txt_str;
+                    SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
 //                        dateTimeFormatter.setTimeZone(TimeZone.getTimeZone("IST"));
-                File file = new File(CheckoutActivity.this.getExternalCacheDir(), File.separator + dateTimeFormatter.format(date) +".pdf");
-                SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
-                invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,bookFormatter.format(date),restMethods);
-                invoiceGenerator.create();
-                String note ="Payment for ".concat(bookFormatter.format(date));
+                    File file = new File(CheckoutActivity.this.getExternalCacheDir(), File.separator + dateTimeFormatter.format(date) +".pdf");
+                    SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
+                    invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,bookFormatter.format(date),restMethods);
+                    invoiceGenerator.create();
+                    String note ="Payment for ".concat(bookFormatter.format(date));
 //                upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
 //                upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);;
-                afterSuccessfulPayment();
+                    afterSuccessfulPayment();
+                }
             }
         });
     }
@@ -115,7 +121,7 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
             Toast.makeText(CheckoutActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
         }

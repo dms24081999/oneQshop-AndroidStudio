@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
-import com.dominicsilveira.one_q_shop.ui.cart.CartHistoryActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.adapters.ProductListAdapter;
@@ -134,9 +132,9 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getProductListDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 ProductListDetails productListDetails = (ProductListDetails) data;
                 productDetailsArrayList=productListDetails.getResults();
                 nextURL=getQueryMap(productListDetails.getNext());
@@ -147,7 +145,7 @@ public class ProductCategoriesActivity extends AppCompatActivity implements ApiL
                 llm.scrollToPositionWithOffset(0, 0);
                 Log.i(TAG, String.valueOf(productDetailsArrayList));
             }else{
-                Toast.makeText(ProductCategoriesActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductCategoriesActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

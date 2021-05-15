@@ -116,9 +116,9 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getProductListDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 ProductListDetails productListDetails = (ProductListDetails) data;
                 productDetailsArrayList=productListDetails.getResults();
                 nextURL=getQueryMap(productListDetails.getNext());
@@ -130,7 +130,7 @@ public class SearchActivity extends AppCompatActivity  implements ApiListener {
                 Log.i(TAG, String.valueOf(productDetailsArrayList));
                 checkEmpty();
             }else{
-                Toast.makeText(SearchActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

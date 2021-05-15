@@ -8,13 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.RegisterLogin.RegisterActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.PersonalDetailsErrors;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.RegisterErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import retrofit2.Call;
 
 public class PersonalDetailsActivity extends AppCompatActivity implements ApiListener {
@@ -88,14 +96,23 @@ public class PersonalDetailsActivity extends AppCompatActivity implements ApiLis
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.updateUserDetailsRequest)) {
             if(status==200){
                 User user = (User) data;
                 Toast.makeText(PersonalDetailsActivity.this, "Updated Details!", Toast.LENGTH_SHORT).show();
                 globalClass.setUserObj(user);
+            }else if(error==1){
+                try{
+                    JSONObject jObjError = new JSONObject((String) data);
+                    PersonalDetailsErrors errors = new Gson().fromJson(jObjError.toString(), PersonalDetailsErrors.class);
+                    Toast.makeText(PersonalDetailsActivity.this, errors.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(PersonalDetailsActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }else{
-                Toast.makeText(PersonalDetailsActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalDetailsActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

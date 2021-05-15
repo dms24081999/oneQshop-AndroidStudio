@@ -13,9 +13,16 @@ import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.ChangePasswordErrors;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.PersonalDetailsErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
@@ -124,12 +131,21 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.changePasswordRequest)) {
             if(status==200){
                 Toast.makeText(ChangePasswordActivity.this, "Password Changed!", Toast.LENGTH_SHORT).show();
+            }else if(error==1){
+                try{
+                    JSONObject jObjError = new JSONObject((String) data);
+                    ChangePasswordErrors errors = new Gson().fromJson(jObjError.toString(), ChangePasswordErrors.class);
+                    Toast.makeText(ChangePasswordActivity.this, errors.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(ChangePasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }else{
-                Toast.makeText(ChangePasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangePasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

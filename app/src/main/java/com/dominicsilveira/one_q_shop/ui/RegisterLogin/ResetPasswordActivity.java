@@ -65,14 +65,14 @@ public class ResetPasswordActivity extends AppCompatActivity implements ApiListe
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postResetPasswordRequest)) {
             if(status==200){
                 Toast.makeText(ResetPasswordActivity.this, "Password reset Successful!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ResetPasswordActivity.this,LoginActivity.class));
                 finish();
             }else{
-                Toast.makeText(ResetPasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

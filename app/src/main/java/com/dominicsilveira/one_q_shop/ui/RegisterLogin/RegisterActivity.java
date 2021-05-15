@@ -1,6 +1,9 @@
 package com.dominicsilveira.one_q_shop.ui.RegisterLogin;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
@@ -12,13 +15,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dominicsilveira.one_q_shop.ui.profile.PersonalDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.RegisterErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import retrofit2.Call;
 
 public class RegisterActivity extends AppCompatActivity implements ApiListener {
@@ -84,9 +96,11 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
         ApiResponse.callRetrofitApi(req, RestApiMethods.postRegisterRequest, RegisterActivity.this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postRegisterRequest)) {
+            Log.i(TAG,"Status"+Integer.toString(status));
             if(status==201){
                 Toast.makeText(RegisterActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 Login login = (Login) data;
@@ -97,8 +111,17 @@ public class RegisterActivity extends AppCompatActivity implements ApiListener {
                 Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }else if(error==1){
+                try{
+                    JSONObject jObjError = new JSONObject((String) data);
+                    RegisterErrors errors = new Gson().fromJson(jObjError.toString(), RegisterErrors.class);
+                    Toast.makeText(RegisterActivity.this, errors.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(RegisterActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }else{
-                Toast.makeText(RegisterActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

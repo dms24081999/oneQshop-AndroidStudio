@@ -11,13 +11,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.profile.PersonalDetailsActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.LoginErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import retrofit2.Call;
 
 
@@ -83,9 +90,9 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postLoginRequest)) {
-            if(data!=null){
+            if(status==200){
                 Login loginData=(Login)data;
                 globalClass.setUserObj(loginData.getUser());
                 String token = loginData.getToken();
@@ -95,8 +102,17 @@ public class LoginActivity extends AppCompatActivity implements ApiListener {
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }else if(error==1){
+                try{
+                    JSONObject jObjError = new JSONObject((String) data);
+                    LoginErrors errors = new Gson().fromJson(jObjError.toString(), LoginErrors.class);
+                    Toast.makeText(LoginActivity.this, errors.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(LoginActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }else{
-                Toast.makeText(LoginActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -245,7 +245,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
 
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getProductRecommendationListDetailsRequest)) {
             ProductRecommendations productRecommendations = (ProductRecommendations) data;
             mAdapter = new ProductListAdapter(productRecommendations.getResults()); //set data and list adapter

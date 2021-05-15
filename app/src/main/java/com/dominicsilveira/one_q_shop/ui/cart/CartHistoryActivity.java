@@ -61,15 +61,15 @@ public class CartHistoryActivity extends AppCompatActivity implements ApiListene
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getInvoiceListDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 InvoiceListDetails invoiceListDetails = (InvoiceListDetails) data;
                 mAdapter = new InvoiceListAdapter(CartHistoryActivity.this,invoiceListDetails.getResults());
                 recyclerView.setAdapter(mAdapter);
                 checkHistoryEmpty();
             }else{
-                Toast.makeText(CartHistoryActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartHistoryActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

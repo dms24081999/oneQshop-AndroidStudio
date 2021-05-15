@@ -357,14 +357,14 @@ public class ScanFragment extends Fragment implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getProductDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 productDetails = (ProductDetails) data;
                 populateProductDialog();
             }else{
                 isProductDialogOpen=false;
-                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
             }
         }
         if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {

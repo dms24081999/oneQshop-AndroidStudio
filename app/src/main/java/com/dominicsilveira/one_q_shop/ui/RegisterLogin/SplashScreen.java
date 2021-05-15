@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
@@ -79,29 +78,29 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.isAuthenticatedRequest)) {
-            if(data!=null){
+            if(error!=1){
                 User user = (User) data;
                 globalClass.setUserObj(user);
                 Toast.makeText(globalClass, "Auth Successful!", Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this, MainActivity.class);
             }else{
-                Toast.makeText(SplashScreen.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashScreen.this, "Error!", Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this,LoginActivity.class);
             }
             startActivity(intent);
             finish();
         }
         if (strApiName.equals(RestApiMethods.getProductBarCodesRequest)) {
-            if(data!=null){
+            if(error!=1){
                 ProductBarCodes productBarCodes = (ProductBarCodes) data;
                 Gson gson = new Gson();
                 String json = gson.toJson(productBarCodes);
                 BasicUtils.editSharedPreferencesString(SplashScreen.this,"ProductBarCodes","barcodesObj",json);
                 checkUserAuth();
             }else{
-                Toast.makeText(SplashScreen.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashScreen.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

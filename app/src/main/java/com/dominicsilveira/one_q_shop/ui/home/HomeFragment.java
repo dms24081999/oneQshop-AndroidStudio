@@ -50,14 +50,14 @@ public class HomeFragment extends Fragment implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.getCategoriesListDetailsRequest)) {
-            if(data!=null){
+            if(error!=1){
                 CategoriesListDetails categoriesListDetails = (CategoriesListDetails) data;
                 mAdapter = new CategoryListAdapter(getActivity(), categoriesListDetails.getResults());  //set data and list adapter
                 recyclerView.setAdapter(mAdapter);
             }else{
-                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

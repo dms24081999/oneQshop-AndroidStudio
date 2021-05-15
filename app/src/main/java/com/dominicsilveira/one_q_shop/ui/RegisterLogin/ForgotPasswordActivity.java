@@ -77,14 +77,14 @@ public class ForgotPasswordActivity extends AppCompatActivity implements ApiList
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postRequestResetPasswordRequest)) {
             if(status==200){
                 Toast.makeText(ForgotPasswordActivity.this, "Password reset Email sent!", Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
             }else{
-                Toast.makeText(ForgotPasswordActivity.this, "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ForgotPasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }

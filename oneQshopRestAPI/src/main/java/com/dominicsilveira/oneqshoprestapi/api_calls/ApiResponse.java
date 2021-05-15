@@ -25,13 +25,11 @@ public class ApiResponse {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                    apiListener.onApiResponse(strApiName, response.code(), response.body(),"");
+                    apiListener.onApiResponse(strApiName, response.code(), response.body(),0);
                 } else {
                     try{
-                        Gson gson = new Gson();
-                        ErrorMessage error=gson.fromJson(response.errorBody().charStream(),ErrorMessage.class);
-                        Log.i(TAG, strApiName + " : onError: " + error.getMessage() + " : STATUS: " + response.code());
-                        apiListener.onApiResponse(strApiName, response.code(),null, error.getMessage());
+                        Log.d(TAG, strApiName + " : onError: " + response.errorBody().toString() + " : STATUS: " + response.code());
+                        apiListener.onApiResponse(strApiName, response.code(), response.errorBody().string(),1);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -40,7 +38,7 @@ public class ApiResponse {
             @Override
             public void onFailure(Call<T> call, Throwable t) {
                 Log.d(TAG, strApiName + " : onFailure: " + t.toString());
-                apiListener.onApiResponse(strApiName, 404,null, "Request Failed!");
+                apiListener.onApiResponse(strApiName, 404,null, 1);
                 t.printStackTrace();
             }
         });

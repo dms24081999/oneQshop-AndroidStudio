@@ -163,14 +163,14 @@ public class ProfileFragment extends Fragment implements ApiListener {
     }
 
     @Override
-    public void onApiResponse(String strApiName, int status, Object data, String error) {
+    public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postProfileImageRequest)) {
             if(status==200){
                 User user = (User) data;
                 globalClass.setUserObj(user);
                 Toast.makeText(getActivity(), "Updated Profile Pic!", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(getActivity(), "Error "+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
             }
         }
     }
