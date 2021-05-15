@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.MainActivity;
 import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
@@ -124,6 +125,10 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
     public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
             Toast.makeText(CheckoutActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(CheckoutActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
         }
         if (strApiName.equals(RestApiMethods.postCartsPaidRequest)) {
             Toast.makeText(CheckoutActivity.this,"Updated Cart!",Toast.LENGTH_SHORT).show();

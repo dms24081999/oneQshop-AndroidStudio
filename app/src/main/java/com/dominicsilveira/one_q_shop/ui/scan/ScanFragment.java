@@ -369,7 +369,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         }
         if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
             CartDetails cartDetails = (CartDetails) data;
-            miniCartDetails.setCount(cartDetails.getCount());
+            miniCartDetails.convertCartDetails(cartDetails);
             updateInCartAndCartCount(cartDetails.getCount());
             Toast.makeText(getActivity(),"Updated!",Toast.LENGTH_SHORT).show();
         }

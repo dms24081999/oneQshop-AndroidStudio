@@ -1,6 +1,7 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Product;
 
 
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -51,5 +52,12 @@ public class MiniCartDetails implements Serializable {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public void convertCartDetails(CartDetails cartDetails){
+        this.id=cartDetails.getId();
+        this.count=cartDetails.getCount();
+        this.ratings=cartDetails.getRatings();
+        this.isDeleted=cartDetails.getIsDeleted();
     }
 }

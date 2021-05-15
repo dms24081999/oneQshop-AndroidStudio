@@ -231,7 +231,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         remove_from_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<CartDetails> req = restMethods.deleteCartDetails(token,productDetails.getCartDetails().getId());
+                Call<CartDetails> req = restMethods.deleteCartDetails(token,miniCartDetails.getId());
                 ApiResponse.callRetrofitApi(req, RestApiMethods.deleteCartDetailsRequest, ProductDetailsActivity.this);
             }
         });
@@ -253,7 +253,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         }
         if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
             CartDetails cartDetails = (CartDetails) data;
-            miniCartDetails.setCount(cartDetails.getCount());
+            miniCartDetails.convertCartDetails(cartDetails);
             updateInCartAndCartCount(cartDetails.getCount());
             Toast.makeText(ProductDetailsActivity.this,"Updated!",Toast.LENGTH_SHORT).show();
         }

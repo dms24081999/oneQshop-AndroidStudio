@@ -102,6 +102,8 @@ public class PersonalDetailsActivity extends AppCompatActivity implements ApiLis
                 User user = (User) data;
                 Toast.makeText(PersonalDetailsActivity.this, "Updated Details!", Toast.LENGTH_SHORT).show();
                 globalClass.setUserObj(user);
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
             }else if(error==1){
                 try{
                     JSONObject jObjError = new JSONObject((String) data);

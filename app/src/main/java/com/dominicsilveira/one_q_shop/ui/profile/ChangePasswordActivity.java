@@ -135,6 +135,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements ApiList
         if (strApiName.equals(RestApiMethods.changePasswordRequest)) {
             if(status==200){
                 Toast.makeText(ChangePasswordActivity.this, "Password Changed!", Toast.LENGTH_SHORT).show();
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  //slide from left to right
             }else if(error==1){
                 try{
                     JSONObject jObjError = new JSONObject((String) data);
