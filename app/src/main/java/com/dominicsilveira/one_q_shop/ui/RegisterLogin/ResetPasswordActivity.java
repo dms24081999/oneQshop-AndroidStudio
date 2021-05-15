@@ -8,10 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
+import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.ChangePasswordErrors;
+import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.PasswordResetErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
@@ -49,7 +57,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements ApiListe
                 String newPassword=newPasswordField.getText().toString();
                 String confirmPassword=confirmPasswordField.getText().toString();
                 if(newPassword.isEmpty() && confirmPassword.isEmpty()){
-
+                    Toast.makeText(ResetPasswordActivity.this, "Please fill all fields!", Toast.LENGTH_SHORT).show();
                 }else if(!newPassword.equals(confirmPassword)){
                     Toast.makeText(ResetPasswordActivity.this,"Passwords don't match!",Toast.LENGTH_SHORT).show();
                 }else{
@@ -71,6 +79,15 @@ public class ResetPasswordActivity extends AppCompatActivity implements ApiListe
                 Toast.makeText(ResetPasswordActivity.this, "Password reset Successful!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ResetPasswordActivity.this,LoginActivity.class));
                 finish();
+            }else if(error==1){
+                try{
+                    JSONObject jObjError = new JSONObject((String) data);
+                    PasswordResetErrors errors = new Gson().fromJson(jObjError.toString(), PasswordResetErrors.class);
+                    Toast.makeText(ResetPasswordActivity.this, errors.getErrorMsg(), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(ResetPasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }else{
                 Toast.makeText(ResetPasswordActivity.this, "Error!", Toast.LENGTH_SHORT).show();
             }
