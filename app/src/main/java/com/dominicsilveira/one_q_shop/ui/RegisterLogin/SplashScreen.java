@@ -86,7 +86,7 @@ public class SplashScreen extends AppCompatActivity implements ApiListener {
                 Toast.makeText(globalClass, "Auth Successful!", Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this, MainActivity.class);
             }else{
-                Toast.makeText(SplashScreen.this, "Error!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SplashScreen.this, "Error!", Toast.LENGTH_SHORT).show();
                 intent=new Intent(SplashScreen.this,LoginActivity.class);
             }
             startActivity(intent);
