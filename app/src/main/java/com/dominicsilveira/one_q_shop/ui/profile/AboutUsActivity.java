@@ -8,8 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
-import com.dominicsilveira.one_q_shop.ui.cart.CartHistoryActivity;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 
 public class AboutUsActivity extends AppCompatActivity {

@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 

@@ -1,13 +1,8 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth;
 
-
-import android.widget.Toast;
-
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 
 public class Login {

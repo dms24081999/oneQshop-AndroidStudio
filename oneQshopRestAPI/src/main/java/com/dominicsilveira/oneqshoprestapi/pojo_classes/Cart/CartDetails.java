@@ -1,11 +1,8 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart;
 
-import android.content.Intent;
-
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class CartDetails implements Serializable {

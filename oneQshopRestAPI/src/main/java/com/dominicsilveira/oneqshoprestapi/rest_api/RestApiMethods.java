@@ -3,7 +3,6 @@ package com.dominicsilveira.oneqshoprestapi.rest_api;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Auth.Login;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.CategoriesListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductBarCodes;
@@ -11,9 +10,7 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Product.ProductRecommendations;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
-
 import java.util.Map;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

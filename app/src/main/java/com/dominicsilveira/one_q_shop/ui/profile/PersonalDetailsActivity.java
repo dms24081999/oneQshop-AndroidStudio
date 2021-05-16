@@ -8,21 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.RegisterLogin.RegisterActivity;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.PersonalDetailsErrors;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.RegisterErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import retrofit2.Call;
 
 public class PersonalDetailsActivity extends AppCompatActivity implements ApiListener {

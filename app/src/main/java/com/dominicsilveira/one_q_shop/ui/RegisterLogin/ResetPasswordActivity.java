@@ -8,18 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.dominicsilveira.one_q_shop.R;
-import com.dominicsilveira.one_q_shop.ui.profile.ChangePasswordActivity;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
-import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.ChangePasswordErrors;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Error.PasswordResetErrors;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 

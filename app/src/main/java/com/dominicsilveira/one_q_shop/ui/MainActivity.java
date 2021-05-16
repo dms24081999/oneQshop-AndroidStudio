@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity{
 //    int mCartItemCount = 3;
 //    TextView textCartItemCount;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,5 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice;
 
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

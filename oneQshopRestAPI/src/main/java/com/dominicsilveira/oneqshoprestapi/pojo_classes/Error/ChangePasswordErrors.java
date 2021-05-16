@@ -2,9 +2,7 @@ package com.dominicsilveira.oneqshoprestapi.pojo_classes.Error;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChangePasswordErrors {
     @SerializedName("old_password")

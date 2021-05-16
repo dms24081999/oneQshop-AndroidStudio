@@ -3,14 +3,12 @@ package com.dominicsilveira.one_q_shop.ui.cart;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.BasicUtils;
 import com.dominicsilveira.one_q_shop.utils.animations.LineItemDecoration;
@@ -20,7 +18,6 @@ import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-
 import retrofit2.Call;
 
 public class CartHistoryActivity extends AppCompatActivity implements ApiListener {

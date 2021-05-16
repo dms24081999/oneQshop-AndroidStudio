@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.one_q_shop.utils.AppConstants;
@@ -29,12 +28,10 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import retrofit2.Call;
 
 

@@ -1,16 +1,12 @@
 package com.dominicsilveira.oneqshoprestapi.rest_api;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 /*
@@ -21,7 +17,7 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
     */
 
 public class RestApiClient {
-    public static final String BACKEND_URL = "https://".concat("dms24-v4.loca.lt");
+    public static final String BACKEND_URL = "https://".concat("dms24-v3.loca.lt");
 
     public static RestApiMethods buildHTTPClient() {
 

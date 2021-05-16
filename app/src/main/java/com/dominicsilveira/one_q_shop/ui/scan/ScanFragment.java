@@ -2,6 +2,7 @@ package com.dominicsilveira.one_q_shop.ui.scan;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -73,8 +74,26 @@ public class ScanFragment extends Fragment implements ApiListener {
     Integer product_id;
 
     String[] PERMISSIONS = {
-            android.Manifest.permission.CAMERA,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void askPermissions() {
+        if (!hasPermissions(getActivity(), PERMISSIONS)) {
+            requestPermissions(PERMISSIONS, AppConstants.SCAN_PERMISSION_ALL);
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -108,7 +127,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         turnOnCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askCameraPermission();
+                askPermissions();
             }
         });
 
@@ -269,7 +288,7 @@ public class ScanFragment extends Fragment implements ApiListener {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == AppConstants.CAMERA_REQUEST_CODE) {// If request is cancelled, the result arrays are empty.
+        if (requestCode == AppConstants.SCAN_PERMISSION_ALL) {// If request is cancelled, the result arrays are empty.
             if (ActivityCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) { // permission was granted, yay! Do the contacts-related task you need to do.
                 Log.e(TAG,"Permission Granted!");

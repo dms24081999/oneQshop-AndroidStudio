@@ -1,22 +1,11 @@
 package com.dominicsilveira.one_q_shop.utils;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
-import android.net.Uri;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiListener;
 import com.dominicsilveira.oneqshoprestapi.api_calls.ApiResponse;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartDetails;
@@ -24,17 +13,13 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.Cart.CartListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceListDetails;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiMethods;
-import com.google.android.gms.tasks.OnFailureListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

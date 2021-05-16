@@ -1,25 +1,18 @@
 package com.dominicsilveira.one_q_shop.utils.adapters;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-import com.dominicsilveira.one_q_shop.R;;
-import com.dominicsilveira.one_q_shop.ui.cart.CartActivity;
+import com.dominicsilveira.one_q_shop.R;
 import com.dominicsilveira.oneqshoprestapi.pojo_classes.Invoice.InvoiceDetails;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

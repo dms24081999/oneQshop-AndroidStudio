@@ -1,6 +1,5 @@
 package com.dominicsilveira.oneqshoprestapi.pojo_classes.Product;
 
-
 import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
