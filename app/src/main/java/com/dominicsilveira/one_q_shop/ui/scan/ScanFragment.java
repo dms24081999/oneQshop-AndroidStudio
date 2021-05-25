@@ -231,7 +231,10 @@ public class ScanFragment extends Fragment implements ApiListener {
             miniCartDetails=productDetails.getCartDetails();
             updateInCartAndCartCount(productDetails.getCartDetails().getCount());
         }
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImagePop);
+
+        if(AppConstants.IS_AWS) Picasso.get().load(productDetails.getImagesDetails().get(0).getImage()).into(productImagePop);
+        else Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImagePop);
+
         categoryTagsPop.removeAllViews();
         for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
             View categoryView = getLayoutInflater().inflate(R.layout.include_round_chips, null);

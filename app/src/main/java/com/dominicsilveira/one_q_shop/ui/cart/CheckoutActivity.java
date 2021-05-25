@@ -102,8 +102,8 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
                     invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,bookFormatter.format(date),restMethods);
                     invoiceGenerator.create();
                     String note ="Payment for ".concat(bookFormatter.format(date));
-//                upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
-//                upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);;
+//                    upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
+    //                upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);;
                     afterSuccessfulPayment();
                 }
             }

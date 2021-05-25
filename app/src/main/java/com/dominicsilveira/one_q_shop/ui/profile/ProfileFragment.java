@@ -73,9 +73,10 @@ public class ProfileFragment extends Fragment implements ApiListener {
         nameText.setText(userObj.getUsername());
         userAvatar = root.findViewById(R.id.userAvatar);
 
-        if(userObj.getPicturePath()!=null)
-            Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
-
+        if(userObj.getPicturePath()!=null){
+            if(AppConstants.IS_AWS) Picasso.get().load(userObj.getPicturePath()).into(userAvatar);
+            else Picasso.get().load(AppConstants.BACKEND_URL.concat(userObj.getPicturePath())).into(userAvatar);
+        }
     }
 
     private void attachListeners() {

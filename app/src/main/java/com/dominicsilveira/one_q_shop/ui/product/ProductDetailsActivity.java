@@ -163,8 +163,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
                 updateInCartAndCartCount(productDetails.getCartDetails().getCount());
             }
 
-            Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
+            if(AppConstants.IS_AWS) Picasso.get().load(productDetails.getImagesDetails().get(0).getImage()).into(productImage);
+            else Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(productImage);
             Log.e(TAG, AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage()));
+
             for(final CategoriesDetails categoriesDetails:productDetails.getCategoriesDetails()){
                 View categoryView = getLayoutInflater().inflate(R.layout.include_round_chips, null);
                 Button chipName=categoryView.findViewById(R.id.chipName);

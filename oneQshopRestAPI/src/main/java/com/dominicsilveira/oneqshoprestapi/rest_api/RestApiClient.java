@@ -17,7 +17,10 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
     */
 
 public class RestApiClient {
-    public static final String BACKEND_URL = "https://".concat("dms24-v3.loca.lt");
+//    https://dms24-v3.loca.lt
+//
+    public static final String BACKEND_URL = "http://oneqshopv1-env.eba-ugajksss.ap-south-1.elasticbeanstalk.com";
+    public static final boolean IS_AWS = true;
 
     public static RestApiMethods buildHTTPClient() {
 

@@ -25,6 +25,7 @@ public class AppConstants extends Application {
     Annotation style: Gson
     */
     public static final String BACKEND_URL = RestApiClient.BACKEND_URL;
+    public static final boolean IS_AWS = RestApiClient.IS_AWS;
 
     private User userObj;
     private Bitmap userProfilePic;

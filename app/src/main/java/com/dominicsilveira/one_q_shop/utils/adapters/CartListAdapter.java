@@ -92,8 +92,9 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                         Float.parseFloat(cartDetails.getCartDetails().getPrice()) * cartDetails.getCount()
                 )
         ));
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(cartDetails.getCartDetails().getImagesDetails().get(0).getImage())).into(holder.productImage);
 
+        if(AppConstants.IS_AWS) Picasso.get().load(cartDetails.getCartDetails().getImagesDetails().get(0).getImage()).into(holder.productImage);
+        else Picasso.get().load(AppConstants.BACKEND_URL.concat(cartDetails.getCartDetails().getImagesDetails().get(0).getImage())).into(holder.productImage);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

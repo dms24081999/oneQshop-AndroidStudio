@@ -91,7 +91,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             holder.quantity_label.setVisibility(View.GONE);
         }
         holder.priceText.setText("₹ ".concat(productDetails.getPrice()));
-        Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
+        if(AppConstants.IS_AWS) Picasso.get().load(productDetails.getImagesDetails().get(0).getImage()).into(holder.productImage);
+        else Picasso.get().load(AppConstants.BACKEND_URL.concat(productDetails.getImagesDetails().get(0).getImage())).into(holder.productImage);
 
     }
 
