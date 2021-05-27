@@ -106,6 +106,14 @@ public class ScanFragment extends Fragment implements ApiListener {
         return root;
     }
 
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        updateUI();
+        Log.i(TAG,"on Scan fragment resume");
+        super.onResume();
+        //Refresh your stuff here
+    }
+
     private void initComponents(View root) {
         globalClass=(AppConstants)getActivity().getApplicationContext();
         token=BasicUtils.getSharedPreferencesString(getActivity(),"TokenAuth","token","0");
@@ -392,6 +400,7 @@ public class ScanFragment extends Fragment implements ApiListener {
         if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
             CartDetails cartDetails = (CartDetails) data;
             miniCartDetails.convertCartDetails(cartDetails);
+            productDetails.setCartDetails(miniCartDetails);
             updateInCartAndCartCount(cartDetails.getCount());
             Toast.makeText(getActivity(),"Updated!",Toast.LENGTH_SHORT).show();
         }

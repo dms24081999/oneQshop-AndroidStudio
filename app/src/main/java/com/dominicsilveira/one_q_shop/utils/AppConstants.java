@@ -11,21 +11,18 @@ import com.dominicsilveira.oneqshoprestapi.pojo_classes.User.User;
 import com.dominicsilveira.oneqshoprestapi.rest_api.RestApiClient;
 
 public class AppConstants extends Application {
+    static String TAG = AppConstants.class.getSimpleName();
+
     public static final int CAMERA_REQUEST_CODE = 100;
     public static final int PRODUCT_CART_PAGE_RELOAD_REQUEST = 101;
     public static final int SCAN_PERMISSION_ALL = 102;
     public static final int UPI_PAYMENT  = 110;
 
-    static String TAG = AppConstants.class.getSimpleName();
-
-    /*
-    http://www.jsonschema2pojo.org
-    Target language: Java
-    Source type::JSON
-    Annotation style: Gson
-    */
-    public static final String BACKEND_URL = RestApiClient.BACKEND_URL;
-    public static final boolean IS_AWS = RestApiClient.IS_AWS;
+    public static final String BACKEND_URL = RestApiClient.BACKEND_URL; // if using UPI
+    public static final boolean IS_AWS = true; // if using AWS S3
+    public static final boolean UPI_ENABLED = true; // if using UPI
+    public static final String UPI_ID = "micsilveira111@oksbi"; // if using UPI
+    public static final String UPI_PERSON_NAME = "Michael"; // if using UPI
 
     private User userObj;
     private Bitmap userProfilePic;

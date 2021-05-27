@@ -14,13 +14,12 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
     Target language: Java
     Source type::JSON
     Annotation style: Gson
-    */
+*/
 
 public class RestApiClient {
-//    https://dms24-v3.loca.lt
-//
-    public static final String BACKEND_URL = "http://oneqshopv1-env.eba-ugajksss.ap-south-1.elasticbeanstalk.com";
-    public static final boolean IS_AWS = true;
+// https://dms24-v0.loca.lt
+// http://oneqshopv0-env.eba-p79dya5i.ap-south-1.elasticbeanstalk.com
+    public static final String BACKEND_URL = "http://oneqshopv0-env.eba-p79dya5i.ap-south-1.elasticbeanstalk.com";
 
     public static RestApiMethods buildHTTPClient() {
 

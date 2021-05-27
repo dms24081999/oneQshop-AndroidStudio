@@ -256,6 +256,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements ApiList
         if (strApiName.equals(RestApiMethods.updateCartDetailsRequest)) {
             CartDetails cartDetails = (CartDetails) data;
             miniCartDetails.convertCartDetails(cartDetails);
+            productDetails.setCartDetails(miniCartDetails);
             updateInCartAndCartCount(cartDetails.getCount());
             Toast.makeText(ProductDetailsActivity.this,"Updated!",Toast.LENGTH_SHORT).show();
         }

@@ -101,10 +101,13 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
                     SimpleDateFormat bookFormatter = new SimpleDateFormat("ddMMMMMyyyyHHmmssSSSZ");
                     invoiceGenerator=new InvoiceGenerator(CheckoutActivity.this,cartListDetails,globalClass.getUserObj(),file,date,line1,line2,bookFormatter.format(date),restMethods);
                     invoiceGenerator.create();
-                    String note ="Payment for ".concat(bookFormatter.format(date));
-//                    upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
-    //                upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);;
-                    afterSuccessfulPayment();
+                    String note ="Payment for cart ID: ".concat(bookFormatter.format(date));
+                    if(AppConstants.UPI_ENABLED){
+                        upi=upiPayment.payUsingUpi(String.valueOf(cartListDetails.getPrice()), AppConstants.UPI_ID, AppConstants.UPI_PERSON_NAME, note,CheckoutActivity.this);
+//                        upi=upiPayment.payUsingUpi(String.valueOf(1), "micsilveira111@oksbi", "Michael", note,CheckoutActivity.this);
+                    }else{
+                        afterSuccessfulPayment();
+                    }
                 }
             }
         });
@@ -119,7 +122,7 @@ public class CheckoutActivity extends AppCompatActivity implements ApiListener {
     @Override
     public void onApiResponse(String strApiName, int status, Object data, int error) {
         if (strApiName.equals(RestApiMethods.postInvoiceDetailsRequest)) {
-            Toast.makeText(CheckoutActivity.this,"Uploaded PDF!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckoutActivity.this,"Invoice Generated!",Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(CheckoutActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
